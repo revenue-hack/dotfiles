@@ -48,4 +48,3 @@ set wildmenu
 " 入力中のコマンドを表示する
 set showcmd
 
-
