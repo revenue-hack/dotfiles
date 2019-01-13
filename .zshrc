@@ -124,6 +124,8 @@ export SDKMAN_DIR="/Users/01018541/.sdkman"
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [[ -f /Users/01018541/.nvm/versions/node/v6.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/01018541/.nvm/versions/node/v6.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
 
+# GO MODULE
+export GO111MODULE=on
 # nvim
 export XDG_CONFIG_HOME=$HOME/.config
 
