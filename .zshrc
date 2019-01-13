@@ -29,7 +29,13 @@ if [ -d $HOME/.anyenv ] ; then
     export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
   done
 fi
+if [ -d $HOME/.goenv ] ; then
+  export PATH="$HOME/.goenv/bin:$PATH"
+  eval "$(goenv init -)"
+fi
 export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
+export GOPATH=$HOME/go
+export GOROOT=$HOME/go
 #export CLASSPATH=/Applications/Eclipse_4.6.2.app/Contents/workspace/Yasui_Ozeki/build/classes
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -135,3 +141,15 @@ if [ -f '/Users/01018541/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/0
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/01018541/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/01018541/google-cloud-sdk/completion.zsh.inc'; fi
+
+bindkey '^]' peco-src
+function peco-src() {
+  local src=$( ghq list --full-path | peco --query "$LBUFFER")
+  if [ -n "$src" ]; then
+    BUFFER="cd $src"
+    zle accept-line
+  fi
+  zle -R -c
+}
+zle -N peco-src
+
