@@ -19,3 +19,12 @@ noremap <C-j> <C-w>j
 noremap <C-h> <C-w>h
 noremap <C-k> <C-w>k
 
+" nvim
+if has("autocmd")
+  if has("mac") || has("macunix")
+    au FileType go nmap <silent> <C-g>b :GoDef<CR>
+    au FileType go nmap <silent> <C-g>[ :GoDefPop<CR>
+    au FileType go imap <silent> <C-o> <C-x><C-o>
+  endif
+endif
+

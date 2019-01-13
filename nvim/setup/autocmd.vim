@@ -1,4 +1,3 @@
-"タブ関連(phpは4スペ)
 if has("autocmd")
   "fileタイプの検索を有効にする
   filetype plugin on

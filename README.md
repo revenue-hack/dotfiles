@@ -11,7 +11,12 @@
 - gcp cli
 
 ## setup
+### base
+```
+make
+```
 
+### nvim
 ```
 cd nvim
 make
