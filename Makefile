@@ -1,4 +1,4 @@
-.PHONY: setup setup-brew setup-ghq
+.PHONY: setup setup-brew setup-ghq setup-anyenv setup-neovim
 
 all: main
 
@@ -14,4 +14,10 @@ setup-ghq:
 	brew install ghq
 	brew install peco
 	git config --global ghq.root ${GOPATH}/src
+
+setup-anyenv:
+	sh shell/setup-anyenv.sh
+
+setup-neovim:
+	sh shell/setup-nvim.sh
 

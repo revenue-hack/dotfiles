@@ -4,6 +4,13 @@
 #VIMRUNTIME=~/.vim
 #VIMRUNTIME=/usr/share/vim/vim73
 #export VIMRUNTIME
+#
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-sdk/completion.zsh.inc'; fi
+
 export ZSH=$HOME/.oh-my-zsh
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.rbenv/shims:$PATH
@@ -14,13 +21,13 @@ export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
 export CATALINA_HOME="/Applications/apache-tomcat-8.0.41"
 export PATH="$CATALINA_HOME/bin:$CATALINA_HOME/lib:$PATH"
 export PATH=/usr/local/bin:$PATH
-if [[ -s ~/.nvm/nvm.sh ]] ; then source ~/.nvm/nvm.sh ; fi
+export PATH=~/google-cloud-sdk/bin:$PATH
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="gallois"
-if [ -d $HOME/.anyenv ] ; then
+if [ -d "$HOME/.anyenv" ] ; then
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init -)"
   # tmux対応
@@ -114,33 +121,15 @@ alias e='emacsclient -nw -a ""'
 # Example aliases
  alias zshconfig="mate ~/.zshrc"
  alias ohmyzsh="mate ~/.oh-my-zsh"
-# eval "$(rbenv init -)"
-
-export NVM_DIR="/Users/01018541/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/Users/01018541/.sdkman"
-[[ -s "/Users/01018541/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/01018541/.sdkman/bin/sdkman-init.sh"
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/01018541/.nvm/versions/node/v6.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/01018541/.nvm/versions/node/v6.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/01018541/.nvm/versions/node/v6.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/01018541/.nvm/versions/node/v6.4.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+export SDKMAN_DIR="~/.sdkman"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 # GO MODULE
 export GO111MODULE=on
 # nvim
 export XDG_CONFIG_HOME=$HOME/.config
-
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/01018541/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/01018541/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/01018541/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/01018541/google-cloud-sdk/completion.zsh.inc'; fi
 
 bindkey '^]' peco-src
 function peco-src() {
