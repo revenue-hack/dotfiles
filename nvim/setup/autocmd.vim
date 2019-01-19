@@ -21,6 +21,7 @@ if has("autocmd")
   autocmd FileType swift setlocal sw=2 sts=2 ts=2 et
   autocmd FileType ruby setlocal sw=2 sts=2 ts=2 et
   autocmd FileType toml setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType vue setlocal sw=2 sts=2 ts=2 et
   autocmd FileType python setlocal sw=4 sts=4 ts=4 et
   syntax enable
 endif

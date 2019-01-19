@@ -1,10 +1,5 @@
 # Path to your oh-my-zsh installation.
-#VIM=/usr/local/bin
-#export VIM
-#VIMRUNTIME=~/.vim
-#VIMRUNTIME=/usr/share/vim/vim73
-#export VIMRUNTIME
-#
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/path.zsh.inc'; fi
 
@@ -12,16 +7,18 @@ if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/pat
 if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-sdk/completion.zsh.inc'; fi
 
 export ZSH=$HOME/.oh-my-zsh
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.rbenv/shims:$PATH
-export PATH=$HOME/.pyenv/shims:$PATH
-export PATH=$HOME/.phpenv/shims:$PATH
+export PATH=$HOME/bin:$PATH
 export NODE_PATH="/usr/local/lib/node_modules"
 export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
 export CATALINA_HOME="/Applications/apache-tomcat-8.0.41"
 export PATH="$CATALINA_HOME/bin:$CATALINA_HOME/lib:$PATH"
 export PATH=/usr/local/bin:$PATH
-export PATH=~/google-cloud-sdk/bin:$PATH
+export PATH=$HOME/.rbenv/shims:$PATH
+export PATH=$HOME/.pyenv/shims:$PATH
+export PATH=$HOME/.phpenv/shims:$PATH
+export PATH=$HOME/.ndenv/shims:$PATH
+export PATH=$HOME/google-cloud-sdk/bin:$PATH
+export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -40,7 +37,6 @@ if [ -d $HOME/.goenv ] ; then
   export PATH="$HOME/.goenv/bin:$PATH"
   eval "$(goenv init -)"
 fi
-export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
 export GOPATH=$HOME/go
 export GOROOT=$HOME/go
 #export CLASSPATH=/Applications/Eclipse_4.6.2.app/Contents/workspace/Yasui_Ozeki/build/classes
