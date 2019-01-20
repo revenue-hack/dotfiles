@@ -1,10 +1,10 @@
-.PHONY: setup setup-brew setup-ghq setup-anyenv setup-neovim
+.PHONY: setup setup-brew setup-ghq setup-anyenv setup-neovim setup-gitignore-global
 
 all: main
 
 main: setup
 
-setup: setup-brew setup-ghq
+setup: setup-brew setup-ghq setup-anyenv setup-neovim setup-gitignore-global
 
 setup-brew:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -20,4 +20,7 @@ setup-anyenv:
 
 setup-neovim:
 	sh shell/setup-nvim.sh
+
+setup-gitignore-global:
+	git config --global core.excludesfile ${PWD}/.gitignore_global
 
