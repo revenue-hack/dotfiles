@@ -39,6 +39,7 @@ if [ -d $HOME/.goenv ] ; then
 fi
 export GOPATH=$HOME/go
 export GOROOT=$HOME/go
+export PATH=$GOPATH/bin:$PATH
 #export CLASSPATH=/Applications/Eclipse_4.6.2.app/Contents/workspace/Yasui_Ozeki/build/classes
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
