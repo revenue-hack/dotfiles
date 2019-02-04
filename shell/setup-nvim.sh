@@ -1,18 +1,21 @@
 #!/bin/sh
-pyenv install -s 2.7
+brew install neovim
+CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 2.7
 pyenv virtualenv 2.7 neovim-2
 pyenv shell neovim-2 && pip install neovim
-pyenv install -s 2.7.15
-pyenv install -s 3.6.5
-pyenv global 2.7.14 3.6.5
+CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 2.7.15
+CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 3.6.5
+pyenv global 2.7.15 3.6.5
 
-pyenv install -s 3.6.1
+CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 3.6.1
 pyenv virtualenv 3.6.1 neovim-3
 pyenv shell neovim-3 && pip install neovim
 
-ndenv install -s 10.15 && npm i -g neovim
+nodenv install -s 10.15 && npm i -g neovim
 
-rbenv install -s 2.6.0 && gem install neovim
+rbenv install -s 2.6.0 && rbenv global 2.6.0 && gem install neovim
+
+mkdir ~/.config/nvim && ln -s ~/.config/nvim/init.vim ~/dotfiles/nvim/init.vim
 
 exec $SHELL -l
 

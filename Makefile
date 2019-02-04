@@ -4,16 +4,21 @@ all: main
 
 main: setup
 
-setup: setup-brew setup-ghq setup-anyenv setup-neovim setup-gitignore-global
+setup: setup-brew setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
 
 setup-brew:
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	brew doctor
+	sh shell/setup-brew.sh
+
+setup-zsh:
+	sh shell/setup-zsh.sh
 
 setup-ghq:
 	brew install ghq
 	brew install peco
 	git config --global ghq.root ${GOPATH}/src
+
+setup-goenv:
+	sh shell/setup-goenv.sh
 
 setup-anyenv:
 	sh shell/setup-anyenv.sh
