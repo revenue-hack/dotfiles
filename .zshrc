@@ -41,8 +41,8 @@ fi
 if [ -d "$HOME/.anyenv" ] ; then
   export ANYENV_ROOT="$HOME/.anyenv"
   export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
+  eval "$(anyenv init - zsh)"
+  eval "$(pyenv virtualenv-init - zsh)"
   # tmux対応
   for D in `\ls $HOME/.anyenv/envs`
   do
@@ -51,7 +51,7 @@ if [ -d "$HOME/.anyenv" ] ; then
 fi
 if [ -d $HOME/.goenv ] ; then
   export PATH="$HOME/.goenv/bin:$PATH"
-  eval "$(goenv init -)"
+  eval "$(goenv init - zsh)"
 fi
 
 export GOPATH=$HOME/go
