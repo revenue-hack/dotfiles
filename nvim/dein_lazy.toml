@@ -40,6 +40,10 @@ hook_add = '''
   let g:go_highlight_structs = 1
 '''
 
+[[plugins]]
+repo = 'hashivim/vim-terraform'
+on_ft = 'tf'
+
 [[plugins]] # TOMLのシンタックスハイライト
 repo  = 'cespare/vim-toml'
 on_ft = 'toml'

@@ -114,6 +114,7 @@ source $ZSH/oh-my-zsh.sh
 # alias
 alias grn='grep -r -n'
 alias e='emacsclient -nw -a ""'
+alias dis="docker images --format '{{.Size}}\t{{.Repository}}\t{{.Tag}}' | sort -r"
 #
 # Example aliases
  alias zshconfig="mate ~/.zshrc"
