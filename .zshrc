@@ -6,7 +6,9 @@ if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/pat
 # The next line enables shell command completion for gcloud.
 if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-sdk/completion.zsh.inc'; fi
 
-export ZSH=$HOME/.oh-my-zsh
+if [ -d $HOME/.oh-my-zsh ] ; then
+  export ZSH=$HOME/.oh-my-zsh
+fi
 export PATH=$HOME/bin:$PATH
 export NODE_PATH="/usr/local/lib/node_modules"
 export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
@@ -24,9 +26,23 @@ export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="gallois"
+if [ -d .anyenv/envs/rbenv/bin ] ; then
+  export PATH="$PATH:$HOME/.anyenv/envs/rbenv/bin"
+  eval "$(rbenv init - zsh)"
+fi
+if [ -d .anyenv/envs/phpenv/bin ] ; then
+  export PATH="$PATH:$HOME/.anyenv/envs/phpenv/bin"
+  eval "$(rbenv init - zsh)"
+fi
+if [ -d .anyenv/envs/pyenv/bin ] ; then
+  export PATH="$PATH:$HOME/.anyenv/envs/pyenv/bin"
+  eval "$(rbenv init - zsh)"
+fi
 if [ -d "$HOME/.anyenv" ] ; then
+  export ANYENV_ROOT="$HOME/.anyenv"
   export PATH="$HOME/.anyenv/bin:$PATH"
-  eval "$(anyenv init -)"
+  eval "$(anyenv init - zsh)"
+  eval "$(pyenv virtualenv-init - zsh)"
   # tmux対応
   for D in `\ls $HOME/.anyenv/envs`
   do
@@ -35,8 +51,9 @@ if [ -d "$HOME/.anyenv" ] ; then
 fi
 if [ -d $HOME/.goenv ] ; then
   export PATH="$HOME/.goenv/bin:$PATH"
-  eval "$(goenv init -)"
+  eval "$(goenv init - zsh)"
 fi
+
 export GOPATH=$HOME/go
 export GOROOT=$HOME/go
 export PATH=$GOPATH/bin:$PATH
@@ -89,7 +106,9 @@ plugins=(git)
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
-source $ZSH/oh-my-zsh.sh
+if [ -f $ZSH/oh-my-zsh.sh ] ; then
+  source $ZSH/oh-my-zsh.sh
+fi
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
