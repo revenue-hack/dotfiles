@@ -43,6 +43,9 @@ hook_add = '''
 [[plugins]]
 repo = 'hashivim/vim-terraform'
 on_ft = 'tf'
+hook_add = '''
+  let g:terraform_fmt_on_save = 1
+'''
 
 [[plugins]] # TOMLのシンタックスハイライト
 repo  = 'cespare/vim-toml'

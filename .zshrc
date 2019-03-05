@@ -143,6 +143,7 @@ alias dis="docker images --format '{{.Size}}\t{{.Repository}}\t{{.Tag}}' | sort 
 export SDKMAN_DIR="~/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
+export DOCKER_BUILDKIT=1
 # GO MODULE
 export GO111MODULE=on
 # nvim
