@@ -1,5 +1,5 @@
 " neovim python
-let g:python_host_prog=$PYENV_ROOT.'/versions/neovim-2/bin/python2'
+let g:python_host_prog=$PYENV_ROOT.'/versions/neovim-2/bin/python2.7'
 let g:python3_host_prog=$PYENV_ROOT.'/versions/neovim-3/bin/python3'
 let g:ruby_host_prog=$RBENV_ROOT.'/versions/2.6.0/bin/ruby'
 

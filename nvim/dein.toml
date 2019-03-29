@@ -6,9 +6,6 @@ repo = 'bronson/vim-trailing-whitespace'
 repo = 'bronson/vim-trailing-whitespace'
 [[plugins]]
 repo = 'scrooloose/nerdtree'
-hook_add='''
-  autocmd VimEnter * execute 'NERDTree'
-'''
 [[plugins]]
 repo = 'tomasr/molokai'
 [[plugins]]

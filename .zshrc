@@ -160,3 +160,14 @@ function peco-src() {
 }
 zle -N peco-src
 
+export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
