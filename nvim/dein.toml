@@ -18,4 +18,6 @@ repo = 'Shougo/neosnippet'
 repo = 'Shougo/neosnippet-snippets'
 [[plugins]]
 repo = 'Shougo/neocomplcache'
+[[plugins]]
+repo = 'GutenYe/json5.vim'
 
