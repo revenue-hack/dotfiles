@@ -10,6 +10,16 @@ if [ -d $HOME/.oh-my-zsh ] ; then
   export ZSH=$HOME/.oh-my-zsh
 fi
 export PATH=$HOME/bin:$PATH
+
+if [ -d $HOME/.goenv ] ; then
+  export PATH="$HOME/.goenv/bin:$PATH"
+  eval "$(goenv init - zsh)"
+fi
+
+export GOPATH=$HOME/go
+export GOROOT=$HOME/go
+export PATH=$GOPATH/bin:$PATH
+
 export NODE_PATH="/usr/local/lib/node_modules"
 export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
 export CATALINA_HOME="/Applications/apache-tomcat-8.0.41"
@@ -49,14 +59,7 @@ if [ -d "$HOME/.anyenv" ] ; then
     export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
   done
 fi
-if [ -d $HOME/.goenv ] ; then
-  export PATH="$HOME/.goenv/bin:$PATH"
-  eval "$(goenv init - zsh)"
-fi
 
-export GOPATH=$HOME/go
-export GOROOT=$HOME/go
-export PATH=$GOPATH/bin:$PATH
 #export CLASSPATH=/Applications/Eclipse_4.6.2.app/Contents/workspace/Yasui_Ozeki/build/classes
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
