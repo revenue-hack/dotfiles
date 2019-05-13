@@ -9,6 +9,7 @@ if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-s
 if [ -d $HOME/.oh-my-zsh ] ; then
   export ZSH=$HOME/.oh-my-zsh
 fi
+
 export PATH=$HOME/bin:$PATH
 
 if [ -d $HOME/.goenv ] ; then
@@ -25,16 +26,13 @@ export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
 export CATALINA_HOME="/Applications/apache-tomcat-8.0.41"
 export PATH="$CATALINA_HOME/bin:$CATALINA_HOME/lib:$PATH"
 export PATH=/usr/local/bin:$PATH
-export PATH=$HOME/.rbenv/shims:$PATH
 export PATH=$HOME/.pyenv/shims:$PATH
+export PATH=$HOME/.rbenv/shims:$PATH
 export PATH=$HOME/.phpenv/shims:$PATH
 export PATH=$HOME/.ndenv/shims:$PATH
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
 export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
+
 ZSH_THEME="gallois"
 if [ -d .anyenv/envs/rbenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/rbenv/bin"
