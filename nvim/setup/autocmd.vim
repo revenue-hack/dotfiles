@@ -22,11 +22,11 @@ if has("autocmd")
   autocmd FileType ruby setlocal sw=2 sts=2 ts=2 et
   autocmd FileType json setlocal sw=2 sts=2 ts=2 et
   autocmd FileType toml setlocal sw=2 sts=2 ts=2 et
-  autocmd FileType vue setlocal sw=2 sts=2 ts=2 et
   autocmd FileType proto setlocal sw=2 sts=2 ts=2 et
   autocmd FileType tf setlocal sw=2 sts=2 ts=2 et
   autocmd FileType json5 setlocal sw=2 sts=2 ts=2 et
   autocmd FileType python setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType vue setlocal sw=2 sts=2 ts=2 et
   syntax enable
 endif
 

@@ -26,6 +26,9 @@ if dein#check_install()
 endif
 
 set runtimepath+=~/dotfiles/nvim
+
+"fileタイプの検索を有効にする
+filetype plugin on
 runtime! setup/*.vim
 
 

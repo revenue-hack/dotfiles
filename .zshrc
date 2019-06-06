@@ -12,11 +12,6 @@ fi
 
 export PATH=$HOME/bin:$PATH
 
-if [ -d $HOME/.goenv ] ; then
-  export PATH="$HOME/.goenv/bin:$PATH"
-  eval "$(goenv init - zsh)"
-fi
-
 export GOPATH=$HOME/go
 export GOROOT=$HOME/go
 export PATH=$GOPATH/bin:$PATH
