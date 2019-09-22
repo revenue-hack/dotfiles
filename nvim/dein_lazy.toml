@@ -41,7 +41,7 @@ hook_add = '''
 '''
 [[plugins]]
 repo = 'hashivim/vim-terraform'
-on_ft = 'tf'
+on_ft = 'terraform'
 hook_add = '''
   let g:terraform_fmt_on_save = 1
 '''
@@ -63,6 +63,5 @@ on_ft = 'vue'
 repo  = 'leafgarland/typescript-vim'
 on_ft = 'typescript'
 hook_add = '''
-  let g:typescript_indent_disable = 1
 '''
 

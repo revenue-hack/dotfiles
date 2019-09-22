@@ -12,9 +12,6 @@ fi
 
 export PATH=$HOME/bin:$PATH
 
-export GOPATH=$HOME/go
-export GOROOT=$HOME/go
-export PATH=$GOPATH/bin:$PATH
 
 export NODE_PATH="/usr/local/lib/node_modules"
 export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
@@ -52,6 +49,18 @@ if [ -d "$HOME/.anyenv" ] ; then
     export PATH="$HOME/.anyenv/envs/$D/shims:$PATH"
   done
 fi
+
+export EDITOR=nvim
+eval "$(direnv hook zsh)"
+
+export GOENV_ROOT="$HOME/.anyenv/envs/goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+
+export GOPATH=$HOME/go
+export PATH=$GOROOT/bin:$PATH
+export PATH=$GOPATH/bin:$PATH
+#export PATH=~/$GOPATH/1.12.6/bin:$PATH
 
 #export CLASSPATH=/Applications/Eclipse_4.6.2.app/Contents/workspace/Yasui_Ozeki/build/classes
 # Uncomment the following line to use case-sensitive completion.
@@ -167,3 +176,4 @@ export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
+
