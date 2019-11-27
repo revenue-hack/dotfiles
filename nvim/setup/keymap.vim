@@ -19,6 +19,9 @@ noremap <C-j> <C-w>j
 noremap <C-h> <C-w>h
 noremap <C-k> <C-w>k
 
+"ファイルを最新にする
+noremap <silent><S-y> :e!<CR>
+
 " nvim
 if has("autocmd")
   if has("mac") || has("macunix")

@@ -156,9 +156,10 @@ export XDG_CONFIG_HOME=$HOME/.config
 
 bindkey '^]' peco-src
 function peco-src() {
-  local src=$( ghq list --full-path | peco --query "$LBUFFER")
+  #local src=$( ghq list --full-path | peco --query "$LBUFFER")
+  local src=$( find $(ghq root)/*/*/* -type d -prune | sed -e 's#'$(ghq root)'/##' | peco --query "$LBUFFER")
   if [ -n "$src" ]; then
-    BUFFER="cd $src"
+    BUFFER="cd $GOPATH/src/$src"
     zle accept-line
   fi
   zle -R -c
