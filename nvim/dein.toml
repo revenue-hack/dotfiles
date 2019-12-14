@@ -20,4 +20,12 @@ repo = 'Shougo/neosnippet-snippets'
 repo = 'Shougo/neocomplcache'
 [[plugins]]
 repo = 'GutenYe/json5.vim'
+[[plugins]]
+repo = 'iamcco/markdown-preview.nvim'
+on_ft = ['markdown', 'md', 'rmd'],
+hook_post_update = '''
+cd app & yarn install
+'''
+
+
 

@@ -29,6 +29,13 @@ hook_add = '''
 '''
 
 [[plugins]]
+repo = 'aklt/plantuml-syntax'
+on_ft = 'uml'
+hook_add = '''
+let g:plantuml_executable_script = "~/dotfiles/shell/plantuml"
+'''
+
+[[plugins]]
 repo = 'fatih/vim-go'
 on_ft = 'go'
 hook_add = '''
