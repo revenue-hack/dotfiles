@@ -139,6 +139,17 @@ fi
 alias grn='grep -r -n'
 alias e='emacsclient -nw -a ""'
 alias dis="docker images --format '{{.Size}}\t{{.Repository}}\t{{.Tag}}' | sort -r"
+
+alias gpp='gpp'
+
+## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
+function gpp() {
+  ## カレントブランチ名
+  local current_branch_name=$(git rev-parse --abbrev-ref @)
+  ## リモートブランチを指定して git pull する
+  git branch --set-upstream-to="origin/$current_branch_name" "$current_branch_name"
+  git push
+}
 #
 # Example aliases
  alias zshconfig="mate ~/.zshrc"
