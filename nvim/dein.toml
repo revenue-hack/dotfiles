@@ -26,6 +26,67 @@ on_ft = ['markdown', 'md', 'rmd'],
 hook_post_update = '''
 cd app & yarn install
 '''
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
 
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+hook_add = '''
+  if executable('gopls')
+    augroup LspGo
+      au!
+      autocmd User lsp_setup call lsp#register_server({
+          \ 'name': 'go-lang',
+          \ 'cmd': {server_info->['gopls']},
+          \ 'whitelist': ['go'],
+          \ 'workspace_config': {'gopls': {
+          \     'staticcheck': v:true,
+          \     'completeUnimported': v:true,
+          \     'caseSensitiveCompletion': v:true,
+          \     'usePlaceholders': v:true,
+          \     'completionDocumentation': v:true,
+          \     'watchFileChanges': v:true,
+          \     'hoverKind': 'SingleLine',
+          \   }},
+          \ })
+      autocmd FileType go setlocal omnifunc=lsp#complete
+      autocmd BufWritePre *.go LspDocumentFormatSync
+      autocmd FileType go nnoremap <buffer><silent> gd :<C-u>LspDefinition<CR>
+      autocmd FileType go nnoremap <buffer><silent> gD :<C-u>LspReferences<CR>
+      autocmd FileType go nnoremap <buffer><silent> gs :<C-u>LspDocumentSymbol<CR>
+      autocmd FileType go nnoremap <buffer><silent> gS :<C-u>LspWorkspaceSymbol<CR>
+      autocmd FileType go nnoremap <buffer><silent> gQ :<C-u>LspDocumentFormat<CR>
+      autocmd FileType go vnoremap <buffer><silent> gQ :LspDocumentRangeFormat<CR>
+      autocmd FileType go nnoremap <buffer><silent> K :<C-u>LspHover<CR>
+      autocmd FileType go nnoremap <buffer><silent> <F1> :<C-u>LspImplementation<CR>
+      autocmd FileType go nnoremap <buffer><silent> <F2> :<C-u>LspRename<CR>
+    augroup END
+  endif
+'''
 
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+on_ft = ['vim', 'go']
+hook_add = '''
+" let g:asyncomplete_log_file = expand('~/_vim/.asyncomplete/log.log')
+let g:asyncomplete_enable_for_all = 0
+'''
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+on_ft = ['go']
+depends = ['asyncomplete.vim', 'vim-lsp']
+
+[[plugins]]
+repo = 'thomasfaingnaert/vim-lsp-snippets'
+hook_add = '''
+imap <expr> <Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
+smap <expr> <Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
+'''
+
+[[plugins]]
+repo = 'thomasfaingnaert/vim-lsp-neosnippet'
 

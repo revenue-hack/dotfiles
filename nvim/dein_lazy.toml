@@ -1,44 +1,37 @@
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-hook_add = '''
-  let g:deoplete#enable_at_startup = 1
-  imap <expr><tab> pumvisible() ? "\<C-n>" :
-        \ neosnippet#expandable_or_jumpable() ?
-        \ "<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
-'''
-on_i = 1
+#[[plugins]]
+#repo = 'Shougo/deoplete.nvim'
+#hook_add = '''
+#  let g:deoplete#enable_at_startup = 1
+#  imap <expr><tab> pumvisible() ? "\<C-n>" :
+#        \ neosnippet#expandable_or_jumpable() ?
+#        \ "<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+#'''
+#on_i = 1
 
-[[plugins]]
-repo = 'Shougo/neosnippet'
-hook_source = '''
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k> <Plug>(neosnippet_expand_target)
-'''
-on_i = 1
-on_ft = ['snippet']
-depends = ['neosnippet-snippets']
-
-[[plugins]]
-repo = 'zchee/deoplete-go'
-depends = ['deoplete.nvim']
-on_ft = 'go'
-hook_add = '''
-  let g:deoplete#enable_at_startup = 1
-  let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-'''
+#[[plugins]]
+#repo = 'Shougo/neosnippet'
+#hook_source = '''
+#  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+#  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+#  xmap <C-k> <Plug>(neosnippet_expand_target)
+#'''
+#on_i = 1
+#on_ft = ['snippet']
+#depends = ['neosnippet-snippets']
 
 [[plugins]]
 repo = 'fatih/vim-go'
 on_ft = 'go'
 hook_add = '''
-  let g:go_fmt_command = "goimports"
   let g:go_metalinter_autosave = 1
   let g:go_metalinter_autosave_enabled = ["vet"]
   let g:go_highlight_functions = 1
   let g:go_highlight_methods = 1
   let g:go_highlight_structs = 1
+  let g:go_def_mapping_enabled = 0
+  let g:go_doc_keywordprg_enabled = 0
 '''
+
 [[plugins]]
 repo = 'hashivim/vim-terraform'
 on_ft = 'terraform'
@@ -64,4 +57,12 @@ repo  = 'leafgarland/typescript-vim'
 on_ft = 'typescript'
 hook_add = '''
 '''
+
+[[plugins]]
+repo = 'mattn/vim-goimports'
+on_ft = ['go']
+hook_add = '''
+let g:goimports = 1
+'''
+
 
