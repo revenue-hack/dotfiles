@@ -168,6 +168,15 @@ NeoBundle 'tell-k/vim-browsereload-mac'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'prabirshrestha/async.vim'
+NeoBundle 'prabirshrestha/asyncomplete.vim'
+NeoBundle 'prabirshrestha/asyncomplete-lsp.vim'
+NeoBundle 'prabirshrestha/vim-lsp'
+NeoBundle 'mattn/vim-lsp-settings'
+NeoBundle 'mattn/vim-lsp-icons'
+
+NeoBundle 'hrsh7th/vim-vsnip'
+NeoBundle 'hrsh7th/vim-vsnip-integ'
 if has('lua') " lua機能が有効になっている場合・・・・・・①
   " コードの自動補完
   NeoBundle 'Shougo/neocomplete.vim'
@@ -181,21 +190,40 @@ call neobundle#end()
 "----------------------------------------------------------
 " neocomplete・neosnippetの設定
 "----------------------------------------------------------
-if neobundle#is_installed('neocomplete.vim')
-  " Vim起動時にneocompleteを有効にする
-  let g:neocomplete#enable_at_startup = 1
-  " smartcase有効化.
-  " 大文字が入力されるまで大文字小文字の区別を無視する
-  let g:neocomplete#enable_smart_case = 1
-  " 3文字以上の単語に対して補完を有効にする
-  let g:neocomplete#min_keyword_length = 3
-  " 区切り文字まで補完する
-  let g:neocomplete#enable_auto_delimiter = 1
-  let g:neocomplete#auto_completion_start_length = 1
-  " バックスペースで補完のポップアップを閉じる
-   inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
-  "エンターキーで補完候補の確定.スニペットの展開もエンターキーで確定・・・・・・②
-  " imap <expr><CR> neosnippet#expandable() ? "<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "<C-y>" : "<CR>"
-  " タブキーで補完候補の選択.スニペット内のジャンプもタブキーでジャンプ・・・・・・③
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-endif
+"if neobundle#is_installed('neocomplete.vim')
+"  " Vim起動時にneocompleteを有効にする
+"  let g:neocomplete#enable_at_startup = 1
+"  " smartcase有効化.
+"  " 大文字が入力されるまで大文字小文字の区別を無視する
+"  let g:neocomplete#enable_smart_case = 1
+"  " 3文字以上の単語に対して補完を有効にする
+"  let g:neocomplete#min_keyword_length = 3
+"  " 区切り文字まで補完する
+"  let g:neocomplete#enable_auto_delimiter = 1
+"  let g:neocomplete#auto_completion_start_length = 1
+"  " バックスペースで補完のポップアップを閉じる
+"   inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
+"  "エンターキーで補完候補の確定.スニペットの展開もエンターキーで確定・・・・・・②
+"  " タブキーで補完候補の選択.スニペット内のジャンプもタブキーでジャンプ・・・・・・③
+"endif
+
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> <f2> <plug>(lsp-rename)
+  inoremap <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
+endfunction
+
+augroup lsp_install
+  au!
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
+
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_popup_delay = 200
+let g:lsp_text_edit_enabled = 1

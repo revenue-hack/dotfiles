@@ -9,12 +9,16 @@ if [ ! -e "$HOME/.anyenv/envs/pyenv" ] ; then
 fi
 if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   anyenv install nodenv
+  ndenv install v12.10.0
+  npm install -g typescript typescript-language-server
 fi
 if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
   anyenv install phpenv
 fi
 if [ ! -e "$HOME/.anyenv/envs/rbenv" ] ; then
   anyenv install rbenv
+  rbenv install 2.6.0
+  gem install solargraph
 fi
 
 exec $SHELL -l

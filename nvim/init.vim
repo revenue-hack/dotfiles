@@ -8,6 +8,9 @@ if &runtimepath !~# '/dein.vim'
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
+augroup vimrc
+  autocmd!
+augroup end
 " dein install
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
@@ -31,10 +34,4 @@ set runtimepath+=~/dotfiles/nvim
 " filetype plugin on
 runtime! setup/*.vim
 
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
