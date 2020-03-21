@@ -10,7 +10,10 @@ fi
 if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   anyenv install nodenv
   ndenv install v12.10.0
+  # TypescriptのLSP
   npm install -g typescript typescript-language-server
+  # PHPのLSP
+  npm -g install intelephense
 fi
 if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
   anyenv install phpenv
