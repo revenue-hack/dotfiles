@@ -19,16 +19,23 @@ repo = 'prabirshrestha/async.vim'
 
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
+depends = ['async.vim']
 hook_add = '''
+
 " Go用LSP
 if executable('gopls')
+  augroup LspGo
+    au!
     au User lsp_setup call lsp#register_server({
         \ 'name': 'gopls',
         \ 'cmd': {server_info->['gopls']},
+        \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'go.mod'))},
         \ 'whitelist': ['go'],
         \ })
     autocmd BufWritePre *.go LspDocumentFormatSync
+  augroup END
 endif
+
 
 " Typescript用LSP
 if executable('typescript-language-server')
@@ -98,11 +105,14 @@ let g:lsp_signs_error = {'text': '✗'}
 let g:lsp_signs_warning = {'text': '!!'}
 let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')
 '''
+
 
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
-on_ft = ['vim', 'go']
+on_ft = ['*']
+depends = ['async.vim']
 hook_add = '''
 let g:asyncomplete_log_file = expand('~/.cache/tmp/asyncomplete.log')
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -110,13 +120,16 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete-lsp.vim'
-on_ft = ['go']
-depends = ['asyncomplete.vim', 'vim-lsp']
+on_ft = ['*']
+depends = ['async.vim', 'asyncomplete.vim', 'vim-lsp']
 
 [[plugins]]
-repo = 'thomasfaingnaert/vim-lsp-snippets'
-hook_add = '''
-'''
+repo = 'thomasfaingnaert/vim-lsp-neosnippet'
 
 [[plugins]]
 repo = 'ctrlpvim/ctrlp.vim'
+
+#[[plugins]]
+#repo = 'mattn/vim-lsp-settings'
+#depends = ['async.vim', 'asyncomplete.vim', 'vim-lsp', 'asyncomplete-lsp.vim']
+
