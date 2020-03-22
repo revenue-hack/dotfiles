@@ -118,3 +118,5 @@ repo = 'thomasfaingnaert/vim-lsp-snippets'
 hook_add = '''
 '''
 
+[[plugins]]
+repo = 'ctrlpvim/ctrlp.vim'
