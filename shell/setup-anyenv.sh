@@ -14,6 +14,8 @@ if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   npm install -g typescript typescript-language-server
   # PHPのLSP
   npm -g install intelephense
+  # VueのLSP
+  npm i -g vls
 fi
 if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
   anyenv install phpenv

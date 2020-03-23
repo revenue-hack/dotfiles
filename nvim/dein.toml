@@ -95,6 +95,28 @@ if executable('intelephense')
   augroup END
 endif
 
+if executable('vls')
+  augroup LspVls
+    au!
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'vue-language-server',
+        \ 'cmd': {server_info->['vls']},
+        \ 'whitelist': ['vue'],
+        \ 'initialization_options': {
+        \         'config': {
+        \             'html': {},
+        \              'vetur': {
+        \                  'validation': {}
+        \              }
+        \         }
+        \     }
+        \ })
+
+    " omnifunc
+    au FileType vue setlocal omnifunc=lsp#complete
+  augroup END
+endif
+
 au FileType * nmap <silent> <Tab>[ :LspDefinition<CR>
 au FileType * nmap <silent> <Tab>h :LspHover<CR>
 au FileType * nmap <silent> <Tab>r :LspReferences<CR>
