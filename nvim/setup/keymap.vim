@@ -1,11 +1,3 @@
-" バッファ一覧
-noremap <C-P> :Unite buffer<CR>
-" ファイル一覧
-noremap <C-N> :Unite -buffer-name=file file<CR>
-" 最近使ったファイルの一覧
-noremap <C-Z> :Unite file_mru<CR>
-
-
 "括弧自動挿入
 imap { {}<LEFT>
 imap [ []<LEFT>
@@ -21,13 +13,4 @@ noremap <C-k> <C-w>k
 
 "ファイルを最新にする
 noremap <silent><S-y> :e!<CR>
-
-" nvim
-if has("autocmd")
-  if has("mac") || has("macunix")
-    au FileType go nmap <silent> <C-g>b :GoDef<CR>
-    au FileType go nmap <silent> <C-g>[ :GoDefPop<CR>
-    au FileType go imap <silent> <C-o> <C-x><C-o>
-  endif
-endif
 

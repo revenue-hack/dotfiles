@@ -189,3 +189,5 @@ export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/ko1014/.anyenv/envs/ndenv/versions/10.15/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
