@@ -163,8 +163,8 @@ command! FZFFileList call fzf#run(fzf#wrap({
             \ 'source': 'find . -type d -name .git -prune -o ! -name .DS_Store',
             \ 'down': '40%'}))
 
-nnoremap <C-b> :Buffers<CR>
-nnoremap <C-g> :Ag<CR>
+"nnoremap <C-g> :Buffers<CR>
+nnoremap <C-a> :Ag<CR>
 "nnoremap <silent> <C-]> :call fzf#vim#tags(expand('<cword>'))<CR>
 
 let g:fzf_buffers_jump = 1
