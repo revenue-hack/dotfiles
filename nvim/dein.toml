@@ -118,6 +118,40 @@ if executable('vls')
   augroup END
 endif
 
+if executable('docker-langserver')
+  augroup LspDocker
+  au!
+  au User lsp_setup call lsp#register_server({
+      \ 'name': 'docker-langserver',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
+      \ 'whitelist': ['dockerfile'],
+      \ })
+  augroup END
+endif
+
+if executable('bash-language-server')
+  augroup LspBash
+    au!
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'bash-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+      \ 'whitelist': ['sh'],
+    \ })
+  augroup END
+endif
+
+if executable('vim-language-server')
+  augroup LspVim
+    au!
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'vim-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'vim-language-server --stdio']},
+      \ 'whitelist': ['vim'],
+    \ })
+  augroup END
+endif
+
+
 au FileType * nmap <silent> <Tab>[ :LspDefinition<CR>
 au FileType * nmap <silent> <Tab>h :LspHover<CR>
 au FileType * nmap <silent> <Tab>r :LspReferences<CR>

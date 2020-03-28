@@ -19,6 +19,12 @@ if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   npm i -g eslint
   npm i -g eslint-loader
   npm i -g eslint-plugin-vue
+  # Dockerfile LSP
+  npm install -g dockerfile-language-server-nodejs
+  # Bash LSP
+  npm i -g bash-language-server
+  # Vim LSP
+  npm install -g vim-language-server
 fi
 if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
   anyenv install phpenv

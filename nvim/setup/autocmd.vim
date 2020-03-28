@@ -29,6 +29,7 @@ if has("autocmd")
   autocmd FileType vue setlocal sw=2 sts=2 ts=2 et
   autocmd FileType typescript setlocal sw=2 sts=2 ts=2 et
   autocmd FileType markdown setlocal sw=2 sts=2 ts=2 et
+  autocmd FileType sh setlocal sw=2 sts=2 ts=2 et
   syntax enable
 endif
 
