@@ -14,3 +14,4 @@ noremap <C-k> <C-w>k
 "ファイルを最新にする
 noremap <silent><S-y> :e!<CR>
 
+noremap <C-t> :terminal<CR>
