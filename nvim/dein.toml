@@ -104,10 +104,11 @@ if executable('vls')
         \ 'whitelist': ['vue'],
         \ 'initialization_options': {
         \         'config': {
-        \             'html': {},
-        \              'vetur': {
-        \                  'validation': {}
-        \              }
+        \             'html': {'suggest': v:true},
+        \             'vetur': {
+        \                 'validation': {'template': v:true, 'script': v:true, 'style': v:true},
+        \                 'completion': {'tagCasing': 'initial'}
+        \             }
         \         }
         \     }
         \ })

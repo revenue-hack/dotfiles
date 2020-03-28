@@ -16,6 +16,9 @@ if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   npm -g install intelephense
   # VueのLSP
   npm i -g vls
+  npm i -g eslint
+  npm i -g eslint-loader
+  npm i -g eslint-plugin-vue
 fi
 if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
   anyenv install phpenv
