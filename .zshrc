@@ -32,11 +32,11 @@ if [ -d .anyenv/envs/rbenv/bin ] ; then
 fi
 if [ -d .anyenv/envs/phpenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/phpenv/bin"
-  eval "$(rbenv init - zsh)"
+  eval "$(phpenv init - zsh)"
 fi
 if [ -d .anyenv/envs/pyenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/pyenv/bin"
-  eval "$(rbenv init - zsh)"
+  eval "$(pyenv init - zsh)"
 fi
 if [ -d "$HOME/.anyenv" ] ; then
   export ANYENV_ROOT="$HOME/.anyenv"
