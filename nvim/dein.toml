@@ -53,6 +53,18 @@ else
     :echomsg "vim-lsp for typescript unavailable"
 endif
 
+" SQL
+if executable('sql-language-server')
+    augroup LspSQL
+      au!
+      autocmd User lsp_setup call lsp#register_server({
+          \ 'name': 'sql-language-server',
+          \ 'cmd': {server_info->[&shell, &shellcmdflag, 'sql-language-server up --method stdio']},
+          \ 'whitelist': ['sql'],
+          \ })
+    augroup END
+endif
+
 " Ruby用LSP
 if executable('solargraph')
     " gem install solargraph
@@ -92,6 +104,18 @@ if executable('intelephense')
       \   },
       \ }
       \})
+  augroup END
+endif
+
+if executable('terraform-lsp')
+  augroup LspTerraform
+    au!
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'terraform-lsp',
+      \ 'cmd': {server_info->['terraform-lsp']},
+      \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), '.terraform'))},
+      \ 'whitelist': ['terraform','tf'],
+      \ })
   augroup END
 endif
 

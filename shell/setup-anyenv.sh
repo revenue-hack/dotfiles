@@ -25,6 +25,8 @@ if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   npm i -g bash-language-server
   # Vim LSP
   npm install -g vim-language-server
+  # SQL LSP
+  npm i -g sql-language-server
 fi
 if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
   anyenv install phpenv
