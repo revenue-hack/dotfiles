@@ -34,4 +34,3 @@ set runtimepath+=~/dotfiles/nvim
 " filetype plugin on
 runtime! setup/*.vim
 
-

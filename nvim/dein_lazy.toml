@@ -67,3 +67,14 @@ let g:ale_fix_on_save = 1
 " ローカルの設定ファイルを考慮する
 let g:ale_javascript_prettier_use_local_config = 1
 '''
+
+[[plugins]]
+repo = "lvht/phpcd.vim"
+build = "composer install"
+on_fmt = ["php"]
+hook_source = '''
+if filereadable('phpcd_autoload.php')
+  let g:phpcd_autoload_path = 'phpcd_autoload.php'
+endif
+'''
+
