@@ -2,6 +2,8 @@
 if [ ! -e "$HOME/.anyenv" ] ; then
   git clone https://github.com/riywo/anyenv ~/.anyenv
   git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.anyenv/envs/pyenv/plugins/pyenv-virtualenv
+  echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.zshrc
+  exec $SHELL -l
   anyenv install --init
 fi
 if [ ! -e "$HOME/.anyenv/envs/pyenv" ] ; then
@@ -34,6 +36,7 @@ fi
 if [ ! -e "$HOME/.anyenv/envs/rbenv" ] ; then
   anyenv install rbenv
   rbenv install 2.6.0
+  exec $SHELL -l
   gem install solargraph
 fi
 
