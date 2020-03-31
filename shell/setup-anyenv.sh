@@ -4,8 +4,10 @@ if !(type "anyenv" > /dev/null 2>&1); then
   git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.anyenv/envs/pyenv/plugins/pyenv-virtualenv
   exec $SHELL -l
   anyenv install --init
-  source ~/.zshrc
 fi
+
+
+source ~/.zshrc
 
 if !(type "pyenv" > /dev/null 2>&1); then
   anyenv install pyenv
