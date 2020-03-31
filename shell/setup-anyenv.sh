@@ -1,16 +1,20 @@
 #!/bin/sh
-if [ ! -e "$HOME/.anyenv" ] ; then
+if !(type "anyenv" > /dev/null 2>&1); then
   git clone https://github.com/riywo/anyenv ~/.anyenv
   git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.anyenv/envs/pyenv/plugins/pyenv-virtualenv
-  echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.zshrc
   exec $SHELL -l
   anyenv install --init
+  source ~/.zshrc
 fi
-if [ ! -e "$HOME/.anyenv/envs/pyenv" ] ; then
+
+if !(type "pyenv" > /dev/null 2>&1); then
   anyenv install pyenv
 fi
-if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
+
+if !(type "ndenv" > /dev/null 2>&1); then
   anyenv install nodenv
+fi
+if type "ndenv" > /dev/null 2>&1 ; then
   ndenv install v12.10.0
   # TypescriptのLSP
   npm install -g typescript typescript-language-server
@@ -30,11 +34,16 @@ if [ ! -e "$HOME/.anyenv/envs/nodenv" ] ; then
   # SQL LSP
   npm i -g sql-language-server
 fi
-if [ ! -e "$HOME/.anyenv/envs/phpenv" ] ; then
+
+if !(type "phpenv" > /dev/null 2>&1); then
   anyenv install phpenv
 fi
-if [ ! -e "$HOME/.anyenv/envs/rbenv" ] ; then
+
+if !(type "rbenv" > /dev/null 2>&1); then
   anyenv install rbenv
+fi
+
+if type "rbenv" > /dev/null 2>&1 ; then
   rbenv install 2.6.0
   exec $SHELL -l
   gem install solargraph
