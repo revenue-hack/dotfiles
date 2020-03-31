@@ -12,37 +12,49 @@ fi
 
 export PATH=$HOME/bin:$PATH
 
+ZSH_THEME="gallois"
 
 export NODE_PATH="/usr/local/lib/node_modules"
 export PATH=/usr/local/apache-maven-3.5.0/bin:$PATH
 export CATALINA_HOME="/Applications/apache-tomcat-8.0.41"
 export PATH="$CATALINA_HOME/bin:$CATALINA_HOME/lib:$PATH"
 export PATH=/usr/local/bin:$PATH
-export PATH=$HOME/.pyenv/shims:$PATH
-export PATH=$HOME/.rbenv/shims:$PATH
-export PATH=$HOME/.phpenv/shims:$PATH
-export PATH=$HOME/.ndenv/shims:$PATH
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
-export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
+#export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
 
-ZSH_THEME="gallois"
-if [ -d .anyenv/envs/rbenv/bin ] ; then
+if [ -d $HOME/.pyenv/shims ] ; then
+  export PATH=$HOME/.pyenv/shims:$PATH
+fi
+
+if [ -d $HOME/.rbenv/shims ] ; then
+  export PATH=$HOME/.rbenv/shims:$PATH
+fi
+
+if [ -d $HOME/.phpenv/shims ] ; then
+  export PATH=$HOME/.phpenv/shims:$PATH
+fi
+
+if [ -d $HOME/.ndenv/shims ] ; then
+  export PATH=$HOME/.ndenv/shims:$PATH
+fi
+
+if [ -d $HOME/.anyenv/envs/rbenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/rbenv/bin"
   eval "$(rbenv init - zsh)"
 fi
-if [ -d .anyenv/envs/phpenv/bin ] ; then
+if [ -d $HOME/.anyenv/envs/phpenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/phpenv/bin"
   eval "$(phpenv init - zsh)"
 fi
-if [ -d .anyenv/envs/pyenv/bin ] ; then
+if [ -d $HOME/.anyenv/envs/pyenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/pyenv/bin"
   eval "$(pyenv init - zsh)"
+  eval "$(pyenv virtualenv-init - zsh)"
 fi
 if [ -d "$HOME/.anyenv" ] ; then
   export ANYENV_ROOT="$HOME/.anyenv"
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init - zsh)"
-  eval "$(pyenv virtualenv-init - zsh)"
   # tmux対応
   for D in `\ls $HOME/.anyenv/envs`
   do
@@ -51,55 +63,19 @@ if [ -d "$HOME/.anyenv" ] ; then
 fi
 
 export EDITOR=nvim
-eval "$(direnv hook zsh)"
+if type "direnv" > /dev/null 2>&1 ; then
+  eval "$(direnv hook zsh)"
+fi
 
-export GOENV_ROOT="$HOME/.anyenv/envs/goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-eval "$(goenv init -)"
+if [ -d $HOME/.anyenv/envs/goenv/bin ] ; then
+  export GOENV_ROOT="$HOME/.anyenv/envs/goenv"
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  eval "$(goenv init -)"
+fi
 
 export GOPATH=$HOME/go
 export PATH=$GOROOT/bin:$PATH
 export PATH=$GOPATH/bin:$PATH
-#export PATH=~/$GOPATH/1.12.6/bin:$PATH
-
-#export CLASSPATH=/Applications/Eclipse_4.6.2.app/Contents/workspace/Yasui_Ozeki/build/classes
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -107,40 +83,19 @@ export PATH=$GOPATH/bin:$PATH
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-# User configuration
-
 # export MANPATH="/usr/local/man:$MANPATH"
 
 if [ -f $ZSH/oh-my-zsh.sh ] ; then
   source $ZSH/oh-my-zsh.sh
 fi
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
 # alias
 alias grn='grep -r -n'
 alias e='emacsclient -nw -a ""'
 alias dis="docker images --format '{{.Size}}\t{{.Repository}}\t{{.Tag}}' | sort -r"
-
 alias gll='gll'
+alias zshconfig="mate ~/.zshrc"
+alias ohmyzsh="mate ~/.oh-my-zsh"
 
 ## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
 function gll() {
@@ -150,10 +105,6 @@ function gll() {
   git branch --set-upstream-to="origin/$current_branch_name" "$current_branch_name"
   git pull origin "$current_branch_name"
 }
-#
-# Example aliases
- alias zshconfig="mate ~/.zshrc"
- alias ohmyzsh="mate ~/.oh-my-zsh"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="~/.sdkman"
