@@ -49,7 +49,7 @@ fi
 if [ -d $HOME/.anyenv/envs/pyenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/pyenv/bin"
   eval "$(pyenv init - zsh)"
-  eval "$(pyenv virtualenv-init - zsh)"
+  #eval "$(pyenv virtualenv-init - zsh)"
 fi
 if [ -d "$HOME/.anyenv" ] ; then
   export ANYENV_ROOT="$HOME/.anyenv"
@@ -116,17 +116,17 @@ export GO111MODULE=on
 # nvim
 export XDG_CONFIG_HOME=$HOME/.config
 
-bindkey '^]' peco-src
-function peco-src() {
-  #local src=$( ghq list --full-path | peco --query "$LBUFFER")
-  local src=$( find $(ghq root)/*/*/* -type d -prune | sed -e 's#'$(ghq root)'/##' | peco --query "$LBUFFER")
-  if [ -n "$src" ]; then
-    BUFFER="cd $GOPATH/src/$src"
-    zle accept-line
-  fi
-  zle -R -c
-}
-zle -N peco-src
+#bindkey '^]' peco-src
+#function peco-src() {
+#  #local src=$( ghq list --full-path | peco --query "$LBUFFER")
+#  local src=$( find $(ghq root)/*/*/* -type d -prune | sed -e 's#'$(ghq root)'/##' | peco --query "$LBUFFER")
+#  if [ -n "$src" ]; then
+#    BUFFER="cd $GOPATH/src/$src"
+#    zle accept-line
+#  fi
+#  zle -R -c
+#}
+#zle -N peco-src
 
 export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 

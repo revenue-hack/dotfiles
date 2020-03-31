@@ -15,7 +15,5 @@ nodenv install -s 10.15 && npm i -g neovim
 
 rbenv install -s 2.6.0 && rbenv global 2.6.0 && gem install neovim
 
-mkdir ~/.config/nvim && ln -s ~/.config/nvim/init.vim ~/dotfiles/nvim/init.vim
-
 exec $SHELL -l
 
