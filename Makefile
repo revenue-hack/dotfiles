@@ -4,7 +4,7 @@ all: main
 
 main: setup
 
-setup: setup-git setup-brew setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
+setup: setup-brew setup-git setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
 
 setup-git:
 	sh shell/setup-git.sh
@@ -19,6 +19,7 @@ setup-ghq:
 	brew install ghq
 	brew install peco
 	git config --global ghq.root ${GOPATH}/src
+	source ~/.zshrc
 
 setup-goenv:
 	sh shell/setup-goenv.sh
