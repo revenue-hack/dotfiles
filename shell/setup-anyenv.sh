@@ -1,11 +1,15 @@
-#!/bin/zsh
+#!/bin/sh
+
 if !(type "anyenv" > /dev/null 2>&1); then
   git clone https://github.com/riywo/anyenv ~/.anyenv
-  $SHELL -l
-  anyenv install --init
 fi
 
-source ~/.zshrc
+
+if [ -d "$HOME/.anyenv" ] ; then
+  export ANYENV_ROOT="$HOME/.anyenv"
+  export PATH="$HOME/.anyenv/bin:$PATH"
+  eval "$(anyenv init - zsh)"
+fi
 
 if !(type "pyenv" > /dev/null 2>&1); then
   anyenv install pyenv
@@ -14,10 +18,16 @@ fi
 if !(type "nodenv" > /dev/null 2>&1); then
   anyenv install nodenv
 fi
+
+if [ -d $HOME/.anyenv/envs/nodenv/bin ] ; then
+  export PATH="$PATH:$HOME/.anyenv/envs/nodenv/bin"
+  eval "$(nodenv init - zsh)"
+fi
+
 if type "nodenv" > /dev/null 2>&1 ; then
   nodenv install 12.10.0
   nodenv global 12.10.0
-  source ~/.zshrc
+
   if type "npm" > /dev/null 2>&1 ; then
     # TypescriptのLSP
     npm install -g typescript typescript-language-server
@@ -51,13 +61,18 @@ if !(type "rbenv" > /dev/null 2>&1); then
   anyenv install rbenv
 fi
 
+if [ -d $HOME/.anyenv/envs/rbenv/bin ] ; then
+  export PATH="$PATH:$HOME/.anyenv/envs/rbenv/bin"
+  eval "$(rbenv init - zsh)"
+fi
+
 if type "rbenv" > /dev/null 2>&1 ; then
   rbenv install 2.6.0
-  source ~/.zshrc
+  source ~/.zshrc > /dev/null 2>&1
   gem install solargraph
 else
   echo "rbenv not found"
 fi
 
-$SHELL -l
+source ~/.zshrc > /dev/null 2>&1
 

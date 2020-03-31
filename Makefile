@@ -7,13 +7,13 @@ main: setup
 setup: setup-brew setup-git setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
 
 setup-git:
-	sh shell/setup-git.sh
+	./shell/setup-git.sh
 
 setup-brew:
-	sh shell/setup-brew.sh
+	./shell/setup-brew.sh
 
 setup-zsh:
-	sh shell/setup-zsh.sh
+	./shell/setup-zsh.sh
 
 setup-ghq:
 	brew install ghq
@@ -22,13 +22,13 @@ setup-ghq:
 	source ~/.zshrc
 
 setup-goenv:
-	sh shell/setup-goenv.sh
+	./shell/setup-goenv.sh
 
 setup-anyenv:
-	sh shell/setup-anyenv.sh
+	./shell/setup-anyenv.sh
 
 setup-neovim:
-	sh shell/setup-nvim.sh
+	./shell/setup-nvim.sh
 
 setup-gitignore-global:
 	git config --global core.excludesfile ${PWD}/.gitignore_global

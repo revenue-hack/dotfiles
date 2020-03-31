@@ -6,9 +6,15 @@ if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/pat
 # The next line enables shell command completion for gcloud.
 if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-sdk/completion.zsh.inc'; fi
 
-if [ -d $HOME/.oh-my-zsh ] ; then
-  export ZSH=$HOME/.oh-my-zsh
+if [ $SHELL = "/bin/zsh" ]; then
+  if [ -d $HOME/.oh-my-zsh ] ; then
+    export ZSH=$HOME/.oh-my-zsh
+  fi
+  if [ -f $ZSH/oh-my-zsh.sh ] ; then
+    source $ZSH/oh-my-zsh.sh
+  fi
 fi
+
 
 export PATH=$HOME/bin:$PATH
 
@@ -67,8 +73,8 @@ if type "direnv" > /dev/null 2>&1 ; then
   eval "$(direnv hook zsh)"
 fi
 
-if [ -d $HOME/.anyenv/envs/goenv/bin ] ; then
-  export GOENV_ROOT="$HOME/.anyenv/envs/goenv"
+if [ -d $HOME/.goenv/bin ] ; then
+  export GOENV_ROOT="$HOME/.goenv"
   export PATH="$GOENV_ROOT/bin:$PATH"
   eval "$(goenv init -)"
 fi
@@ -84,10 +90,6 @@ export PATH=$GOPATH/bin:$PATH
 plugins=(git)
 
 # export MANPATH="/usr/local/man:$MANPATH"
-
-if [ -f $ZSH/oh-my-zsh.sh ] ; then
-  source $ZSH/oh-my-zsh.sh
-fi
 
 # alias
 alias grn='grep -r -n'
