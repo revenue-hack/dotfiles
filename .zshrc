@@ -6,13 +6,11 @@ if [ -f '~/google-cloud-sdk/path.zsh.inc' ]; then source '~/google-cloud-sdk/pat
 # The next line enables shell command completion for gcloud.
 if [ -f '~/google-cloud-sdk/completion.zsh.inc' ]; then source '~/google-cloud-sdk/completion.zsh.inc'; fi
 
-if [ $SHELL = "/bin/zsh" ]; then
-  if [ -d $HOME/.oh-my-zsh ] ; then
-    export ZSH=$HOME/.oh-my-zsh
-  fi
-  if [ -f $ZSH/oh-my-zsh.sh ] ; then
-    source $ZSH/oh-my-zsh.sh
-  fi
+if [ -d $HOME/.oh-my-zsh ] ; then
+  export ZSH=$HOME/.oh-my-zsh
+fi
+if [ -f $ZSH/oh-my-zsh.sh ] ; then
+  source $ZSH/oh-my-zsh.sh
 fi
 
 
@@ -87,6 +85,21 @@ fi
 export GOPATH=$HOME/go
 export PATH=$GOROOT/bin:$PATH
 export PATH=$GOPATH/bin:$PATH
+
+# PHPENVのため
+#if [ -d /usr/local/opt/bison@2.7 ] ; then
+#  export PATH="/usr/local/opt/bison@2.7/bin:$PATH"
+#fi
+#if [ -d /usr/local/opt/libxml2 ] ; then
+#  export PATH="/usr/local/opt/libxml2/bin:$PATH"
+#fi
+#if [ -d /usr/local/opt/openssl@1.1 ] ; then
+#  export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+#fi
+
+if [ -d /usr/local/opt/php@7.2 ] ; then
+  export PATH="/usr/local/opt/php@7.2/bin:$PATH"
+fi
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
