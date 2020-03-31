@@ -44,6 +44,11 @@ if [ -d $HOME/.ndenv/shims ] ; then
   export PATH=$HOME/.ndenv/shims:$PATH
 fi
 
+if [ -d $HOME/.anyenv/envs/nodenv/bin ] ; then
+  export PATH="$PATH:$HOME/.anyenv/envs/nodenv/bin"
+  eval "$(nodenv init - zsh)"
+fi
+
 if [ -d $HOME/.anyenv/envs/rbenv/bin ] ; then
   export PATH="$PATH:$HOME/.anyenv/envs/rbenv/bin"
   eval "$(rbenv init - zsh)"
