@@ -3,7 +3,11 @@ if [ ! -d "$HOME/.goenv" ] ; then
   git clone https://github.com/syndbg/goenv.git ~/.goenv
 fi
 
-source ~/.zshrc > /dev/null 2>&1
+if [ -d "$HOME/.goenv" ] ; then
+  export GOENV_ROOT="$HOME/.goenv"
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  eval "$(goenv init -)"
+fi
 
 if type "goenv" > /dev/null 2>&1 ; then
   goenv install 1.14.1 && goenv global 1.14.1
@@ -15,7 +19,7 @@ if type "goenv" > /dev/null 2>&1 ; then
   cd terraform-lsp
   GO111MODULE=on go mod download
   make
-  make copy
+  cp ./terraform-lsp /usr/local/bin
   cd ../ && rm -rf terraform-lsp
 else
   echo "goenv not found"
