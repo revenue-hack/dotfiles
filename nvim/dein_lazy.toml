@@ -1,16 +1,3 @@
-#[[plugins]]
-#repo = 'fatih/vim-go'
-#on_ft = 'go'
-#hook_add = '''
-#  let g:go_metalinter_autosave = 1
-#  let g:go_metalinter_autosave_enabled = ["vet"]
-#  let g:go_highlight_functions = 1
-#  let g:go_highlight_methods = 1
-#  let g:go_highlight_structs = 1
-#  let g:go_def_mapping_enabled = 0
-#  let g:go_doc_keywordprg_enabled = 0
-#'''
-
 [[plugins]]
 repo = 'hashivim/vim-terraform'
 on_ft = 'terraform'
@@ -77,4 +64,8 @@ if filereadable('phpcd_autoload.php')
   let g:phpcd_autoload_path = 'phpcd_autoload.php'
 endif
 '''
+
+#[[plugins]]
+#repo = 'mattn/vim-goimports'
+#on_fmt = ['go']
 
