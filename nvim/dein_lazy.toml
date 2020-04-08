@@ -13,18 +13,6 @@ on_ft = 'toml'
 repo = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
 
-#[[plugins]]
-#repo = 'prettier/vim-prettier'
-#build = 'npm install'
-#on_ft = ['javascript', 'typescript', 'vue', 'css', 'scss', 'json', 'markdown']
-#hook_add = '''
-#source ~/.config/nvim/plugins/vim-prettier.rc.vim
-#
-#" @format or @prettierのタグがファイルの一番上にある場合に発動
-#let g:prettier#autoformat = 1
-#nnoremap <Leader>p :PrettierAsync
-#'''
-
 [[plugins]]
 repo = 'w0rp/ale'
 on_ft = ['vue', 'typescript', 'javascript']
