@@ -15,3 +15,6 @@ noremap <C-k> <C-w>k
 noremap <silent><S-y> :e!<CR>
 
 noremap <C-t> :terminal<CR>
+
+" カッコ内全選択
+noremap <C-u> vi)
