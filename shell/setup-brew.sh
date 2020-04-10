@@ -6,7 +6,8 @@ brew doctor
 brew install fzf
 brew install the_silver_searcher
 
-brew install jq tmux
+brew install jq tmux tfenv
+tfenv install 0.12.19
 
 brew install php@7.2
 curl -s http://getcomposer.org/installer | php
