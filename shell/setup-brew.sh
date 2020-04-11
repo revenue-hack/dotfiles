@@ -6,7 +6,7 @@ brew doctor
 brew install fzf
 brew install the_silver_searcher
 
-brew install jq tmux tfenv
+brew install jq tmux tfenv protobuf
 tfenv install 0.12.19
 
 brew cask install bloomrpc
