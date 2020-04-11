@@ -14,6 +14,9 @@ if type "goenv" > /dev/null 2>&1 ; then
   # goのLSPサーバ
   go get golang.org/x/tools/gopls@latest
 
+  # gPRC, ProtocolBuffers
+  go get -u -v github.com/golang/protobuf/protoc-gen-go
+  go get -u -v google.golang.org/grpc
   # terraform LSP
   git clone https://github.com/juliosueiras/terraform-lsp.git
   cd terraform-lsp
