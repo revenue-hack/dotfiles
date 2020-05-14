@@ -5,7 +5,8 @@ pyenv virtualenv 2.7 neovim-2
 pyenv shell neovim-2 && pip install neovim
 CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 2.7.15
 CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 3.6.5
-pyenv global 2.7.15 3.6.5
+pyenv global 3.6.5 2.7.15
+pyenv rehash
 
 CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 3.6.1
 pyenv virtualenv 3.6.1 neovim-3
