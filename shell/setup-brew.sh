@@ -10,17 +10,6 @@ tfenv install 0.12.19
 
 brew cask install bloomrpc
 
-brew install php@7.2
-curl -s http://getcomposer.org/installer | php
 # PHPENV用
-#brew install re2c
-#brew install bison@2.7
-#brew install openssl
-#brew install libxml2
-#brew link --force openssl
-#brew link --force libxml2
-#brew install mcrypt
-#brew install libjpeg
-#brew install libpng
-#brew install icu4c
+ brew install autoconf bison bzip2 curl icu4c libedit libjpeg libiconv libpng libxml2 libzip openssl re2c tidy-html5 zlib
 
