@@ -110,6 +110,7 @@ alias dis="docker images --format '{{.Size}}\t{{.Repository}}\t{{.Tag}}' | sort 
 alias gll='gll'
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
+alias gcurl='curl -H "Authorization: Bearer $(gcloud auth print-identity-token)"'
 
 ## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
 function gll() {
