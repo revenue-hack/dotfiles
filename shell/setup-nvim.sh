@@ -7,6 +7,9 @@ CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 2.7.15
 CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 3.6.5
 pyenv global 3.6.5 2.7.15
 pyenv rehash
+# LSP
+pyenv global 3.6.5
+pip install python-language-server
 
 CFLAGS="-I$(xcrun --show-sdk-path)/usr/include" pyenv install -s 3.6.1
 pyenv virtualenv 3.6.1 neovim-3
