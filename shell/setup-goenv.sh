@@ -12,7 +12,7 @@ fi
 if type "goenv" > /dev/null 2>&1 ; then
   goenv install 1.14.1 && goenv global 1.14.1
   # goのLSPサーバ
-  go get golang.org/x/tools/gopls@latest
+  go get -u golang.org/x/tools/gopls@latest
 
   # gPRC, ProtocolBuffers
   go get -u -v github.com/golang/protobuf/protoc-gen-go
