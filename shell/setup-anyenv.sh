@@ -50,13 +50,13 @@ if [ -d $HOME/.anyenv/envs/rbenv/bin ] ; then
   eval "$(rbenv init - zsh)"
 fi
 
-if type "rbenv" > /dev/null 2>&1 ; then
-   CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib) --with-bz2=$(brew --prefix bzip2) --with-curl=$(brew --prefix curl) --with-iconv=$(brew --prefix libiconv) --with-libedit=$(brew --prefix libedit) --with-readline=$(brew --prefix readline) --with-tidy=$(brew --prefix tidy-html5)" phpenv install 7.1.33
-  source ~/.zshrc > /dev/null 2>&1
-fi
+#if type "phpenv" > /dev/null 2>&1 ; then
+#   CONFIGURE_OPTS="--with-zlib-dir=$(brew --prefix zlib) --with-bz2=$(brew --prefix bzip2) --with-curl=$(brew --prefix curl) --with-iconv=$(brew --prefix libiconv) --with-libedit=$(brew --prefix libedit) --with-readline=$(brew --prefix readline) --with-tidy=$(brew --prefix tidy-html5)" phpenv install 7.1.33
+#  source ~/.zshrc > /dev/null 2>&1
+#fi
 
 if type "rbenv" > /dev/null 2>&1 ; then
-  rbenv install 2.6.0
+  rbenv install 3.0.0
   source ~/.zshrc > /dev/null 2>&1
   gem install solargraph
 else

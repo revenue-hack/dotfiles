@@ -80,6 +80,8 @@ export GOPATH=$HOME/go
 export PATH=$GOROOT/bin:$PATH
 export PATH=$GOPATH/bin:$PATH
 
+export PATH=$PATH:$HOME/pear/bin
+
 # PHPENVのため
 #if [ -d /usr/local/opt/bison@2.7 ] ; then
 #  export PATH="/usr/local/opt/bison@2.7/bin:$PATH"
@@ -126,8 +128,7 @@ export SDKMAN_DIR="~/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 export DOCKER_BUILDKIT=1
-# GO MODULE
-export GO111MODULE=on
+export GO111MODULE=auto
 # nvim
 export XDG_CONFIG_HOME=$HOME/.config
 
@@ -157,4 +158,5 @@ export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
+## phpenv用
+export PATH="/usr/local/opt/bison@2.7/bin:$PATH"

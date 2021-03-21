@@ -24,6 +24,8 @@ if type "goenv" > /dev/null 2>&1 ; then
   make
   cp ./terraform-lsp /usr/local/bin
   cd ../ && rm -rf terraform-lsp
+  # VimなどのLSP
+  go get github.com/mattn/efm-langserver
 else
   echo "goenv not found"
 fi
