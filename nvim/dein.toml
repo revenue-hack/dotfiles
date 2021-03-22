@@ -35,10 +35,13 @@ function! s:GoToDefinition()
     call searchdecl(expand('<cword>'))
   endif
 endfunction
-
-au FileType go nmap <silent> <Tab>[ :call <SID>GoToDefinition()<CR>
-au FileType go nmap <silent> <Tab>] :split \| :call <SID>GoToDefinition()<CR>
+nmap <silent> <Tab>[ <Plug>(coc-definition)
+nmap <silent> T <Plug>(coc-type-definition)
+nmap <silent> I <Plug>(coc-implementation)
+nmap <silent> R <Plug>(coc-references)
+nmap <silent> <Tab>] :split \| :call <SID>GoToDefinition()<CR>
 '''
+
 
 #[[plugins]]
 #repo = "tbodt/deoplete-tabnine"
