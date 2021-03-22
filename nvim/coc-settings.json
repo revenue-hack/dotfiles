@@ -1,4 +1,15 @@
 {
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "typescript.suggest.autoImports":true,
+  "eslint.autoFixOnSave": true,
+  "prettier.disableSuccessMessage": true,
+  "tsserver.formatOnType": true,
   "languageserver": {
     "dockerfile": {
       "command": "docker-langserver",
