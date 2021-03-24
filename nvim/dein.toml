@@ -292,6 +292,7 @@ command! -bang -nargs=? -complete=dir Files
             \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 '''
 
+
 #[[plugins]]
 #repo = 'mattn/vim-lsp-settings'
 #depends = ['async.vim', 'asyncomplete.vim', 'vim-lsp', 'asyncomplete-lsp.vim']

@@ -11,10 +11,9 @@
   "prettier.disableSuccessMessage": true,
   "tsserver.formatOnType": true,
   "languageserver": {
-    "dockerfile": {
-      "command": "docker-langserver",
-      "filetypes": ["dockerfile"],
-      "args": ["--stdio"]
+    "lua": {
+      "command": "lua-lsp",
+      "filetypes": ["lua"]
     },
     "bash": {
       "command": "bash-language-server",
@@ -29,6 +28,11 @@
       "initializationOptions": {
         "storagePath": "/tmp/intelephense"
       }
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "filetypes": ["dockerfile"],
+      "args": ["--stdio"]
     },
     "sql": {
       "command": "sql-language-server",
