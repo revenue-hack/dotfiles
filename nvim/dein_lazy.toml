@@ -57,11 +57,4 @@ if filereadable('phpcd_autoload.php')
 endif
 '''
 
-[[plugins]]
-repo = 'mattn/vim-goimports'
-on_fmt = ['go']
-hook_add = '''
-let g:goimports = 1
-'''
-
 

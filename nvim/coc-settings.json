@@ -1,12 +1,7 @@
 {
   "coc.preferences.formatOnType": true,
-  "coc.preferences.formatOnSaveFiletypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "typescript.suggest.autoImports":true,
+  "coc.preferences.formatOnSaveFiletypes": ["*"],
+  "typescript.suggest.autoImports": true,
   "eslint.autoFixOnSave": true,
   "prettier.disableSuccessMessage": true,
   "tsserver.formatOnType": true,
@@ -36,7 +31,7 @@
     },
     "sql": {
       "command": "sql-language-server",
-      "args" : ["up", "--method", "stdio"],
+      "args": ["up", "--method", "stdio"],
       "filetypes": ["sql", "mysql"]
     },
     "terraform": {
