@@ -9,6 +9,9 @@ repo = 'tomasr/molokai'
 [[plugins]]
 repo = 'GutenYe/json5.vim'
 [[plugins]]
+repo = 'sebdah/vim-delve'
+on_ft = ['go']
+[[plugins]]
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'md', 'rmd'],
 hook_post_update = '''
