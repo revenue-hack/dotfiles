@@ -11,6 +11,13 @@ repo = 'GutenYe/json5.vim'
 [[plugins]]
 repo = 'sebdah/vim-delve'
 on_ft = ['go']
+hook_add = '''
+autocmd FileType go nmap dbp :DlvAddBreakpoint<CR>
+autocmd FileType go nmap dtp :DlvAddTracepoint<CR>
+autocmd FileType go nmap dt :DlvTest<CR>
+autocmd FileType go nmap dc :DlvClearAll<CR>
+
+'''
 [[plugins]]
 repo = 'iamcco/markdown-preview.nvim'
 on_ft = ['markdown', 'md', 'rmd'],
