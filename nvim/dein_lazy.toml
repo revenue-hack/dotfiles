@@ -5,6 +5,9 @@ hook_add = '''
   let g:terraform_fmt_on_save = 1
 '''
 
+[[plugins]]
+repo = 'jparise/vim-graphql'
+
 [[plugins]] # TOMLのシンタックスハイライト
 repo  = 'cespare/vim-toml'
 on_ft = 'toml'
