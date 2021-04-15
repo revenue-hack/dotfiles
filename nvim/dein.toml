@@ -44,6 +44,7 @@ autocmd FileType go nmap gtx :CocCommand go.tags.clear<cr>
 "   endif
 " endfunction
 nmap <silent> <Tab>[ <Plug>(coc-definition)
+nmap <silent> cn <Plug>(coc-rename)
 nmap <silent> T <Plug>(coc-type-definition)
 nmap <silent> I <Plug>(coc-implementation)
 nmap <silent> R <Plug>(coc-references)
