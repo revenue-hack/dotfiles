@@ -4,9 +4,9 @@ repo = 'plasticboy/vim-markdown'
 [[plugins]]
 repo = 'previm/previm'
 hook_add = '''
-    autocmd BufRead,BufNewFile *.md  set filetype=markdown
-    nnoremap <silent> <C-l> :PrevimOpen<CR>
+    nnoremap <silent> <C-o> :PrevimOpen<CR>
     let g:vim_markdown_folding_disabled=1
+    let g:previm_open_cmd = 'open -a Google\ Chrome'
     let g:previm_enable_realtime=1
 '''
 
