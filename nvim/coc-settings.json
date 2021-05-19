@@ -5,6 +5,10 @@
   "eslint.autoFixOnSave": true,
   "prettier.disableSuccessMessage": true,
   "tsserver.formatOnType": true,
+  "markdownlint.config": {
+    "default": true,
+    "line_length": false
+  },
   "languageserver": {
     "lua": {
       "command": "lua-lsp",
