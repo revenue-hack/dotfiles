@@ -5,3 +5,4 @@ vendor
 .env
 .idea
 .nvimlog
+.go-version
