@@ -30,11 +30,11 @@ on_ft = 'toml'
 
 [[plugins]]
 repo = 'leafgarland/typescript-vim'
-on_ft = ['typescript']
+on_ft = ['typescriptreact', 'typescript']
 
 [[plugins]]
 repo = 'peitalin/vim-jsx-typescript'
-on_ft = ['tsx']
+on_ft = ['tsx', 'jsx', 'typescriptreact']
 
 [[plugins]]
 repo = 'w0rp/ale'
