@@ -6,3 +6,4 @@ vendor
 .idea
 .nvimlog
 .go-version
+.node-version
