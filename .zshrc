@@ -1,4 +1,4 @@
-# Path to your oh-my-zsh installation.
+g Path to your oh-my-zsh installation.
 
 if [ -d $HOME/.oh-my-zsh ] ; then
   export ZSH=$HOME/.oh-my-zsh
@@ -113,6 +113,10 @@ alias gll='gll'
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias gcurl='curl -H "Authorization: Bearer $(gcloud auth print-identity-token)"'
+alias ext='exa --long --tree'
+alias exla='exa -la'
+alias n='nvim'
+alias psw='procs --watch'
 
 ## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
 function gll() {
