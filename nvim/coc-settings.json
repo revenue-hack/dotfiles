@@ -38,6 +38,12 @@
       "args": ["up", "--method", "stdio"],
       "filetypes": ["sql", "mysql"]
     },
+    "jedi": {
+      "enable": true,
+      "filetypes": ["python"],
+      "startupMessage": false,
+      "command": "~/.anyenv/envs/pyenv/shims/jedi-language-server"
+    },
     "terraform": {
       "command": "terraform-lsp",
       "filetypes": ["terraform"],
