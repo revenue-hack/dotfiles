@@ -148,6 +148,16 @@ function peco-src() {
 }
 zle -N peco-src
 
+checkout-fzf-gitbranch() {
+  local GIT_BRANCH=$(git branch -vv | grep -v HEAD | fzf +m)
+  if [ -n "$GIT_BRANCH" ]; then
+    git checkout $(echo "$GIT_BRANCH" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+  fi
+  zle accept-line
+}
+zle -N checkout-fzf-gitbranch
+bindkey '^[' checkout-fzf-gitbranch
+
 export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 
 # tabtab source for serverless package

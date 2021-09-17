@@ -11,9 +11,6 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'leafOfTree/vim-svelte-plugin'
-
-[[plugins]]
 repo = 'tyru/open-browser.vim'
 
 [[plugins]]

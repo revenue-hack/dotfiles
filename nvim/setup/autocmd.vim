@@ -30,6 +30,7 @@ if has("autocmd")
   autocmd FileType typescript setlocal sw=2 sts=2 ts=2 et
   autocmd FileType markdown setlocal sw=2 sts=2 ts=2 et
   autocmd FileType sh setlocal sw=2 sts=2 ts=2 et
+  autocmd BufNewFile,BufRead *.svelte set filetype=svelte
   autocmd BufNewFile,BufRead *.tsx,*.jsx setlocal sw=2 sts=2 ts=2 et
   autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
   autocmd BufRead,BufNewFile *.md set filetype=markdown
