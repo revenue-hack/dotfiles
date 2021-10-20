@@ -34,6 +34,7 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.tsx,*.jsx setlocal sw=2 sts=2 ts=2 et
   autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
   autocmd BufRead,BufNewFile *.md set filetype=markdown
+  autocmd BufNewFile,BufRead *.pu setlocal sw=2 sts=2 ts=2 et
   syntax enable
 endif
 
