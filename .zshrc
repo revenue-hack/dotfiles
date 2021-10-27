@@ -114,7 +114,8 @@ alias gcurl='curl -H "Authorization: Bearer $(gcloud auth print-identity-token)"
 alias ext='exa --long --tree'
 alias exla='exa -la'
 alias n='nvim'
-alias psw='procs --watch'
+alias psw='procs --watch --watch-interval 5'
+alias ps='procs'
 
 ## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
 function gll() {
