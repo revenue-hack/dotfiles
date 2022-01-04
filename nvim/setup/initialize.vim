@@ -13,6 +13,7 @@ let g:rehash256 = 1
 set background=dark
 set number
 set expandtab
+set noignorecase
 set autoindent
 set smartindent
 set encoding=utf-8

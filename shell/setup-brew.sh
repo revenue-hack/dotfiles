@@ -3,7 +3,7 @@ if !(type "brew" > /dev/null 2>&1) ; then
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 brew doctor
-brew install git fzf the_silver_searcher pwgen
+brew install git fzf the_silver_searcher pwgen rename
 
 brew install jq tmux tfenv protobuf
 tfenv install 0.12.19
