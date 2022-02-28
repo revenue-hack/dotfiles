@@ -116,6 +116,10 @@ alias exla='exa -la'
 alias n='nvim'
 alias psw='procs --watch --watch-interval 5'
 alias ps='procs'
+alias chf='chflags'
+alias chfru='chflags -R uchg'
+alias chfrnou='chflags -R nouchg'
+alias chfnou='chflags nouchg'
 
 ## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
 function gll() {
