@@ -10,6 +10,28 @@
     "line_length": false
   },
   "languageserver": {
+    "dls": {
+      "command": "diagnostic-languageserver",
+      "args": ["--stdio", "--log-level", "2"],
+      "filetypes": [ "go" ], // filetypes that you want to enable this lsp
+      "initializationOptions": {
+        "linters": {
+          "command": "staticcheck",
+          "rootPatterns": [],
+          "debounce": 100,
+          "args": [ "-fail", "checks"],
+          "offsetLine": 0,
+          "offsetColumn": 0,
+          "sourceName": "staticcheck",
+          "ignore": []
+        },
+        "filetypes": {
+          "go": "staticcheck"
+        },
+        "formatters": {},
+        "formatFiletypes": {}
+      }
+    },
     "lua": {
       "command": "lua-lsp",
       "filetypes": ["lua"]
