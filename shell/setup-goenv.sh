@@ -10,13 +10,14 @@ if [ -d "$HOME/.goenv" ] ; then
 fi
 
 if type "goenv" > /dev/null 2>&1 ; then
-  goenv install 1.14.1 && goenv global 1.14.1
+  goenv install 1.18.0 && goenv global 1.18.0
   # goのLSPサーバ
-  go get -u golang.org/x/tools/gopls@latest
+  go install golang.org/x/tools/gopls
 
   # gPRC, ProtocolBuffers
-  go get -u -v github.com/golang/protobuf/protoc-gen-go
-  go get -u -v google.golang.org/grpc
+  go install  github.com/golang/protobuf/protoc-gen-go
+  go install google.golang.org/grpc
+  go install honnef.co/go/tools/cmd/staticcheck
   # terraform LSP
   git clone https://github.com/juliosueiras/terraform-lsp.git
   cd terraform-lsp
