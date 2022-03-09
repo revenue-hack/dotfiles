@@ -44,6 +44,11 @@
       "startupMessage": false,
       "command": "~/.anyenv/envs/pyenv/shims/jedi-language-server"
     },
+    "gopls": {
+      "command": "gopls",
+      "filetypes": ["go"],
+      "diagnosticsDelay": 150
+    },
     "terraform": {
       "command": "terraform-lsp",
       "filetypes": ["terraform"],
