@@ -19,10 +19,6 @@ autocmd FileType go nmap dc :DlvClearAll<CR>
 '''
 
 [[plugins]]
-repo = 'evanleck/vim-svelte'
-on_ft = ['svelte']
-
-[[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
 hook_add = '''
