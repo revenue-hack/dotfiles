@@ -178,6 +178,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 ## phpenv用
 export PATH="/usr/local/opt/bison@2.7/bin:$PATH"
 
+export NVIM_COC_LOG_FILE=~/.cache/tmp/coc.log
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('~/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"

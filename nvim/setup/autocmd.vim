@@ -26,6 +26,7 @@ if has("autocmd")
   autocmd FileType tf setlocal sw=2 sts=2 ts=2 et
   autocmd FileType json5 setlocal sw=2 sts=2 ts=2 et
   autocmd FileType python setlocal sw=4 sts=4 ts=4 et
+  autocmd FileType graphql setlocal sw=4 sts=4 ts=4 et
   autocmd FileType vue setlocal sw=2 sts=2 ts=2 et
   autocmd FileType typescript setlocal sw=2 sts=2 ts=2 et
   autocmd FileType markdown setlocal sw=2 sts=2 ts=2 et
@@ -33,6 +34,7 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.svelte set filetype=svelte
   autocmd BufNewFile,BufRead *.tsx,*.jsx setlocal sw=2 sts=2 ts=2 et
   autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact
+  autocmd BufNewFile,BufRead *.graphql set filetype=graphql
   autocmd BufRead,BufNewFile *.md set filetype=markdown
   autocmd BufNewFile,BufRead *.pu setlocal sw=2 sts=2 ts=2 et
   syntax enable

@@ -10,31 +10,18 @@
     "line_length": false
   },
   "languageserver": {
-    "dls": {
-      "command": "diagnostic-languageserver",
-      "args": ["--stdio", "--log-level", "2"],
-      "filetypes": [ "go" ], // filetypes that you want to enable this lsp
-      "initializationOptions": {
-        "linters": {
-          "command": "staticcheck",
-          "rootPatterns": [],
-          "debounce": 100,
-          "args": [ "-fail", "checks"],
-          "offsetLine": 0,
-          "offsetColumn": 0,
-          "sourceName": "staticcheck",
-          "ignore": []
-        },
-        "filetypes": {
-          "go": "staticcheck"
-        },
-        "formatters": {},
-        "formatFiletypes": {}
-      }
-    },
     "lua": {
       "command": "lua-lsp",
       "filetypes": ["lua"]
+    },
+    "graphql": {
+      "command": "graphql-lsp",
+      "args": ["server", "-m", "stream"],
+      "filetypes": ["typescript", "typescriptreact", "graphql"],
+      "settings": {
+        "graphql-config.load.legacy": true,
+        "graphql-config.load.configName": ".gqlgen.yml"
+      }
     },
     "bash": {
       "command": "bash-language-server",
@@ -65,11 +52,6 @@
       "filetypes": ["python"],
       "startupMessage": false,
       "command": "~/.anyenv/envs/pyenv/shims/jedi-language-server"
-    },
-    "gopls": {
-      "command": "gopls",
-      "filetypes": ["go"],
-      "diagnosticsDelay": 150
     },
     "terraform": {
       "command": "terraform-lsp",
