@@ -154,7 +154,8 @@ zle -N peco-src
 checkout-fzf-gitbranch() {
   local GIT_BRANCH=$(git branch -vv | grep -v HEAD | fzf +m)
   if [ -n "$GIT_BRANCH" ]; then
-    git checkout $(echo "$GIT_BRANCH" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+    #git checkout $(echo "$GIT_BRANCH" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+    git checkout $(echo "$GIT_BRANCH" | awk '{print $1}')
   fi
   zle accept-line
 }
