@@ -19,8 +19,7 @@
       "args": ["server", "-m", "stream"],
       "filetypes": ["typescript", "typescriptreact", "graphql"],
       "settings": {
-        "graphql-config.load.legacy": true,
-        "graphql-config.load.configName": ".gqlgen.yml"
+        "graphql-config.load.legacy": true
       }
     },
     "bash": {

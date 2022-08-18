@@ -14,5 +14,6 @@ if type "npm" > /dev/null 2>&1 ; then
     npm install -g vim-language-server
     npm i -g sql-language-server
     npm i -g diagnostic-languageserver
+    npm i -g graphql
     npm i -g graphql-language-service-cli
 fi
