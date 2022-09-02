@@ -21,6 +21,8 @@ if dein#load_state(s:dein_dir)
     call dein#load_toml(s:lazy_toml, {'lazy': 1})
   call dein#end()
   call dein#save_state()
+
+  let g:dein#install_github_api_token = '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'
 endif
 
 " still installed
