@@ -44,7 +44,7 @@ nmap <silent> R <Plug>(coc-references)
 " nmap <silent> <Tab>] :split \| :call <SID>GoToDefinition()<CR>
 nmap <silent> <Tab>] :call CocAction('jumpDefinition', 'split')<CR>
 
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm(): "\<C-y>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm(): "\<CR>"
 inoremap <expr><Up> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 inoremap <expr><Down> coc#pum#visible() ? coc#pum#next(1) : "\<C-h>"
 
