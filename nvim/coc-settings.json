@@ -14,14 +14,6 @@
       "command": "lua-lsp",
       "filetypes": ["lua"]
     },
-    "graphql": {
-      "command": "graphql-lsp",
-      "args": ["server", "-m", "stream"],
-      "filetypes": ["typescript", "typescriptreact", "graphql"],
-      "settings": {
-        "graphql-config.load.legacy": true
-      }
-    },
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
