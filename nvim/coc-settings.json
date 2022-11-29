@@ -10,6 +10,11 @@
     "line_length": false
   },
   "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod",".git/"],
+      "filetypes": ["go"]
+    },
     "lua": {
       "command": "lua-lsp",
       "filetypes": ["lua"]
