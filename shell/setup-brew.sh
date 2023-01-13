@@ -13,3 +13,4 @@ brew cask install bloomrpc
 # PHPENV用
 #brew install autoconf bison bzip2 curl icu4c libedit libjpeg libiconv libpng libxml2 libzip openssl re2c tidy-html5 zlib
 
+brew install starship
