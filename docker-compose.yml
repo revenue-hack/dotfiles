@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  go:
+    build:
+      context: ./build/go
+      args:
+        GO_VERSION: 1.19.5
+        LINTER_VERSION: v1.50.1
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app:cached
+    working_dir: /app
+    env_file:
+      - .env
+    # airを使用する場合はアンコメントしてください
+    # command: air -c .air.toml

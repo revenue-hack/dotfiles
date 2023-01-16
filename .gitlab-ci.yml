@@ -1,0 +1,74 @@
+image: golang:1.19.5
+
+stages:
+  - prepare
+  - test   # use in KGM template
+  - notice # use in KGM template
+  - deploy
+
+include:
+  - project: 'ae/kgm'
+    file: '/.gitlab/ci/kgm_template.yml'
+
+.go-cache:
+  variables:
+    GOPATH: $CI_PROJECT_DIR/.go
+  before_script:
+    - mkdir -p .go
+  cache:
+    - key:
+        files:
+          - go.sum
+        prefix: gomod
+      paths:
+        - .go/pkg/mod/
+      policy: pull-push
+
+gomod:
+  stage: prepare
+  tags:
+    - gorun
+  extends: .go-cache
+  script:
+    - go mod vendor
+
+golangcilint:
+  stage: test
+  tags:
+    - gorun
+  image: golangci/golangci-lint:v1.45.2
+  extends: .go-cache
+  script:
+    - make lint
+
+# ※kgm templateがgotestに依存するのでジョブ名は変更しないでください
+gotest:
+  stage: test
+  tags:
+    - gorun
+  extends: .go-cache
+  script:
+    - make gotest_cover
+  artifacts:
+    paths:
+      - coverage
+    expire_in: 1 mos
+
+# GitLab Pagesにカバレッジを公開する場合はアンコメントしてください
+# https://ae.gitlab.kaonavi.jp/[repo name]/master/coverage.html
+# pages:
+#   stage: deploy
+#   tags:
+#     - gorun
+#   script:
+#     - rm -rf public/$CI_COMMIT_REF_NAME
+#     - mkdir -p public/$CI_COMMIT_REF_NAME
+#     - mv ./coverage/coverage.html public/$CI_COMMIT_REF_NAME/coverage.html
+#   artifacts:
+#     paths:
+#       - public
+#   only:
+#     refs:
+#       - master
+#     variables:
+#       - $IS_PUBLISH_PAGES == "1"
