@@ -10,7 +10,7 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/flags"
 )
 
-func Info(ctx context.Context, msg message, params ...parameter) {
+func Info(ctx context.Context, msg Message, params ...parameter) {
 	l.Info(msg, fields(ctx, params...)...)
 }
 

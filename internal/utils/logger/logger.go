@@ -7,7 +7,7 @@ import (
 )
 
 type (
-	message   = log.Message
+	Message   = log.Message
 	parameter = log.Field
 )
 
@@ -20,9 +20,9 @@ func New(w io.Writer) {
 	l = log.New(w, log.Option{})
 }
 
-// Message はログ出力用のメッセージを生成します
-func Message(format string, args ...interface{}) message {
-	return message{
+// MakeMessage はログ出力用のメッセージを生成します
+func MakeMessage(format string, args ...interface{}) Message {
+	return Message{
 		Format: format,
 		Args:   args,
 	}
