@@ -20,10 +20,11 @@ lint:
 	golangci-lint run ./... --timeout=2m
 
 gotest:
-	go test ./test/... -p=1 -count=1
+	$(MAKE) feature_test
+	$(MAKE) unit_test
 
 feature_test:
-	go test ./test/feature/... -p=1 -count=1
+	go test ./test/feature/... -tags=feature_test -p=1 -count=1
 
 unit_test:
 	go test ./test/unit/... -count=1

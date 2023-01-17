@@ -1,4 +1,4 @@
-module gitlab.kaonavi.jp/ae/go-project-standard
+module gitlab.kaonavi.jp/ae/sardine
 
 go 1.19
 
@@ -23,6 +23,10 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
+	gitlab.kaonavi.jp/ae/kgm/log v1.3.0 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.7.0 // indirect
+	go.uber.org/zap v1.23.0 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/sys v0.0.0-20210510120138-977fb7262007 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
