@@ -7,7 +7,7 @@ tmp_dir = ".air"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "make build_api OUTPUT_FILE=.air/api"
+cmd = "make build_api OUTPUT_FILE=.air/api ENV=local"
 # Binary file yields from `cmd`.
 bin = ".air/api"
 # Customize binary.

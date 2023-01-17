@@ -7,13 +7,29 @@ services:
       args:
         GO_VERSION: 1.19.5
         LINTER_VERSION: v1.50.1
+    container_name: sardine_go
     tty: true
     ports:
-      - "8080:8080"
+      - "28080:8080"
     volumes:
       - ./:/app:cached
     working_dir: /app
     env_file:
       - .env
-    # airを使用する場合はアンコメントしてください
-    # command: air -c .air.toml
+    command: air -c .air.toml
+
+  mysql:
+    build: ./build/mysql
+    container_name: sardine_mysql
+    ports:
+      - "23306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./build/mysql/my.cnf:/etc/my.cnf
+      - ./build/mysql/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+volumes:
+  mysql_data: null
+
