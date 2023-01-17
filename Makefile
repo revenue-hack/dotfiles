@@ -7,11 +7,11 @@ build_all:
 	$(MAKE) build_cli
 
 _build_base:
-	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build -a -tags netgo -installsuffix netgo \
+	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build -a -tags=netgo,$(ENV) -installsuffix netgo \
 		-o $(OUTPUT_FILE) ./cmd/$(CMD)/.
 
 build_api:
-	CMD=api OUTPUT_FILE=dist/api $(MAKE) _build_base
+	CMD=api OUTPUT_FILE=dist/api ENV=production $(MAKE) _build_base
 
 build_cli:
 	CMD=cli OUTPUT_FILE=dist/cli $(MAKE) _build_base

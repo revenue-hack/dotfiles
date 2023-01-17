@@ -5,11 +5,10 @@ FROM golang:${GO_VERSION}-alpine
 
 RUN apk --update-cache add --no-cache git make gcc musl-dev curl bash-completion
 
-# wireを利用する場合はアンコメントしてください
-# RUN go install github.com/google/wire/cmd/wire@vlatest
-# airを利用する場合はアンコメントしてください
-# RUN go install github.com/cosmtrek/air@latest
-
+# wire
+RUN go install github.com/google/wire/cmd/wire@latest
+# air
+RUN go install github.com/cosmtrek/air@latest
 # golangci-lint
 RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${LINT_VERSION}
 
