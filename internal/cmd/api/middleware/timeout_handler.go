@@ -16,6 +16,7 @@ func NewTimeoutHandler() *TimeoutHandler {
 }
 
 func (*TimeoutHandler) Handler(ctx *gin.Context) {
+	// TODO: タイムアウト時間が長すぎるかもしれないので、後で数値を調整する
 	// 5m30s: ALBのタイムアウト値(300) < アプリのタイムアウト値にするため
 	timeout := time.Second * 330
 	tx, cancel := context.WithTimeout(ctx.Request.Context(), timeout)
