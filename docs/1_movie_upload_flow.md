@@ -54,29 +54,4 @@ sequenceDiagram
         Note over Client,S3_origin: 取得したCredentialsを使用<br>マルチパートアップロードを行う
         Client-->>User: アップロード完了
     deactivate User
-
-    Note right of S3_origin: 動画変換処理
-    rect rgb(240, 243, 255)
-        S3_origin->>Lambda1: S3のPutObjectを検知して起動
-        Lambda1->>Lambda1: S3のパスから教材を特定する（しかなさそう）
-        Lambda1->>DB: 教材のステータスを更新（動画アップロード完了）
-        Lambda1->>MC: 動画ファイルの変換ジョブを起動
-        MC->>S3_deliv: Apple HLSに変換したファイルをアップロード
-    end
-
-    Note right of Lambda2: 動画変換のステータス更新処理
-    rect rgb(240, 243, 255)
-        MC->>Lambda2: ジョブのステータス変更を検知して起動
-
-        alt ステータス == PROCESSING
-            Lambda2->>DB: 教材のステータスを更新（動画変換処理中）
-        end
-        alt ステータス == COMPLETE
-            Lambda2->>DB: 教材のステータスを更新（動画変換完了）
-        end
-        alt ステータス == ERROR
-            Lambda2->>DB: 教材のステータスを更新（動画変換失敗）
-            Note right of Lambda2: Slackにエラー通知を行う
-        end
-    end
 ```
