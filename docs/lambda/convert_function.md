@@ -26,6 +26,11 @@ sequenceDiagram
       Lambda-->EB: 終了
     end
 
+    Lambda->>DB: xxx_moviewsから動画情報を検索
+    alt 変換処理起動済み
+      Lambda-->EB: 終了
+    end
+
     Lambda->>DB: 動画の変換ステータスを更新（アップロード完了）
     alt DB更新に失敗
       Lambda-->EB: 終了
@@ -66,6 +71,11 @@ https://docs.aws.amazon.com/ja_jp/AmazonS3/latest/userguide/ev-events.html
 
 パスのフォーマットは `users/{顧客コード}/{動画ID}/ファイル名.mp4`
 
+### 変換処理起動済み
+
+動画の変換ステータスが `アップロード完了` 移行のステータスの場合は処理をスキップ
+
+変換処理が複数回呼ばれると不要な動画が作成されてコスト増につながるため。
 
 ### 動画変換ジョブを作成
 
