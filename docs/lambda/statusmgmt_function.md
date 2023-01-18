@@ -13,18 +13,18 @@ sequenceDiagram
 
     Lambda->>Lambda: 起動ログを出力
 
-    break 不正な起動パラメーター
+    alt 不正な起動パラメーター
       Lambda-->EB: 終了
     end
 
     Lambda->>Lambda: 出力先のパスをパース
-    break 不正な形式のパス
+    alt 不正な形式のパス
       Lambda-->EB: 終了
     end
 
     Lambda->>Lambda: 起動パラメータからステータスを取得
     Lambda->>DB: 動画の変換ステータスを更新
-    break DB更新に失敗
+    alt DB更新に失敗
       Lambda-->EB: 終了
     end
 

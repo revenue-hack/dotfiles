@@ -17,23 +17,23 @@ sequenceDiagram
 
     Lambda->>Lambda: 起動ログ出力
 
-    break 不正な起動パラメーター
+    alt 不正な起動パラメーター
       Lambda-->EB: 終了
     end
 
     Lambda->>Lambda: PUTされたパスをパース
-    break 不正な形式のパス
+    alt 不正な形式のパス
       Lambda-->EB: 終了
     end
 
     Lambda->>DB: 動画の変換ステータスを更新（アップロード完了）
-    break DB更新に失敗
+    alt DB更新に失敗
       Lambda-->EB: 終了
     end
 
     Lambda->>Lambda: Hash値を生成
     Lambda->>MC: 動画変換ジョブを作成
-    break ジョブ作成に失敗
+    alt ジョブ作成に失敗
       Lambda->>DB: 動画の変換ステータスを更新（ジョブ作成エラー）
       Lambda-->EB: 終了
     end
