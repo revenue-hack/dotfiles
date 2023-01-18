@@ -36,7 +36,7 @@ golangcilint:
   stage: test
   tags:
     - gorun
-  image: golangci/golangci-lint:v1.45.2
+  image: golangci/golangci-lint:v1.50.1
   extends: .go-cache
   script:
     - make lint
