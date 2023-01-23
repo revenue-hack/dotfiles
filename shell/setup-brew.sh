@@ -14,3 +14,4 @@ brew cask install bloomrpc
 #brew install autoconf bison bzip2 curl icu4c libedit libjpeg libiconv libpng libxml2 libzip openssl re2c tidy-html5 zlib
 
 brew install starship
+brew install ripgrep
