@@ -11,6 +11,8 @@ RUN go install github.com/google/wire/cmd/wire@latest
 RUN go install github.com/cosmtrek/air@latest
 # golangci-lint
 RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${LINT_VERSION}
+# migrate
+RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.2
 
 # タイムゾーンをJSTに設定
 RUN apk add --no-cache tzdata \
