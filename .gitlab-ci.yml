@@ -48,6 +48,7 @@ gotest:
     - gorun
   extends: .go-cache
   script:
+    - make wire
     - make gotest_cover
   artifacts:
     paths:
