@@ -15,6 +15,7 @@ include:
     GOPATH: $CI_PROJECT_DIR/.go
   before_script:
     - mkdir -p .go
+    - export PATH="$CI_PROJECT_DIR/.go/bin:$PATH"
   cache:
     - key:
         files:
