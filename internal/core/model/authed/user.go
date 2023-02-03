@@ -1,4 +1,4 @@
-package auth
+package authed
 
 // User は認証済みのユーザー情報を表す構造体です
 type User struct {

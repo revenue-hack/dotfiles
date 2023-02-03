@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ka "gitlab.kaonavi.jp/ae/kgm/auth"
-	"gitlab.kaonavi.jp/ae/sardine/internal/core/model/auth"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/model/authed"
 	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 )
@@ -39,7 +39,7 @@ func (m *AuthenticateToken) Handler(ctx *gin.Context) {
 		return
 	}
 
-	authenticate := auth.New(
+	authenticate := authed.New(
 		token.Raw, // Raw = アクセストークン
 		token.Payload.CustomerCode,
 		token.Payload.LoginAddress,
