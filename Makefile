@@ -24,7 +24,7 @@ gotest:
 	$(MAKE) unit_test
 
 feature_test:
-	go test ./test/feature/... -tags=feature_test -p=1 -count=1 ${ARG} -run=${RUN}
+	go test ./test/feature/... -tags=feature_test -p=5 -count=1 ${ARG} -run=${RUN}
 
 unit_test:
 	go test ./test/unit/... -count=1 ${ARG} -run=${RUN}
