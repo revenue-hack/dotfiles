@@ -52,6 +52,9 @@ gotest:
   script:
     - make wire
     - make gotest_cover
+  variables:
+    TOKEN_ENCRYPT_KEY: c5DgPGOlETw7pLxYWrlRErwAF6FZutC1
+    TOKEN_SIGNING_KEY: HQcyvtSkoO1v3pyaM2ZvtLvbAWN8eeSd
   artifacts:
     paths:
       - coverage
