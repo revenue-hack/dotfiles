@@ -33,3 +33,6 @@ gotest_cover:
 	mkdir -p coverage
 	go test -coverpkg=./internal/... -coverprofile=coverage/coverage.out ./test/...
 	go tool cover -html=coverage/coverage.out -o ./coverage/coverage.html
+
+wire:
+	cd internal/cmd/api/di && wire

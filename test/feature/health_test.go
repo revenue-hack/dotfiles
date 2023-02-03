@@ -2,13 +2,14 @@ package feature
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
-	"gitlab.kaonavi.jp/ae/sardine/test/helper"
+	"gitlab.kaonavi.jp/ae/sardine/internal/cmd/api"
 )
 
 func TestHealth(t *testing.T) {
-	serv := helper.Server()
+	serv := httptest.NewServer(api.Route())
 	defer serv.Close()
 
 	req, err := http.NewRequest(http.MethodGet, serv.URL+"/health", nil)

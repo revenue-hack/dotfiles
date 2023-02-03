@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"context"
+
 	"github.com/gin-gonic/gin"
 	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
 )
@@ -18,5 +20,5 @@ func NewSetRequestId() *SetRequestId {
 // "X-Amzn-Trace-Id" が存在しなければ空文字列を設定
 func (*SetRequestId) Handler(ctx *gin.Context) {
 	uniqueId := ctx.GetHeader("X-Amzn-Trace-Id")
-	ctx.Set(ctxt.ContextKeyLogUniqueId.String(), uniqueId)
+	ctx.Request = ctx.Request.WithContext(context.WithValue(ctx.Request.Context(), ctxt.KeyLogUniqueId, uniqueId))
 }
