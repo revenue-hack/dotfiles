@@ -39,6 +39,7 @@ golangcilint:
   image: golangci/golangci-lint:v1.50.1
   extends: .go-cache
   script:
+    - make wire
     - make lint
 
 # ※kgm templateがgotestに依存するのでジョブ名は変更しないでください

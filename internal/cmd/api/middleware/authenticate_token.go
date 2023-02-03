@@ -26,9 +26,6 @@ func (m *AuthenticateToken) Handler(ctx *gin.Context) {
 		Encrypt: os.Getenv("TOKEN_ENCRYPT_KEY"),
 		Signing: os.Getenv("TOKEN_SIGNING_KEY"),
 	})
-
-	ctx.Request.Context()
-
 	if err != nil {
 		if ka.IsValidationError(err) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"errors": []string{err.Error()}})

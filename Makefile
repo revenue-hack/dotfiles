@@ -34,5 +34,7 @@ gotest_cover:
 	go test -coverpkg=./internal/... -coverprofile=coverage/coverage.out ./test/...
 	go tool cover -html=coverage/coverage.out -o ./coverage/coverage.html
 
-wire:
+install_wire:
+	go install github.com/google/wire/cmd/wire@v0.5.0
+wire: install_wire
 	cd internal/cmd/api/di && wire
