@@ -1,0 +1,64 @@
+linters-settings:
+  goimports:
+    local-prefixes: github.com/golangci/golangci-lint
+  govet:
+    check-shadowing: true
+    settings:
+      printf:
+        funcs:
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Infof
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Warnf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Errorf
+          - (github.com/golangci/golangci-lint/pkg/logutils.Log).Fatalf
+  errcheck:
+    ignore: fmt:.*,io:Close,database/sql:Close
+  lll:
+    line-length: 120
+  # gosecで見ているエラー情報はこの辺を参考にしてください。
+  # @see https://securego.io/docs/rules/rule-intro.html
+  gosec:
+    excludes:
+      # 変数名にtoken等を使用しているとエラーになるが、ノイズが多いので除外しておく
+      - G101
+      # errcheckと内容が重複するため除外
+      - G104
+  gocyclo:
+    # Minimal code complexity to report.
+    # Default: 30 (but we recommend 10-20)
+    min-complexity: 20
+  gocognit:
+    # Minimal code complexity to report
+    # Default: 30 (but we recommend 10-20)
+    min-complexity: 20
+
+linters:
+  disable-all: true
+  enable:
+    - goimports
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - lll
+    - gosec
+    - gocyclo
+    - gocognit
+
+issues:
+  exclude-use-default: false
+  exclude-rules:
+    - path: test/
+      linters:
+        - errcheck
+        - lll
+        - gosec
+        - gocyclo
+        - gocognit
+
+#run:
+#  skip-dirs:
+
+service:
+  golangci-lint-version: 1.50.x
+  prepare:
+    - echo "here I can run custom commands, but no preparation needed for this repo"
