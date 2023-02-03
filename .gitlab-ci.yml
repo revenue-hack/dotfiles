@@ -49,6 +49,9 @@ gotest:
   extends: .go-cache
   script:
     - make gotest_cover
+  variables:
+    # テストで使用するマイグレーションファイルのパス
+    MIGRATE_DIR: /builds/ae/sardine/build/migrate
   artifacts:
     paths:
       - coverage
