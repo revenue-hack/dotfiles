@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	ka "gitlab.kaonavi.jp/ae/kgm/auth"
-	"gitlab.kaonavi.jp/ae/sardine/internal/core/model/authed"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/authed"
 	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 )
