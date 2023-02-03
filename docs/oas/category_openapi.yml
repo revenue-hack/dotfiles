@@ -1,0 +1,113 @@
+openapi: 3.0.2
+info:
+  title: カテゴリ情報 操作API
+  description: カテゴリ情報の取得・更新等を行うためのAPIです。
+  version: '1.0'
+servers:
+  - url: http://localhost:28080/api
+paths:
+  /categories:
+    get:
+      tags:
+        - Category
+      summary: カテゴリの一覧を返却します
+      description: カテゴリの一覧を返却します
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items :
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: カテゴリid
+                          example: 1
+                        name:
+                          type: string
+                          description: カテゴリ名
+                          example: 新卒研修
+                        courseCount:
+                          type: number
+                          description: カテゴリに紐づく講習の件数
+                          example: 10
+
+    post:
+      tags:
+        - Category
+      summary: カテゴリの新規登録を行います
+      description: カテゴリの新規登録を行います
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: カテゴリ名
+                  required: true
+                  example: キャリア支援
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: カテゴリid
+                    example: 20
+                  name:
+                    type: string
+                    description: カテゴリ名
+                    example: キャリア支援
+
+  /categories/{id}:
+    patch:
+      tags:
+        - Category
+      summary: カテゴリの編集を行います
+      description: カテゴリの編集を行います
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: カテゴリ名
+                  required: true
+                  example: キャリア支援
+      responses:
+        '204':
+          description: No Content
+
+    delete:
+      tags:
+        - Category
+      summary: カテゴリの削除を行います
+      description: カテゴリの削除を行います
+      responses:
+        '204':
+          description: No Content
+
+components:
+  securitySchemes:
+    bearerAuth:
+      description: 事前に/shield/tokenで取得したAccessTokenを設定してください
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
