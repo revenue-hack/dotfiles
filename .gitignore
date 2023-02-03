@@ -7,3 +7,4 @@ dist/
 vendor/
 coverage.html
 coverage.out
+*.mwb.bak
