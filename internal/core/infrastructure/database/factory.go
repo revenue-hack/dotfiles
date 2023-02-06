@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/env"
 	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
 )
 
@@ -21,5 +22,19 @@ func (c *connFactory) Create(ctx context.Context) (*Conn, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Conn{customerCode: authedUser.CustomerCode()}, nil
+
+	readSetting, err := env.GetReadDbConnectSetting()
+	if err != nil {
+		return nil, err
+	}
+	writeSetting, err := env.GetWriteDbConnectSetting()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Conn{
+		customerCode: authedUser.CustomerCode(),
+		readSetting:  readSetting,
+		writeSetting: writeSetting,
+	}, nil
 }

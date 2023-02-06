@@ -3,8 +3,8 @@ package database
 import (
 	"context"
 	"fmt"
-	"os"
 
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/env"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/timer"
 	"gorm.io/driver/mysql"
@@ -15,6 +15,11 @@ import (
 type Conn struct {
 	// 接続先の顧客コード
 	customerCode string
+	// 接続設定（読み込み
+	readSetting *env.DbConnectSetting
+	// 接続設定（書き込み
+	writeSetting *env.DbConnectSetting
+
 	// 顧客ごとのReadコネクション
 	dbRead *gorm.DB
 }
@@ -24,7 +29,7 @@ func (c *Conn) Read() (*gorm.DB, error) {
 	if c.dbRead != nil {
 		return c.dbRead, nil
 	}
-	db, err := c.open(os.Getenv("DB_READ_HOST_NAME"))
+	db, err := c.open(c.readSetting)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +41,7 @@ func (c *Conn) Read() (*gorm.DB, error) {
 // 書き込み用の接続情報を返却するinterfaceはないため、書き込みは必ずこのメソッドを通して行う必要があります
 // クロージャに実際の書き込み処理を実装してください
 func (c *Conn) Transaction(ctx context.Context, f func(tx *gorm.DB) error) (err error) {
-	db, err := c.open(os.Getenv("DB_WRITE_HOST_NAME"))
+	db, err := c.open(c.writeSetting)
 	if err != nil {
 		return err
 	}
@@ -68,13 +73,13 @@ func (c *Conn) Close() {
 	}
 }
 
-func (c *Conn) open(host string) (*gorm.DB, error) {
+func (c *Conn) open(setting *env.DbConnectSetting) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"%s:%s@tcp(%s:%v)/%s?charset=utf8mb4&parseTime=true&loc=%s",
-		os.Getenv("DB_USER_NAME"),
-		os.Getenv("DB_PASSWORD"),
-		host,
-		os.Getenv("DB_PORT"),
+		setting.Username,
+		setting.Password,
+		setting.Host,
+		setting.Port,
 		c.customerCode, // 接続先のDB名は顧客コード
 		"Asia%2FTokyo",
 	)
