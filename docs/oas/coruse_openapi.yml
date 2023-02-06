@@ -24,7 +24,8 @@ paths:
                     取得する講習の種別を表す区分値<br>
                       1: 必須の講習
                       2: 任意の講習
-                      3: 終了した講習
+                      3: 回答期間が終了した講習
+                      4: 自身が受講済みの講習
                   nullable: true
                   default: null
                   example: 1
@@ -55,10 +56,10 @@ paths:
                   nullable: true
                   default: null
                   example: ロジカル
-                nexCursor:
+                nextPageToken:
                   type: number
                   description: |
-                    2ページ目移行のデータを取得したい場合、1ページ目のAPIリクエスト時に返却されたnexCursorを設定<br>
+                    2ページ目移行のデータを取得したい場合、1ページ目のAPIリクエスト時に返却されたnextPageTokenを設定<br>
                     値を指定しない場合は1ページ目のデータを取得します
                   nullable: true
                   default: null
@@ -76,10 +77,10 @@ paths:
                     type: number
                     description: 実行時点でのAPIから取得できる推定の最大ページ数です
                     example: 10
-                  nexCursor:
+                  nextPageToken:
                     type: string
                     description: |
-                      次のページを取得するためのカーソルです<br>
+                      次のページを取得するためのトークンです<br>
                       次のページが存在しない場合にはnullを返却します
                     nullable: true
                     example: xxxxxxxxxx
