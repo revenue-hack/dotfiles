@@ -49,6 +49,6 @@ func (m *AuthenticateToken) Handler(ctx *gin.Context) {
 	)
 
 	ctx.Request = ctx.Request.WithContext(
-		context.WithValue(ctx.Request.Context(), ctxt.KeyAuthenticatedUser, authenticate))
+		context.WithValue(ctx.Request.Context(), ctxt.KeyAuthenticatedUser, &authenticate))
 	ctx.Next()
 }
