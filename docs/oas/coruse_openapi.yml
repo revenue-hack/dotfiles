@@ -22,12 +22,11 @@ paths:
                   type: number
                   description: |
                     取得する講習の種別を表す区分値<br>
-                      1: 必須の講習
-                      2: 任意の講習
-                      3: 回答期間が終了した講習
-                      4: 自身が受講済みの講習
-                  nullable: true
-                  default: null
+                      1: 必須の講習<br>
+                      2: 任意の講習<br>
+                      3: 回答期間が終了した講習<br>
+                      4: 自身が受講済みの講習<br>
+                  nullable: false
                   example: 1
                 categoryId:
                   type: number
@@ -37,17 +36,6 @@ paths:
                   nullable: true
                   default: null
                   example: 10
-                attendType:
-                  type: number
-                  description: |
-                    受講状況でのフィルタを行うための区分値<br>
-                      1: 未受講<br>
-                      2: 受講済み<br>
-                    未指定の場合は全ての受講状況の講習を検索します
-                  enum: [1]
-                  nullable: true
-                  default: null
-                  example: 1
                 searchWord:
                   type: string
                   description: |
