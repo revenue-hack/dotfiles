@@ -34,6 +34,11 @@ gotest_cover:
 	go test -coverpkg=./internal/... -coverprofile=coverage/coverage.out ./test/...
 	go tool cover -html=coverage/coverage.out -o ./coverage/coverage.html
 
+install_wire:
+	go install github.com/google/wire/cmd/wire@v0.5.0
+wire: install_wire
+	cd internal/cmd/api/di && wire
+
 migrate:
 	migrate \
 		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \

@@ -6,6 +6,8 @@ require (
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/google/wire v0.5.0
+	gitlab.kaonavi.jp/ae/kgm/auth v1.3.0
 	gitlab.kaonavi.jp/ae/kgm/log v1.3.0
 	gorm.io/driver/mysql v1.4.5
 	gorm.io/gorm v1.24.5
@@ -18,6 +20,7 @@ require (
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.9.7 // indirect
+	github.com/golang-jwt/jwt/v4 v4.2.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect

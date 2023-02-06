@@ -19,6 +19,7 @@ variables:
     GOPATH: $CI_PROJECT_DIR/.go
   before_script:
     - mkdir -p .go
+    - export PATH="$CI_PROJECT_DIR/.go/bin:$PATH"
   cache:
     - key:
         files:
@@ -43,6 +44,7 @@ golangcilint:
   image: golangci/golangci-lint:v1.50.1
   extends: .go-cache
   script:
+    - make wire
     - make lint
 
 # ※kgm templateがgotestに依存するのでジョブ名は変更しないでください
@@ -55,8 +57,11 @@ gotest:
     - gorun
   extends: .go-cache
   script:
+    - make wire
     - make gotest_cover
   variables:
+    TOKEN_ENCRYPT_KEY: c5DgPGOlETw7pLxYWrlRErwAF6FZutC1
+    TOKEN_SIGNING_KEY: HQcyvtSkoO1v3pyaM2ZvtLvbAWN8eeSd
     # DB接続
     DB_HOST_NAME: mysql
     DB_USER_NAME: root

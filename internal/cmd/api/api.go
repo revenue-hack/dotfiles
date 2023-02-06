@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"gitlab.kaonavi.jp/ae/sardine/internal/cmd/api/di"
 	"gitlab.kaonavi.jp/ae/sardine/internal/cmd/api/middleware"
 )
 
@@ -30,6 +31,14 @@ func Route() *gin.Engine {
 	e.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
+
+	authGroup := e.Group("", di.InitializeAuthenticateToken().Handler)
+	{
+		// TODO: 検証用なので後で消します
+		authGroup.GET("/test", func(ctx *gin.Context) {
+			ctx.JSON(http.StatusOK, gin.H{"message": "ok"})
+		})
+	}
 
 	return e
 }
