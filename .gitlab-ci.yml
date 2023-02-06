@@ -10,6 +10,10 @@ include:
   - project: 'ae/kgm'
     file: '/.gitlab/ci/kgm_template.yml'
 
+variables:
+  # gotestで利用するmysqlのrootユーザー作成用の変数
+  MYSQL_ROOT_PASSWORD: password
+
 .go-cache:
   variables:
     GOPATH: $CI_PROJECT_DIR/.go
@@ -44,11 +48,22 @@ golangcilint:
 # ※kgm templateがgotestに依存するのでジョブ名は変更しないでください
 gotest:
   stage: test
+  services:
+    - name: mysql:8.0.30
+      alias: mysql
   tags:
     - gorun
   extends: .go-cache
   script:
     - make gotest_cover
+  variables:
+    # DB接続
+    DB_HOST_NAME: mysql
+    DB_USER_NAME: root
+    DB_PASSWORD: password
+    DB_PORT: 3306
+    # テストで使用するマイグレーションファイルのパス
+    MIGRATE_DIR: /builds/ae/sardine/build/migrate
   artifacts:
     paths:
       - coverage
