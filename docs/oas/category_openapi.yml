@@ -13,7 +13,7 @@ paths:
       summary: カテゴリの一覧を返却します
       description: カテゴリの一覧を返却します
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
@@ -55,7 +55,7 @@ paths:
                   required: true
                   example: キャリア支援
       responses:
-        '201':
+        201:
           description: Created
           content:
             application/json:
@@ -89,7 +89,7 @@ paths:
                   required: true
                   example: キャリア支援
       responses:
-        '204':
+        204:
           description: No Content
 
     delete:
@@ -98,7 +98,7 @@ paths:
       summary: カテゴリの削除を行います
       description: カテゴリの削除を行います
       responses:
-        '204':
+        204:
           description: No Content
 
 components:

@@ -64,9 +64,8 @@ paths:
                   nullable: true
                   default: null
                   example: xxxxxxxxxx
-
       responses:
-        '200':
+        200:
           description: OK
           content:
             application/json:
@@ -131,6 +130,51 @@ paths:
                           description: 受講期間が終了した講習を表すフラグ
                           example: false
 
+  /courses/{course_type}:
+    post:
+      tags:
+        - Course
+      summary: 講習の新規作成を行います
+      description: e-Learning、集合研修の新規作成を行います
+      parameters:
+        - name: course_type
+          in: path
+          required: true
+          description: 登録を行う講習の種別
+          schema:
+            type: string
+            enum: [e_learning, group_training]
+            example: e_learning
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: 講習ID
+                    example: 10
+
+  /courses/{id}:
+    delete:
+      tags:
+        - Course
+      summary: 講習の削除を行います
+      description: 講習の削除を行います
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 講習ID
+          schema:
+            type: number
+            example: 10
+      responses:
+        204:
+          description: No Content
 
 components:
   securitySchemes:
