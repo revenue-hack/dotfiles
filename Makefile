@@ -33,3 +33,14 @@ gotest_cover:
 	mkdir -p coverage
 	go test -coverpkg=./internal/... -coverprofile=coverage/coverage.out ./test/...
 	go tool cover -html=coverage/coverage.out -o ./coverage/coverage.html
+
+migrate:
+	migrate \
+		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
+		-path ./build/migrate \
+		up
+migrate_down:
+	migrate \
+		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
+		-path ./build/migrate \
+		down
