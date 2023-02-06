@@ -29,7 +29,7 @@ paths:
                   nullable: true
                   default: null
                   example: 1
-                category_id:
+                categoryId:
                   type: number
                   description: |
                     カテゴリIDでのフィルタを行う場合に指定<br>
@@ -92,22 +92,22 @@ paths:
                           type: number
                           description: 講習id
                           example: 1
-                        name:
+                        title:
                           type: string
-                          description: 講習名
+                          description: 講習タイトル
                           example: ロジカルシンキング研修
-                        thumbnail_url:
+                        thumbnailUrl:
                           type: string
                           description: サムネイル画像URL
                           example: http://localhost/path/to/img
-                        category_name:
+                        categoryName:
                           type: string
                           description: |
                             カテゴリ名<br>
                             カテゴリが未設定の場合はnullを返却します
                           nullable: true
                           example: 新卒研修
-                        expire_at:
+                        expireAt:
                           type: string
                           description: |
                             受講期限<br>
