@@ -24,7 +24,7 @@ gotest:
 	$(MAKE) unit_test
 
 feature_test:
-	go test ./test/feature/... -tags=feature_test -p=1 -count=1 ${ARG} -run=${RUN}
+	go test ./test/feature/... -tags=feature_test -p=5 -count=1 ${ARG} -run=${RUN}
 
 unit_test:
 	go test ./test/unit/... -count=1 ${ARG} -run=${RUN}
@@ -38,3 +38,14 @@ install_wire:
 	go install github.com/google/wire/cmd/wire@v0.5.0
 wire: install_wire
 	cd internal/cmd/api/di && wire
+
+migrate:
+	migrate \
+		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
+		-path ./build/migrate \
+		up
+migrate_down:
+	migrate \
+		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
+		-path ./build/migrate \
+		down
