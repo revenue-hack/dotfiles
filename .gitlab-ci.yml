@@ -63,7 +63,8 @@ gotest:
     TOKEN_ENCRYPT_KEY: c5DgPGOlETw7pLxYWrlRErwAF6FZutC1
     TOKEN_SIGNING_KEY: HQcyvtSkoO1v3pyaM2ZvtLvbAWN8eeSd
     # DB接続
-    DB_HOST_NAME: mysql
+    DB_READ_HOST_NAME: mysql
+    DB_WRITE_HOST_NAME: mysql
     DB_USER_NAME: root
     DB_PASSWORD: password
     DB_PORT: 3306

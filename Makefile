@@ -41,11 +41,11 @@ wire: install_wire
 
 migrate:
 	migrate \
-		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
+		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_WRITE_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
 		-path ./build/migrate \
 		up
 migrate_down:
 	migrate \
-		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
+		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_WRITE_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
 		-path ./build/migrate \
 		down

@@ -50,7 +50,7 @@ func openDb(dbName string) (*gorm.DB, error) {
 		"%s:%s@tcp(%s:3306)/%s?charset=utf8mb4&parseTime=true&loc=%s&multiStatements=true",
 		os.Getenv("DB_USER_NAME"),
 		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST_NAME"),
+		os.Getenv("DB_WRITE_HOST_NAME"),
 		dbName,
 		"Asia%2FTokyo",
 	)
