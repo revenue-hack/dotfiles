@@ -1,0 +1,176 @@
+openapi: 3.0.2
+info:
+  title: 講習情報 操作API
+  description: 講習情報の取得・更新等を行うためのAPIです。
+  version: '1.0'
+servers:
+  - url: http://localhost:28080/api
+paths:
+  /courses/search:
+    post:
+      tags:
+        - Course
+      summary: 講習の検索を行います
+      description: 講習の検索を行います
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                courseType:
+                  type: number
+                  description: |
+                    取得する講習の種別を表す区分値<br>
+                      1: 必須の講習<br>
+                      2: 任意の講習<br>
+                      3: 回答期間が終了した講習<br>
+                      4: 自身が受講済みの講習<br>
+                  nullable: false
+                  example: 1
+                categoryId:
+                  type: number
+                  description: |
+                    カテゴリIDでのフィルタを行う場合に指定<br>
+                    未指定の場合は全てのカテゴリの講習を検索します
+                  nullable: true
+                  default: null
+                  example: 10
+                searchWord:
+                  type: string
+                  description: |
+                    検索ワード<br>
+                    講習名の部分一致を行います。（AND/OR検索非対応）
+                  nullable: true
+                  default: null
+                  example: ロジカル
+                nextPageToken:
+                  type: number
+                  description: |
+                    2ページ目移行のデータを取得したい場合、1ページ目のAPIリクエスト時に返却されたnextPageTokenを設定<br>
+                    値を指定しない場合は1ページ目のデータを取得します
+                  nullable: true
+                  default: null
+                  example: xxxxxxxxxx
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  maxPageSize:
+                    type: number
+                    description: 実行時点でのAPIから取得できる推定の最大ページ数です
+                    example: 10
+                  nextPageToken:
+                    type: string
+                    description: |
+                      次のページを取得するためのトークンです<br>
+                      次のページが存在しない場合にはnullを返却します
+                    nullable: true
+                    example: xxxxxxxxxx
+                  courses:
+                    type: array
+                    items :
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                          description: 講習id
+                          example: 1
+                        title:
+                          type: string
+                          description: 講習タイトル
+                          example: ロジカルシンキング研修
+                        thumbnailUrl:
+                          type: string
+                          description: サムネイル画像URL
+                          example: http://localhost/path/to/img
+                        categoryName:
+                          type: string
+                          description: |
+                            カテゴリ名<br>
+                            カテゴリが未設定の場合はnullを返却します
+                          nullable: true
+                          example: 新卒研修
+                        expireAt:
+                          type: string
+                          description: |
+                            受講期限<br>
+                            受講期限がない場合はnullを返却します
+                          nullable: true
+                          example: 2023-01-10 10:00:00
+                        recommend:
+                          type: number
+                          description: |
+                            おすすめ度の数値<br>
+                            おすすめ度がない場合はnullを返却します
+                          nullable: true
+                          example: 90
+                        isRequired:
+                          type: boolean
+                          description: 必須受講の講習を表すフラグ
+                          example: true
+                        isFixed:
+                          type: boolean
+                          description: 受講期間が終了した講習を表すフラグ
+                          example: false
+
+  /courses/{course_type}:
+    post:
+      tags:
+        - Course
+      summary: 講習の新規作成を行います
+      description: e-Learning、集合研修の新規作成を行います
+      parameters:
+        - name: course_type
+          in: path
+          required: true
+          description: 登録を行う講習の種別
+          schema:
+            type: string
+            enum: [e_learning, group_training]
+            example: e_learning
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: 講習ID
+                    example: 10
+
+  /courses/{id}:
+    delete:
+      tags:
+        - Course
+      summary: 講習の削除を行います
+      description: 講習の削除を行います
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 講習ID
+          schema:
+            type: number
+            example: 10
+      responses:
+        204:
+          description: No Content
+
+components:
+  securitySchemes:
+    bearerAuth:
+      description: 事前に/shield/tokenで取得したAccessTokenを設定してください
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
