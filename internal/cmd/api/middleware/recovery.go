@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"net"
 	"net/http"
 	"net/http/httputil"
@@ -9,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 )
 
@@ -34,8 +34,7 @@ func (r *RecoveryLogWriter) Handler(ctx *gin.Context) {
 		if r.isSyscallError(err) {
 			logger.Error(
 				ctx,
-				// TODO: errsパッケージを作ったら置き換える
-				fmt.Errorf("%v", err),
+				errs.NewInternalError("syscall error: %v", err),
 				logger.MakeParameter("request", string(httpRequest)),
 			)
 			ctx.Error(err.(error)) // nolint: errcheck

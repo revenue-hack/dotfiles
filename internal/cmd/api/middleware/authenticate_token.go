@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -10,6 +9,7 @@ import (
 	ka "gitlab.kaonavi.jp/ae/kgm/auth"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/authed"
 	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 )
 
@@ -33,7 +33,7 @@ func (m *AuthenticateToken) Handler(ctx *gin.Context) {
 			return
 		}
 
-		logger.Error(ctx, fmt.Errorf("トークン認証でエラーが発生しました: %s", err.Error()))
+		logger.Error(ctx, errs.NewInternalError("トークン認証でエラーが発生しました: %v", err))
 		ctx.JSON(http.StatusBadRequest, gin.H{"errors": []string{"invalid token"}})
 		ctx.Abort()
 		return

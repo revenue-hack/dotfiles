@@ -3,12 +3,15 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 )
+
+const internalError = `{"errors":["internal server error"]}`
 
 // API はREST APIのhandler用のインタフェースです
 type API interface {
@@ -30,10 +33,7 @@ func Exec(ctx *gin.Context, handler func(ctx *gin.Context) ResponseData) {
 			// goroutine内でrecoverを行う必要があります。
 			if err := recover(); err != nil {
 				logger.Panic(ctx, err)
-				ch <- ResponseData{
-					Status: http.StatusInternalServerError,
-					Body:   []byte(`{"errors":["Internal Server Error"]}`),
-				}
+				ch <- ResponseData{Status: http.StatusInternalServerError, Body: []byte(internalError)}
 			}
 		}()
 		ch <- handler(ctx)
@@ -49,33 +49,40 @@ func Exec(ctx *gin.Context, handler func(ctx *gin.Context) ResponseData) {
 }
 
 func NewErrorResponseData(ctx context.Context, err error) ResponseData {
+	status := http.StatusInternalServerError
 	resp := struct {
 		Errors []string `json:"errors"`
 	}{
 		Errors: []string{},
 	}
 
-	// TODO: Switchでエラーの種別を判定してステータスを切り替える
-	status := http.StatusBadRequest
-	resp.Errors = []string{err.Error()}
+	var ers *errs.Errors
+	switch {
+	case errors.As(err, &ers):
+		status = http.StatusUnprocessableEntity
+		resp.Errors = ers.Errors()
+	case errors.Is(err, &errs.InvalidParameter{}):
+		status = http.StatusUnprocessableEntity
+		resp.Errors = append(resp.Errors, err.Error())
+	case errors.Is(err, &errs.NotFound{}):
+		status = http.StatusNotFound
+		resp.Errors = append(resp.Errors, err.Error())
+	}
 
 	body, err2 := json.Marshal(resp)
 	if err2 != nil {
+		// jsonエンコードが失敗することはないはずだが一応失敗したら固定文言を返すようにしておく
 		status = http.StatusInternalServerError
-		body = []byte(`{"errors":["Internal Server Error"]}`)
+		body = []byte(internalError)
 		logger.Error(ctx, err)
 	}
-
-	return ResponseData{
-		Status: status,
-		Body:   body,
-	}
+	return ResponseData{Status: status, Body: body}
 }
 
 func NewJsonBindError(err error) error {
 	switch err.(type) {
 	case *json.UnmarshalTypeError:
-		return fmt.Errorf(`%sの型が異なっています。`, err.(*json.UnmarshalTypeError).Field)
+		return errs.NewInvalidParameter(`%sの型が異なっています。`, err.(*json.UnmarshalTypeError).Field)
 	}
-	return fmt.Errorf("必須パラメータが不足しています")
+	return errs.NewInvalidParameter("必須パラメータが不足しています")
 }
