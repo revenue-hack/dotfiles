@@ -34,6 +34,12 @@ func Route() *gin.Engine {
 
 	authGroup := e.Group("", di.InitializeAuthenticateToken().Handler)
 	{
+		// 検索処理
+		authGroup.POST("/search/required", di.InitializeSearchRequiredHandler().Handler)
+		authGroup.POST("/search/optional", di.InitializeSearchOptionalHandler().Handler)
+		authGroup.POST("/search/expired", di.InitializeSearchExpiredHandler().Handler)
+		authGroup.POST("/search/completed", di.InitializeSearchCompletedHandler().Handler)
+
 		// TODO: 検証用なので後で消します
 		authGroup.GET("/test", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{"message": "ok"})

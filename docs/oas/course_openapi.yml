@@ -6,28 +6,36 @@ info:
 servers:
   - url: http://localhost:28080/api
 paths:
-  /courses/search:
+  /courses/search/{search_type}:
     post:
       tags:
         - Course
       summary: 講習の検索を行います
       description: 講習の検索を行います
+      parameters:
+        - name: search_type
+          in: path
+          required: true
+          description: |
+            検索する講習の種別<br>
+              required:  必須の講習を検索<br>
+              optional:  任意の講習を検索<br>
+              expired:   期限切れの講習を検索<br>
+              completed: 受講完了した講習を検索<br>
+          schema:
+            type: string
+            example: required
+            enum:
+              - required
+              - optional
+              - expired
+              - completed
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                courseType:
-                  type: number
-                  description: |
-                    取得する講習の種別を表す区分値<br>
-                      1: 必須の講習<br>
-                      2: 任意の講習<br>
-                      3: 回答期間が終了した講習<br>
-                      4: 自身が受講済みの講習<br>
-                  nullable: false
-                  example: 1
                 categoryId:
                   type: number
                   description: |
