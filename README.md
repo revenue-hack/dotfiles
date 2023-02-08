@@ -33,3 +33,43 @@ $ docker compose up -d --build
 $ docker compose exec go make migrate
 ```
 
+## MinIOのAccessKey/SecretKeyを発行
+
+aws cliやフロントエンド開発の際にAccessKey/SecretKeyが必要になるので、必要に応じて以下の手順でキーを発行してください。
+
+### MinIOのコンソールにログイン
+
+```sh
+$ open http://localhost:29001
+```
+
+※ID/Passwordは `minioadmin` です
+
+### キーを発行
+
+1. サイドメニューの `Access Keys` を押下
+2. `Create access key` を押下
+3. `Create` を押下
+4. 表示されるキーを保持する
+   - ローカル専用でいつでも再発行できるのでDownloadは不要
+
+### 動作確認(AWS CLI)
+
+```sh
+$ vi ~/.aws/credentials
+
+----- 以下を設定
+
+[sardine-minio]
+aws_access_key_id = [発行したAccess Key]
+aws_secret_access_key = [発行したSecret Key]
+```
+
+#### 動作確認
+
+以下のようにバケット名が表示されればOK
+
+```sh
+$ aws --endpoint-url=http://localhost:29000 --profile=sardine-minio s3 ls
+2023-02-08 09:43:32 local-lms-storage
+```
