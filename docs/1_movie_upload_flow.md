@@ -7,7 +7,7 @@ sequenceDiagram
     actor User as User
     participant Client as kaonavi<br>Frontend
     participant Server as kaonavi<br>Backend
-    participant API as API Gateway<br>+<br>Lambda
+    participant API as LMS API
     participant S3_origin as S3(元データ)
     participant S3_deliv as S3(配信用データ)
     participant Lambda1 as Lambda<br>動画変換関数
