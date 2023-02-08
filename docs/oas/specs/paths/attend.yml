@@ -1,0 +1,66 @@
+/attend/{course_id}/e_learning:
+  get:
+    tags:
+      - 受講
+    summary: 講習の詳細を取得します
+    description: 講習の詳細を取得します
+    parameters:
+      - $ref: "#/components/parameters/CourseId"
+    responses:
+      200:
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 講習名
+                  example: ロジカルシンキング研修
+                description:
+                  type: string
+                  description: 講習の詳細
+                  example: ロジカルシンキング研修の詳細
+                isFixed:
+                  type: boolean
+                  description: 受講完了済みを表すフラグ
+                  example: true
+                hasTest:
+                  type: boolean
+                  description: テストフォームが存在するかを表すフラグ
+                  example: true
+                form:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      description: テストフォームID
+                      example: 100
+                    title:
+                      type: string
+                      description: フォームタイトル
+                      example: 確認テスト
+                contents:
+                  type: array
+                  description: 講習に設定されている動画・ファイル・外部URLです
+                  items:
+                    type: object
+                    properties:
+                      contentType:
+                        type: number
+                        description: |
+                          コンテンツの種別<br>
+                            1: 動画<br>
+                            2: ファイル<br>
+                            3: 外部URL<br>
+                        enum: [1, 2, 3]
+                        example: 1
+                      title:
+                        type: string
+                        description: コンテンツタイトル
+                        example: 研修動画①
+                      url:
+                        type: string
+                        description: コンテンツ配信用URL
+                        example: https://localhost/path/to/movie.m3u8

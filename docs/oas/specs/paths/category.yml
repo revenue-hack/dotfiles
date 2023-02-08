@@ -1,0 +1,110 @@
+/categories:
+  get:
+    tags:
+      - カテゴリ
+    summary: カテゴリの一覧を返却します
+    description: カテゴリの一覧を返却します
+    responses:
+      200:
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categories:
+                  type: array
+                  items :
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                        description: カテゴリid
+                        example: 1
+                      name:
+                        type: string
+                        description: カテゴリ名
+                        example: 新卒研修
+                      courseCount:
+                        type: number
+                        description: カテゴリに紐づく講習の件数
+                        example: 10
+
+  post:
+    tags:
+      - カテゴリ
+    summary: カテゴリの新規登録を行います
+    description: カテゴリの新規登録を行います
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: カテゴリ名
+                required: true
+                example: キャリア支援
+    responses:
+      201:
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                  description: カテゴリid
+                  example: 20
+                name:
+                  type: string
+                  description: カテゴリ名
+                  example: キャリア支援
+
+/categories/{category_id}:
+  patch:
+    tags:
+      - カテゴリ
+    summary: カテゴリの編集を行います
+    description: カテゴリの編集を行います
+    parameters:
+      - name: category_id
+        in: path
+        required: true
+        description: 講習ID
+        schema:
+          type: integer
+          example: 1
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: カテゴリ名
+                required: true
+                example: キャリア支援
+    responses:
+      204:
+        description: No Content
+
+  delete:
+    tags:
+      - カテゴリ
+    summary: カテゴリの削除を行います
+    description: カテゴリの削除を行います
+    parameters:
+      - name: category_id
+        in: path
+        required: true
+        description: 講習ID
+        schema:
+          type: integer
+          example: 1
+    responses:
+      204:
+        description: No Content

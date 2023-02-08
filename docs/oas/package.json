@@ -1,0 +1,14 @@
+{
+  "name": "oas",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "16.15.0"
+  },
+  "scripts": {
+    "build": "swagger-merger -i ./specs/index.yml -o swagger.yml"
+  },
+  "dependencies": {
+    "swagger-merger": "^1.5.4"
+  }
+}
