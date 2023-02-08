@@ -81,7 +81,7 @@ pages:
      - gorun
    script:
      - rm -rf public/$CI_COMMIT_REF_NAME
-     - mkdir -p public/$CI_COMMIT_REF_NAME
+     - mkdir -p public/$CI_COMMIT_REF_NAME/oas
      - cp ./docs/oas/swagger.yml public/$CI_COMMIT_REF_NAME/oas/swagger.yml
      - cp ./docs/oas/index.html public/$CI_COMMIT_REF_NAME/oas/index.html
    artifacts:
