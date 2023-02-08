@@ -33,9 +33,13 @@ $ docker compose up -d --build
 $ docker compose exec go make migrate
 ```
 
+---
+
 ## MinIOのAccessKey/SecretKeyを発行
 
-aws cliやフロントエンド開発の際にAccessKey/SecretKeyが必要になるので、必要に応じて以下の手順でキーを発行してください。
+開発の際にAccessKey/SecretKeyが必要になった場合は以下の手順でキーを発行してください。
+
+※通常のケースでは必要ないはずですが一応手順だけ書いてあります。
 
 ### MinIOのコンソールにログイン
 
