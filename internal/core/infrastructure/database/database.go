@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/env"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/timer"
 	"gorm.io/driver/mysql"
@@ -31,7 +32,7 @@ func (c *Conn) Read() (*gorm.DB, error) {
 	}
 	db, err := c.open(c.readSetting)
 	if err != nil {
-		return nil, err
+		return nil, errs.NewInternalError("DBの読み込み用のホストへの接続に失敗しました: %v", err)
 	}
 	c.dbRead = db
 	return c.dbRead, nil
@@ -43,7 +44,7 @@ func (c *Conn) Read() (*gorm.DB, error) {
 func (c *Conn) Transaction(ctx context.Context, f func(tx *gorm.DB) error) (err error) {
 	db, err := c.open(c.writeSetting)
 	if err != nil {
-		return err
+		return errs.NewInternalError("DBの書き込み用のホストへの接続に失敗しました: %v", err)
 	}
 	defer c.close(db)
 
@@ -51,8 +52,7 @@ func (c *Conn) Transaction(ctx context.Context, f func(tx *gorm.DB) error) (err 
 	defer func() {
 		if r := recover(); r != nil {
 			logger.Panic(ctx, r)
-			// TODO: errsパッケージを作ったら置き換える
-			err = fmt.Errorf("panic recover: %r", r)
+			err = errs.NewInternalError("トランザクション処理中にpanicが発生しました: %v", r)
 		}
 
 		if err != nil {
@@ -88,7 +88,7 @@ func (c *Conn) open(setting *env.DbConnectSetting) (*gorm.DB, error) {
 		NowFunc: timer.Now,
 	})
 	if err != nil {
-		return nil, err
+		return nil, errs.NewInternalError("failed to open db connection: %v", err)
 	}
 	return db, nil
 }

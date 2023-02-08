@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
 )
 
@@ -27,8 +27,7 @@ func (*TimeoutHandler) Handler(ctx *gin.Context) {
 		if tx.Err() == context.DeadlineExceeded {
 			logger.Error(
 				ctx,
-				// TODO: errsパッケージを作ったら置き換える
-				fmt.Errorf("タイムアウトが発生しました %s %s", ctx.Request.Method, ctx.Request.URL.String()),
+				errs.NewInternalError("タイムアウトが発生しました %s %s", ctx.Request.Method, ctx.Request.URL.String()),
 			)
 
 			// ここに到達時点でレスポンスは出力済みのはずなのでAbortするだけにする

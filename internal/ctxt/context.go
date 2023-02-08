@@ -2,9 +2,9 @@ package ctxt
 
 import (
 	"context"
-	"fmt"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/authed"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
 // Contextのキーを表す型定義です
@@ -28,8 +28,7 @@ func AuthenticatedUser(ctx context.Context) (*authed.User, error) {
 func get[T any](ctx context.Context, k key) (T, error) {
 	v, ok := ctx.Value(k).(T)
 	if !ok {
-		// TODO: errsパッケージを作ったら置き換える
-		return v, fmt.Errorf("contextに%sが存在しません", k)
+		return v, errs.NewInternalError("contextに%sが存在しません", k)
 	}
 	return v, nil
 }
