@@ -1,6 +1,4 @@
-# LMS
-
-## 動画アップロードのフロー
+# 動画アップロードのフロー
 
 ```mermaid
 sequenceDiagram
