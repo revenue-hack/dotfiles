@@ -87,6 +87,3 @@ pages:
    artifacts:
      paths:
        - public
-   rules:
-     - changes:
-         - "docs/oas/**/*"
