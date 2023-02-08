@@ -40,3 +40,24 @@ $ docker compose up -d --build
 $ docker compose exec go make migrate
 ```
 
+---
+
+## MinIOのAccessKey/SecretKeyを発行
+
+開発の際にAccessKey/SecretKeyが必要になった場合は以下の手順でキーを発行してください。
+
+### MinIOのコンソールにログイン
+
+```sh
+$ open http://localhost:29001
+```
+
+※ID/Passwordは `minioadmin` です
+
+### キーを発行
+
+1. サイドメニューの `Access Keys` を押下
+2. `Create access key` を押下
+3. `Create` を押下
+4. 表示されるキーを保持する
+   - ローカル専用でいつでも再発行できるのでDownloadは不要
