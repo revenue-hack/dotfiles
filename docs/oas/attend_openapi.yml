@@ -1,15 +1,15 @@
 openapi: 3.0.2
 info:
-  title: 講習の受講管理API
-  description: 講習の内容取得・受講状況の更新等を行うためのAPIです。
+  title: 講習の受講ページ用のAPI
+  description: 講習の受講時に使用するAPIです
   version: '1.0'
 servers:
   - url: http://localhost:28080/api
 paths:
-  /attend/e_learnings/{course_id}:
+  /attend/{course_id}/e_learning:
     get:
       tags:
-        - Course
+        - Attend
       summary: 講習の詳細を取得します
       description: 講習の詳細を取得します
       parameters:
