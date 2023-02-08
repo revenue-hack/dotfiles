@@ -1,0 +1,37 @@
+openapi: 3.0.2
+info:
+  title: LMS API
+  description: LMS機能の情報を取得・更新を行うためのAPIです
+  version: '1.0'
+servers:
+  - url: http://localhost:28080/api
+tags:
+  - name: カテゴリ
+  - name: 講習
+  - name: 講習設定(e-Learning)
+  - name: 受講
+x-tagGroups:
+  - name: APIリファレンス
+    tags:
+      - カテゴリ
+      - 講習
+      - 講習設定(e-Learning)
+      - 受講
+paths:
+  $ref: "./paths/_index.yml"
+components:
+  securitySchemes:
+    bearerAuth:
+      description: 事前に/shield/tokenで取得したAccessTokenを設定してください
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    #$ref#header: "./components/parameters/header.yml"
+    $ref#path: "./components/parameters/path.yml"
+  #requestBodies:
+    #$ref: "./components/requestBodies/_index.yml"
+  #schemas:
+    #$ref: "./components/schemas/_index.yml"
+security:
+  - bearerAuth: []

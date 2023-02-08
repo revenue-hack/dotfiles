@@ -1,0 +1,119 @@
+/courses/{course_id}/e_learning:
+  get:
+    tags:
+      - 講習設定(e-Learning)
+    summary: e-Learningの基礎情報の取得
+    description: e-Learningの基礎情報（タイトル、概要等）を取得します
+    parameters:
+      - $ref: "#/components/parameters/CourseId"
+    responses:
+      200:
+        description: No Content
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 講習のタイトル
+                  example: ロジカルシンキング研修
+                description:
+                  type: string
+                  description: ロジカルな思考を身につけることができます
+                  example: 10
+                categoryId:
+                  type: integer
+                  description: カテゴリID
+                  example: 10
+                  nullable: true
+                thumbnailImageUrl:
+                  type: string
+                  description: サムネイル画像URL
+                  example:
+                attendSchedule:
+                  type: object
+                  description: 受講期間
+                  properties:
+                    id:
+                      type: integer
+                      description: |
+                        受講期間ID<br>
+                        初回表示の場合はnullを返却します。
+                      example: 100
+                      nullable: true
+                    from:
+                      type: string
+                      description: 受講開始
+                      example: 2023/05/31 18:00
+                      nullable: true
+                    to:
+                      type: string
+                      description: 受講終了
+                      example: 2023/05/31 18:00
+                      nullable: true
+
+  put:
+    tags:
+      - 講習設定(e-Learning)
+    summary: e-Learningの基礎情報の更新
+    description: e-Learningの基礎情報（タイトル、概要等）の更新を行います
+    parameters:
+      - $ref: "#/components/parameters/CourseId"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: 講習のタイトル
+                example: ロジカルシンキング研修
+              description:
+                type: string
+                description: ロジカルな思考を身につけることができます
+                example: 10
+              categoryId:
+                type: integer
+                description: カテゴリID
+                example: 10
+                nullable: true
+              thumbnailImage:
+                type: string
+                description: |
+                  サムネイル画像（base64エンコード）<br>
+                  画像を更新が必要な場合のみ送信してください。未設定の場合はサムネイル画像の更新は行いません。<br>
+                nullable: true
+                example:
+              isRemoveThumbnailImage:
+                type: boolean
+                description: |
+                  設定されているサムネイル画像を削除する場合にtrueを設定してください。<br>
+                  このフィールドにtrueを設定した状態でthumbnailImageフィールドの値を指定した場合は、このフィールドの設定は無視されます。<br>
+                  （thumbnailImageの画像での更新動作となります）<br>
+                example: false
+              attendSchedule:
+                type: object
+                description: 受講期間
+                properties:
+                  id:
+                    type: integer
+                    description: |
+                      受講期間ID<br>
+                      初回の受講期間保存時はnull、2回目以降は取得時に返却されるidを設定してください。<br>
+                    example: 100
+                    nullable: true
+                  from:
+                    type: string
+                    description: 受講開始
+                    example: 2023/05/31 18:00
+                    nullable: true
+                  to:
+                    type: string
+                    description: 受講終了
+                    example: 2023/05/31 18:00
+                    nullable: true
+    responses:
+      204:
+        description: No Content

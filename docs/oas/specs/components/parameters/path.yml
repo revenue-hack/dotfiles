@@ -1,0 +1,8 @@
+CourseId:
+  name: course_id
+  in: path
+  required: true
+  description: 講習ID
+  schema:
+    type: integer
+    example: 1
