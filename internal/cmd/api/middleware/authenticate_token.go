@@ -3,11 +3,11 @@ package middleware
 import (
 	"context"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	ka "gitlab.kaonavi.jp/ae/kgm/auth"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/authed"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/env"
 	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
 	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/logger"
@@ -22,9 +22,17 @@ func NewAuthenticateToken(a ka.Authenticator) *AuthenticateToken {
 }
 
 func (m *AuthenticateToken) Handler(ctx *gin.Context) {
+	keys, err := env.GetTokenKey()
+	if err != nil {
+		logger.Error(ctx, err)
+		ctx.JSON(http.StatusInternalServerError, gin.H{"errors": []string{"Internal Server Error"}})
+		ctx.Abort()
+		return
+	}
+
 	token, err := m.auth.ValidRequest(ctx.Request, ka.Key{
-		Encrypt: os.Getenv("TOKEN_ENCRYPT_KEY"),
-		Signing: os.Getenv("TOKEN_SIGNING_KEY"),
+		Encrypt: keys.EncryptKey,
+		Signing: keys.SigningKey,
 	})
 	if err != nil {
 		if ka.IsValidationError(err) {

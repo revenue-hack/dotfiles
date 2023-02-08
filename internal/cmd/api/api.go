@@ -2,13 +2,13 @@ package api
 
 import (
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gitlab.kaonavi.jp/ae/sardine/internal/cmd/api/di"
 	"gitlab.kaonavi.jp/ae/sardine/internal/cmd/api/middleware"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/env"
 )
 
 func Route() *gin.Engine {
@@ -50,7 +50,7 @@ func Route() *gin.Engine {
 }
 
 func getMode() string {
-	mode := os.Getenv("APP_MODE")
+	mode := env.GetString("APP_MODE")
 	if mode == "" {
 		return gin.ReleaseMode
 	}
