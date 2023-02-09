@@ -12,9 +12,9 @@ func Info(context.Context, Message, ...parameter) {
 }
 
 func Error(_ context.Context, err error, _ ...parameter) {
-	fmt.Println(err)
+	fmt.Printf("\n    エラーが発生しました: %#v\n\n", err)
 }
 
 func Panic(_ context.Context, err interface{}, _ ...parameter) {
-	panic(err)
+	panic(fmt.Sprintf("    Panicが発生しました: %#v\n", err))
 }

@@ -33,9 +33,14 @@ func (c *connFactory) Create(ctx context.Context) (*Conn, error) {
 		return nil, err
 	}
 
-	return &Conn{
+	conn := &Conn{
 		customerCode: authedUser.CustomerCode(),
 		readSetting:  readSetting,
 		writeSetting: writeSetting,
-	}, nil
+	}
+
+	if err = conn.init(); err != nil {
+		return nil, err
+	}
+	return conn, nil
 }
