@@ -32,7 +32,7 @@ func EqualJson(t *testing.T, actual, expected string) {
 func compactJson(s string) string {
 	buf := bytes.NewBuffer(nil)
 	if err := json.Compact(buf, []byte(s)); err != nil {
-		return err.Error()
+		return s
 	} else {
 		return buf.String()
 	}

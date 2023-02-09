@@ -40,10 +40,8 @@ func Route() *gin.Engine {
 		authGroup.POST("/search/expired", di.InitializeSearchExpiredHandler().Handler)
 		authGroup.POST("/search/completed", di.InitializeSearchCompletedHandler().Handler)
 
-		// TODO: 検証用なので後で消します
-		authGroup.GET("/test", func(ctx *gin.Context) {
-			ctx.JSON(http.StatusOK, gin.H{"message": "ok"})
-		})
+		// 講習の新規作成
+		authGroup.POST("/course/e_learning", di.InitializeCreateELearningHandler().Handler)
 	}
 
 	return e
