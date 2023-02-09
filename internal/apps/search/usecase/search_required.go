@@ -4,7 +4,9 @@ import (
 	"context"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search"
+	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search/model"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
 func NewSearchRequired(
@@ -19,6 +21,30 @@ type searchRequired struct {
 	connFactory database.ConnFactory
 }
 
-func (h *searchRequired) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
-	return &search.Output{}, nil
+func (uc *searchRequired) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
+	conn, err := uc.connFactory.Create(ctx)
+	if err != nil {
+		return nil, errs.NewInternalError("failed to connFactory.Create from searchRequired: %v", err)
+	}
+
+	courses, err := uc.query.Get(ctx, conn, nil)
+	if err != nil {
+		return nil, errs.NewInternalError("failed to query.Get from searchRequired: %v", err)
+	}
+
+	// modelにつめかえ
+	ret := make([]model.Course, 0, len(courses))
+	for _, c := range courses {
+		ret = append(ret, model.Course{
+			Id:         c.Id,
+			Title:      c.Title,
+			ExpireAt:   c.To,
+			IsRequired: c.IsRequired,
+			IsFixed:    false, // 期限内のデータしかないはずなので固定値
+		})
+	}
+
+	return &search.Output{
+		Courses: ret,
+	}, nil
 }

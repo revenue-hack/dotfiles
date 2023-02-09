@@ -49,7 +49,7 @@ func Exec(ctx *gin.Context, handler func(ctx *gin.Context) ResponseData) {
 }
 
 func NewErrorResponseData(ctx context.Context, err error) ResponseData {
-	status := http.StatusInternalServerError
+	var status int
 	resp := struct {
 		Errors []string `json:"errors"`
 	}{
@@ -67,14 +67,18 @@ func NewErrorResponseData(ctx context.Context, err error) ResponseData {
 	case errors.Is(err, &errs.NotFound{}):
 		status = http.StatusNotFound
 		resp.Errors = append(resp.Errors, err.Error())
+	default:
+		status = http.StatusInternalServerError
+		resp.Errors = append(resp.Errors, "internal server error")
 	}
 
-	body, err2 := json.Marshal(resp)
-	if err2 != nil {
+	logger.Error(ctx, err)
+	body, marshalErr := json.Marshal(resp)
+	if marshalErr != nil {
 		// jsonエンコードが失敗することはないはずだが一応失敗したら固定文言を返すようにしておく
 		status = http.StatusInternalServerError
 		body = []byte(internalError)
-		logger.Error(ctx, err)
+		logger.Error(ctx, marshalErr)
 	}
 	return ResponseData{Status: status, Body: body}
 }

@@ -25,17 +25,18 @@ type Conn struct {
 	dbRead *gorm.DB
 }
 
-// Read は読み込み用の接続設定を返却します
-func (c *Conn) Read() (*gorm.DB, error) {
-	if c.dbRead != nil {
-		return c.dbRead, nil
-	}
+func (c *Conn) init() error {
 	db, err := c.open(c.readSetting)
 	if err != nil {
-		return nil, errs.NewInternalError("DBの読み込み用のホストへの接続に失敗しました: %v", err)
+		return errs.NewInternalError("DBの読み込み用のホストへの接続に失敗しました: %v", err)
 	}
 	c.dbRead = db
-	return c.dbRead, nil
+	return nil
+}
+
+// DB は読み込み用の接続設定を返却します
+func (c *Conn) DB() *gorm.DB {
+	return c.dbRead
 }
 
 // Transaction は書き込み処理を行います

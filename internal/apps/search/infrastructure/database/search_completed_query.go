@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search"
-	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search/model"
+	ae "gitlab.kaonavi.jp/ae/sardine/internal/apps/search/entity"
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search/model/searchparam"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
 )
@@ -28,6 +28,6 @@ func (h *searchCompletedQuery) Get(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,
-) ([]model.Course, error) {
+) ([]ae.Course, error) {
 	return nil, nil
 }
