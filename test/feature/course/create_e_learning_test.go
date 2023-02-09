@@ -14,7 +14,7 @@ func TestCreateELearning(t *testing.T) {
 
 	res := helper.DoRequest(t, helper.ApiRequest{
 		Method: http.MethodPost,
-		Path:   "/course/e_learning",
+		Path:   "/courses/e_learning",
 		Body:   `{}`,
 	})
 	expected := `{"id": 1}`
