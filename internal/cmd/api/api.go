@@ -44,6 +44,10 @@ func Route() *gin.Engine {
 		authGroup.GET("/test", func(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{"message": "ok"})
 		})
+
+		// 講習内容の編集
+		// 概要取得
+		authGroup.GET("/settings/:course_id/e_learning", di.InitializeSettingGetELearningHandler().Handler)
 	}
 
 	return e

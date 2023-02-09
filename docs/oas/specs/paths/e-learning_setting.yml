@@ -31,27 +31,16 @@
                   type: string
                   description: サムネイル画像URL
                   example:
-                attendSchedule:
-                  type: object
-                  description: 受講期間
-                  properties:
-                    id:
-                      type: integer
-                      description: |
-                        受講期間ID<br>
-                        初回表示の場合はnullを返却します。
-                      example: 100
-                      nullable: true
-                    from:
-                      type: string
-                      description: 受講開始
-                      example: 2023/05/31 18:00
-                      nullable: true
-                    to:
-                      type: string
-                      description: 受講終了
-                      example: 2023/05/31 18:00
-                      nullable: true
+                from:
+                  type: string
+                  description: 受講開始
+                  example: 2023/05/31 18:00
+                  nullable: true
+                to:
+                  type: string
+                  description: 受講終了
+                  example: 2023/05/31 18:00
+                  nullable: true
 
   put:
     tags:
@@ -93,27 +82,16 @@
                   このフィールドにtrueを設定した状態でthumbnailImageフィールドの値を指定した場合は、このフィールドの設定は無視されます。<br>
                   （thumbnailImageの画像での更新動作となります）<br>
                 example: false
-              attendSchedule:
-                type: object
-                description: 受講期間
-                properties:
-                  id:
-                    type: integer
-                    description: |
-                      受講期間ID<br>
-                      初回の受講期間保存時はnull、2回目以降は取得時に返却されるidを設定してください。<br>
-                    example: 100
-                    nullable: true
-                  from:
-                    type: string
-                    description: 受講開始
-                    example: 2023/05/31 18:00
-                    nullable: true
-                  to:
-                    type: string
-                    description: 受講終了
-                    example: 2023/05/31 18:00
-                    nullable: true
+              from:
+                type: string
+                description: 受講開始
+                example: 2023/05/31 18:00
+                nullable: true
+              to:
+                type: string
+                description: 受講終了
+                example: 2023/05/31 18:00
+                nullable: true
     responses:
       204:
         description: No Content
