@@ -3,6 +3,7 @@ package helper
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -39,7 +40,30 @@ func CloseDb(t *testing.T, db *gorm.DB) {
 
 func TruncateAll(t *testing.T) {
 	if err := truncateAllTable(); err != nil {
-		t.Fatal(err.Error())
+		t.Fatal(err)
+	}
+}
+
+// InitDb はテスト用のデータベースを初期状態に戻します
+// 全テーブルのTruncateと、初期マスタデータの流し込みを行います
+func InitDb(t *testing.T) {
+	TruncateAll(t)
+	ExecSeeder(t, "master_data")
+}
+
+// ExecSeeder テストデータを投入するためのSQLファイルを実行します
+// 引数の名前に.sqlは不要です
+func ExecSeeder(t *testing.T, name string) {
+	db := OpenDb(t)
+	defer CloseDb(t, db)
+
+	path := fmt.Sprintf("%s/%s.sql", os.Getenv("SEEDER_DIR"), name)
+	f, err := os.ReadFile(filepath.Clean(path))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = db.Exec(string(f)).Error; err != nil {
+		t.Fatal(err)
 	}
 }
 

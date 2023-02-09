@@ -15,8 +15,7 @@ import (
 )
 
 const (
-	TestRequestDefaultCustomerCode = "kaodev"
-	TestRequestDefaultUserId       = 123
+	TestRequestDefaultUserId = 123
 )
 
 // ApiRequest APIのテストで使用するリクエストパラメータを設定するための構造体
@@ -41,10 +40,11 @@ func init() {
 	logger.New(os.Stdout)
 
 	// kgm/authを通す必要があるため、kgmから検証用トークンを発行しておく
+	// 顧客コードはDBにしておく必要がある
 	tkn, err := auth.GetTestHS256Token(
 		auth.Payload{
 			CustomerId:   1,
-			CustomerCode: TestRequestDefaultCustomerCode,
+			CustomerCode: dbName,
 			LoginUserId:  TestRequestDefaultUserId,
 			LoginAddress: "test@kaodev.jp",
 			RoleType:     2,

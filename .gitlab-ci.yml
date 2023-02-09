@@ -70,6 +70,7 @@ gotest:
     DB_PORT: 3306
     # テストで使用するマイグレーションファイルのパス
     MIGRATE_DIR: /builds/ae/sardine/build/migrate
+    SEEDER_DIR: /builds/ae/sardine/test/seeds
   artifacts:
     paths:
       - coverage
