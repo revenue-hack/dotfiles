@@ -15,12 +15,13 @@ COMMENT = 'カテゴリ管理';
 
 CREATE TABLE `courses` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `name` VARCHAR(255) NOT NULL COMMENT '名称',
+  `course_type` TINYINT(3) UNSIGNED NOT NULL COMMENT '研修の種別\n  1: e-Learning\n  2: 集合研修',
+  `title` VARCHAR(255) NOT NULL COMMENT '名称',
   `description` TEXT NULL COMMENT '説明文',
-  `thumbnail_image_name` VARCHAR(255) NULL COMMENT 'サムネイル画像名',
-  `content_type` TINYINT(3) UNSIGNED NOT NULL COMMENT 'コンテンツ種別\n  1: e-Learning\n  2: 集合研修',
-  `is_required` TINYINT(1) UNSIGNED NOT NULL COMMENT '受講必須フラグ\n  0: 任意\n  1: 必須',
-  `category_id` INT UNSIGNED NULL COMMENT 'categories.id',
+  `thumbnail_image_name` VARCHAR(255) NULL DEFAULT NULL COMMENT 'サムネイル画像名',
+  `is_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '受講必須フラグ\n  0: 任意\n  1: 必須',
+  `category_id` INT UNSIGNED NULL DEFAULT NULL COMMENT 'categories.id',
+  `status` TINYINT(3) UNSIGNED NOT NULL DEFAULT 1 COMMENT '講習のステータス\n  1: 非公開\n  2: 公開',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
   `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
@@ -38,11 +39,10 @@ COLLATE = utf8mb4_ja_0900_as_cs_ks
 COMMENT = '講習の基礎情報を管理';
 
 
-CREATE TABLE `e_learnings` (
+CREATE TABLE `contents` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
-  `from` DATETIME NOT NULL COMMENT '受講期間（開始）',
-  `to` DATETIME NULL COMMENT '受講期間（終了）',
+  `display_order` SMALLINT UNSIGNED NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
   `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
@@ -57,56 +57,12 @@ CREATE TABLE `e_learnings` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_ja_0900_as_cs_ks
-COMMENT = 'e-Learningの講習情報を管理';
-
-
-CREATE TABLE `group_trainings` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
-  `af_form_id` INT UNSIGNED NOT NULL COMMENT '事前申請に使用するワークフローのフォーム（af_forms.id）',
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
-  `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
-  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
-  `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
-  PRIMARY KEY (`id`),
-  INDEX `group_trainings_course_id_fk_idx` (`course_id` ASC) VISIBLE,
-  CONSTRAINT `group_trainings_course_id_fk`
-    FOREIGN KEY (`course_id`)
-    REFERENCES `courses` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_ja_0900_as_cs_ks
-COMMENT = 'グループ研修の講習情報を管理';
-
-
-CREATE TABLE `group_training_schedules` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `group_training_id` INT UNSIGNED NOT NULL COMMENT 'group_trainings.id',
-  `from` DATETIME NOT NULL COMMENT '受講期間（開始）',
-  `to` DATETIME NULL COMMENT '受講期間（終了）',
-  `capacity` INT NULL COMMENT '定員（NULL: 定員なし）',
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
-  `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
-  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
-  `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
-  PRIMARY KEY (`id`),
-  INDEX `group_training_schedules_group_training_id_fk_idx` (`group_training_id` ASC) VISIBLE,
-  CONSTRAINT `group_training_schedules_group_training_id_fk`
-    FOREIGN KEY (`group_training_id`)
-    REFERENCES `group_trainings` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_ja_0900_as_cs_ks
-COMMENT = 'グループ研修の日程情報を管理';
+COMMENT = '講習に紐づく動画・ファイル・外部URLの枠を管理';
 
 
 CREATE TABLE `movies` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
+  `content_id` INT UNSIGNED NOT NULL COMMENT 'contents.id',
   `source_file_name` VARCHAR(255) NOT NULL COMMENT '配信用ファイルのファイル名',
   `original_file_name` VARCHAR(255) NOT NULL COMMENT 'アップロード時の元ファイル名',
   `thumbnail_image_name` VARCHAR(255) NOT NULL COMMENT 'サムネイル画像名',
@@ -118,10 +74,10 @@ CREATE TABLE `movies` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
   `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
   PRIMARY KEY (`id`),
-  INDEX `movies_course_id_fk_idx` (`course_id` ASC) VISIBLE,
-  CONSTRAINT `movies_course_id_fk`
-    FOREIGN KEY (`course_id`)
-    REFERENCES `courses` (`id`)
+  INDEX `movies_content_id_fk_idx` (`content_id` ASC) VISIBLE,
+  CONSTRAINT `movies_content_id_fk`
+    FOREIGN KEY (`content_id`)
+    REFERENCES `contents` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -132,7 +88,7 @@ COMMENT = '動画コンテンツ管理';
 
 CREATE TABLE `files` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
+  `content_id` INT UNSIGNED NOT NULL COMMENT 'contents.id',
   `source_file_name` VARCHAR(255) NOT NULL COMMENT '配信用ファイルのファイル名',
   `original_file_name` VARCHAR(255) NOT NULL COMMENT 'アップロード時の元ファイル名',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
@@ -140,10 +96,10 @@ CREATE TABLE `files` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
   `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
   PRIMARY KEY (`id`),
-  INDEX `files_course_id_fk_idx` (`course_id` ASC) VISIBLE,
-  CONSTRAINT `files_course_id_fk`
-    FOREIGN KEY (`course_id`)
-    REFERENCES `courses` (`id`)
+  INDEX `files_content_id_fk_idx` (`content_id` ASC) VISIBLE,
+  CONSTRAINT `files_content_id_fk`
+    FOREIGN KEY (`content_id`)
+    REFERENCES `contents` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -154,7 +110,7 @@ COMMENT = 'ファイルコンテンツ管理';
 
 CREATE TABLE `urls` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
+  `content_id` INT UNSIGNED NOT NULL COMMENT 'contents.id',
   `title` VARCHAR(255) NOT NULL COMMENT '動画タイトル',
   `url` TEXT NOT NULL COMMENT 'URL',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
@@ -162,10 +118,10 @@ CREATE TABLE `urls` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
   `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
   PRIMARY KEY (`id`),
-  INDEX `urls_course_id_fk_idx` (`course_id` ASC) VISIBLE,
-  CONSTRAINT `urls_course_id_fk`
-    FOREIGN KEY (`course_id`)
-    REFERENCES `courses` (`id`)
+  INDEX `urls_content_id_fk_idx` (`content_id` ASC) VISIBLE,
+  CONSTRAINT `urls_content_id_fk`
+    FOREIGN KEY (`content_id`)
+    REFERENCES `contents` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -174,18 +130,16 @@ COLLATE = utf8mb4_ja_0900_as_cs_ks
 COMMENT = '外部URLコンテンツ管理';
 
 
-CREATE TABLE `target_members` (
+CREATE TABLE `course_schedules` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
-  `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
-  `member_id` INT UNSIGNED NOT NULL COMMENT 'kaonaviのmembers.id',
-  `status` TINYINT(3) UNSIGNED NOT NULL COMMENT '受講ステータス\n  1: 未実施\n  2: 実施済み',
+  `course_id` INT UNSIGNED NOT NULL COMMENT 'group_trainings.id',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
   `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
   `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
   PRIMARY KEY (`id`),
-  INDEX `target_members_course_id_fk_idx` (`course_id` ASC) VISIBLE,
-  CONSTRAINT `target_members_course_id_fk`
+  INDEX `course_schedules_course_id_fk_idx` (`course_id` ASC) VISIBLE,
+  CONSTRAINT `course_schedules_course_id_fk`
     FOREIGN KEY (`course_id`)
     REFERENCES `courses` (`id`)
     ON DELETE CASCADE
@@ -193,7 +147,29 @@ CREATE TABLE `target_members` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_ja_0900_as_cs_ks
-COMMENT = 'コンテンツの受講対象メンバー管理';
+COMMENT = '研修の日程情報を管理';
+
+
+CREATE TABLE `target_members` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `course_schedule_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
+  `member_id` INT UNSIGNED NOT NULL COMMENT 'kaonaviのmembers.id',
+  `status` TINYINT(3) UNSIGNED NOT NULL COMMENT '受講ステータス\n  1: 未実施\n  2: 実施済み',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
+  `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
+  `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
+  PRIMARY KEY (`id`),
+  INDEX `target_members_course_schedule_id_fk_idx` (`course_schedule_id` ASC) VISIBLE,
+  CONSTRAINT `target_members_course_schedule_id_fk`
+    FOREIGN KEY (`course_schedule_id`)
+    REFERENCES `course_schedules` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_ja_0900_as_cs_ks
+COMMENT = '講習の日程別の受講対象メンバー管理';
 
 
 CREATE TABLE `target_member_movie_watch_statuses` (
@@ -483,3 +459,69 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_ja_0900_as_cs_ks
 COMMENT = 'リマインダーメールの送信履歴を管理';
+
+
+CREATE TABLE `e_learning_schedules` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `course_schedule_id` INT UNSIGNED NOT NULL COMMENT 'group_trainings.id',
+  `from` DATETIME NULL DEFAULT NULL COMMENT '受講期間（開始）',
+  `to` DATETIME NULL DEFAULT NULL COMMENT '受講期間（終了）',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
+  `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
+  `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
+  PRIMARY KEY (`id`),
+  INDEX `e_learning_schedules_course_schedule_id_fk_idx` (`course_schedule_id` ASC) VISIBLE,
+  CONSTRAINT `e_learning_schedules_course_schedule_id_fk`
+    FOREIGN KEY (`course_schedule_id`)
+    REFERENCES `course_schedules` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_ja_0900_as_cs_ks
+COMMENT = 'e-Learningの日程情報を管理';
+
+
+CREATE TABLE `group_training_schedules` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `course_schedule_id` INT UNSIGNED NOT NULL COMMENT 'group_trainings.id',
+  `from` DATETIME NOT NULL COMMENT '受講期間（開始）',
+  `to` DATETIME NOT NULL COMMENT '受講期間（終了）',
+  `capacity` SMALLINT UNSIGNED NULL COMMENT '定員（NULL: 定員なし）',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
+  `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
+  `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
+  PRIMARY KEY (`id`),
+  INDEX `group_training_schedules_course_schedule_id_fk_idx` (`course_schedule_id` ASC) VISIBLE,
+  CONSTRAINT `group_training_schedules_course_schedule_id_fk`
+    FOREIGN KEY (`course_schedule_id`)
+    REFERENCES `course_schedules` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_ja_0900_as_cs_ks
+COMMENT = '集合研修の日程情報を管理';
+
+
+CREATE TABLE `entry_target_members` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
+  `course_id` INT UNSIGNED NOT NULL COMMENT 'group_trainings.id',
+  `member_id` INT UNSIGNED NOT NULL COMMENT 'kaonaviのmembers.id',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
+  `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
+  `updated_by` INT UNSIGNED NOT NULL COMMENT '更新者ID（login_users.id）',
+  PRIMARY KEY (`id`),
+  INDEX `entry_target_members_course_id_fk_idx` (`course_id` ASC) VISIBLE,
+  CONSTRAINT `entry_target_members_course_id_fk`
+    FOREIGN KEY (`course_id`)
+    REFERENCES `courses` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_ja_0900_as_cs_ks
+COMMENT = '講習に申込可能なメンバーを管理（集合研修でのみ使用）';
