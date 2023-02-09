@@ -33,12 +33,12 @@
                   example:
                 from:
                   type: string
-                  description: 受講開始
+                  description: 受講開始（YYYY/MM/DD hh:mm形式）
                   example: 2023/05/31 18:00
                   nullable: true
                 to:
                   type: string
-                  description: 受講終了
+                  description: 受講終了（YYYY/MM/DD hh:mm形式）
                   example: 2023/05/31 18:00
                   nullable: true
 
@@ -84,12 +84,12 @@
                 example: false
               from:
                 type: string
-                description: 受講開始
+                description: 受講開始（YYYY/MM/DD hh:mm形式）
                 example: 2023/05/31 18:00
                 nullable: true
               to:
                 type: string
-                description: 受講終了
+                description: 受講終了（YYYY/MM/DD hh:mm形式）
                 example: 2023/05/31 18:00
                 nullable: true
     responses:

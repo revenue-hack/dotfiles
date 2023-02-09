@@ -31,8 +31,8 @@ func TestSetting_GetELearning(t *testing.T) {
 	"thumbnailUrl": null,
 	"isRequired": false,
 	"categoryId": 1,
-	"from": "2023-02-01T10:00:00+09:00",
-	"to": "2023-03-01T18:30:00+09:00"
+	"from": "2023/02/01 10:00",
+	"to": "2023/03/01 18:30"
 }`,
 		},
 		{

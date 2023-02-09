@@ -43,14 +43,14 @@ func (h *getELearning) exec(ctx *gin.Context) handler.ResponseData {
 
 func (h *getELearning) makeResponse(out *course.GetELearningOutput) ([]byte, error) {
 	resp := struct {
-		Id           uint32     `json:"id"`
-		Title        string     `json:"title"`
-		Description  *string    `json:"description"`
-		ThumbnailUrl *string    `json:"thumbnailUrl"`
-		IsRequired   bool       `json:"isRequired"`
-		CategoryId   *uint32    `json:"categoryId"`
-		From         *time.Time `json:"from"`
-		To           *time.Time `json:"to"`
+		Id           uint32  `json:"id"`
+		Title        string  `json:"title"`
+		Description  *string `json:"description"`
+		ThumbnailUrl *string `json:"thumbnailUrl"`
+		IsRequired   bool    `json:"isRequired"`
+		CategoryId   *uint32 `json:"categoryId"`
+		From         *string `json:"from"`
+		To           *string `json:"to"`
 	}{
 		Id:           out.Id,
 		Title:        out.Title,
@@ -58,8 +58,18 @@ func (h *getELearning) makeResponse(out *course.GetELearningOutput) ([]byte, err
 		ThumbnailUrl: out.ThumbnailUrl,
 		IsRequired:   out.IsRequired,
 		CategoryId:   out.CategoryId,
-		From:         out.From,
-		To:           out.To,
 	}
+
+	format := func(t time.Time) *string {
+		s := t.Format("2006/01/02 15:04")
+		return &s
+	}
+	if out.From != nil {
+		resp.From = format(*out.From)
+	}
+	if out.To != nil {
+		resp.To = format(*out.To)
+	}
+
 	return json.Marshal(&resp)
 }
