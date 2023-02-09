@@ -73,12 +73,12 @@ func NewErrorResponseData(ctx context.Context, err error) ResponseData {
 	}
 
 	logger.Error(ctx, err)
-	body, err2 := json.Marshal(resp)
-	if err2 != nil {
+	body, marshalErr := json.Marshal(resp)
+	if marshalErr != nil {
 		// jsonエンコードが失敗することはないはずだが一応失敗したら固定文言を返すようにしておく
 		status = http.StatusInternalServerError
 		body = []byte(internalError)
-		logger.Error(ctx, err2)
+		logger.Error(ctx, marshalErr)
 	}
 	return ResponseData{Status: status, Body: body}
 }
