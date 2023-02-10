@@ -24,13 +24,13 @@ func Route() *gin.Engine {
 	e.Use(middleware.NewSetRequestId().Handler)
 	// タイムアウト
 	e.Use(middleware.NewTimeoutHandler().Handler)
-	// CORS
-	e.Use(cors.New(corsConfig()))
-
 	// ヘルスチェック
 	e.GET("/health", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, gin.H{"message": "pong"})
 	})
+
+	// CORS
+	e.Use(cors.New(corsConfig()))
 
 	authGroup := e.Group("", di.InitializeAuthenticateToken().Handler)
 	{
@@ -40,14 +40,12 @@ func Route() *gin.Engine {
 		authGroup.POST("/search/expired", di.InitializeSearchExpiredHandler().Handler)
 		authGroup.POST("/search/completed", di.InitializeSearchCompletedHandler().Handler)
 
-		// TODO: 検証用なので後で消します
-		authGroup.GET("/test", func(ctx *gin.Context) {
-			ctx.JSON(http.StatusOK, gin.H{"message": "ok"})
-		})
-
 		// 講習内容の編集
 		// 概要取得
 		authGroup.GET("/settings/:course_id/e_learning", di.InitializeSettingGetELearningHandler().Handler)
+
+		// 講習の新規作成
+		authGroup.POST("/courses/e_learning", di.InitializeCreateELearningHandler().Handler)
 	}
 
 	return e
