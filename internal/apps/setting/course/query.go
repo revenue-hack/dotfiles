@@ -12,3 +12,8 @@ type GetQuery interface {
 	// GetELearning はe-Learningの概要情報を取得します
 	GetELearning(context.Context, *database.Conn, vo.CourseId) (*entity.Course, error)
 }
+
+type UpdateQuery interface {
+	// ExistCourse は講習が存在するか
+	ExistCourse(context.Context, *database.Conn, vo.CourseId) (bool, error)
+}

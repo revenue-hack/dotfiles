@@ -40,12 +40,13 @@ func Route() *gin.Engine {
 		authGroup.POST("/search/expired", di.InitializeSearchExpiredHandler().Handler)
 		authGroup.POST("/search/completed", di.InitializeSearchCompletedHandler().Handler)
 
-		// 講習内容の編集
-		// 概要取得
-		authGroup.GET("/settings/:course_id/e_learning", di.InitializeSettingGetELearningHandler().Handler)
-
 		// 講習の新規作成
 		authGroup.POST("/courses/e_learning", di.InitializeCreateELearningHandler().Handler)
+
+		// 講習内容の編集
+		// 概要取得・更新
+		authGroup.GET("/settings/:course_id/e_learning", di.InitializeSettingGetELearningHandler().Handler)
+		authGroup.PUT("/settings/:course_id/e_learning", di.InitializeSettingUpdateELearningHandler().Handler)
 	}
 
 	return e

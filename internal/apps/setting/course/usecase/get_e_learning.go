@@ -25,7 +25,7 @@ type getELearning struct {
 func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course.GetELearningOutput, error) {
 	conn, err := uc.connFactory.Create(ctx)
 	if err != nil {
-		return nil, errs.NewInternalError("failed to connFactory.Create from getELearning: %v", err)
+		return nil, errs.NewInternalError("failed to connFactory.Create from updateELearning: %v", err)
 	}
 
 	record, err := uc.query.GetELearning(ctx, conn, courseId)
@@ -33,12 +33,12 @@ func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course
 		if err == database.ErrRecordNotFound {
 			return nil, errs.NewNotFound("講習が存在しません")
 		}
-		return nil, errs.NewInternalError("failed to GetELearning from getELearning: %v", err)
+		return nil, errs.NewInternalError("failed to GetELearning from updateELearning: %v", err)
 	}
 
 	var out course.GetELearningOutput
 	if err = uc.bindOutput(record, &out); err != nil {
-		return nil, errs.NewInternalError("failed to bindOutput from getELearning: %v", err)
+		return nil, errs.NewInternalError("failed to bindOutput from updateELearning: %v", err)
 	}
 	return &out, nil
 }

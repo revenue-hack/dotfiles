@@ -9,3 +9,7 @@ import (
 type GetELearningUseCase interface {
 	Exec(context.Context, vo.CourseId) (*GetELearningOutput, error)
 }
+
+type UpdateELearningUseCase interface {
+	Exec(context.Context, vo.CourseId, UpdateELearningInput) error
+}

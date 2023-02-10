@@ -19,3 +19,13 @@ func InitializeSettingGetELearningHandler() h.API {
 	)
 	return nil
 }
+
+func InitializeSettingUpdateELearningHandler() h.API {
+	wire.Build(
+		ProviderSet,
+		handler.NewGetELearning,
+		usecase.NewGetELearning,
+		database.NewGetQuery,
+	)
+	return nil
+}
