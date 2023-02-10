@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 
 	"github.com/aws/aws-secretsmanager-caching-go/secretcache"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
 var secretCache, _ = secretcache.New()
@@ -25,12 +26,12 @@ func GetTokenKey() (*TokenKey, error) {
 	// TODO: キーは仮なので正式に決まったら変更
 	val, err := secretCache.GetSecretString("SHIELD_TOKEN_KEYS")
 	if err != nil {
-		return nil, err
+		return nil, errs.Wrap("[env.GetTokenKey]SHIELD_TOKEN_KEYSの取得に失敗", err)
 	}
 
 	var res *TokenKey
 	if err = json.Unmarshal([]byte(val), res); err != nil {
-		return nil, err
+		return nil, errs.Wrap("[env.GetTokenKey]json.Unmarshalに失敗", err)
 	}
 	return res, nil
 }
@@ -40,12 +41,12 @@ func GetReadDbConnectSetting() (*DbConnectSetting, error) {
 	// TODO: キーは仮なので正式に決まったら変更
 	val, err := secretCache.GetSecretString("DB_READ_CONNECT_SETTING")
 	if err != nil {
-		return nil, err
+		return nil, errs.Wrap("[env.GetReadDbConnectSetting]DB_READ_CONNECT_SETTINGの取得に失敗", err)
 	}
 
 	var res *DbConnectSetting
 	if err = json.Unmarshal([]byte(val), res); err != nil {
-		return nil, err
+		return nil, errs.Wrap("[env.GetReadDbConnectSetting]json.Unmarshalに失敗", err)
 	}
 	return res, nil
 }
@@ -55,12 +56,12 @@ func GetWriteDbConnectSetting() (*DbConnectSetting, error) {
 	// TODO: キーは仮なので正式に決まったら変更
 	val, err := secretCache.GetSecretString("DB_WRITE_CONNECT_SETTING")
 	if err != nil {
-		return nil, err
+		return nil, errs.Wrap("[env.GetWriteDbConnectSetting]DB_WRITE_CONNECT_SETTINGの取得に失敗", err)
 	}
 
 	var res *DbConnectSetting
 	if err = json.Unmarshal([]byte(val), res); err != nil {
-		return nil, err
+		return nil, errs.Wrap("[env.GetWriteDbConnectSetting]json.Unmarshalに失敗", err)
 	}
 	return res, nil
 }

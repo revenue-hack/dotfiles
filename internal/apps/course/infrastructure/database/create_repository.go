@@ -31,10 +31,13 @@ func (r *createRepository) CreateELearning(
 		UpdatedBy:  authedUser.UserId(),
 	}
 	err := conn.Transaction(ctx, func(tx *gorm.DB) error {
-		return tx.Create(record).Error
+		if err := tx.Create(record).Error; err != nil {
+			return errs.Wrap("[createRepository.CreateELearning]coursesの保存に失敗", err)
+		}
+		return nil
 	})
 	if err != nil {
-		return nil, errs.NewInternalError("failed to createRepository.CreateELearning: %v", err)
+		return nil, errs.Wrap("[createRepository.CreateELearning]DBの保存に失敗", err)
 	}
 	return record, nil
 }
