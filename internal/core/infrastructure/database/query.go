@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	ErrRecordNotFound = errs.NewNotFound("record not found")
+	errRecordNotFound = errs.NewNotFound("record not found")
 )
 
 // IsErrRecordNotFound はレコードが存在しない場合のエラーである場合にtrueを返します
 func IsErrRecordNotFound(err error) bool {
-	return err == ErrRecordNotFound
+	return err == errRecordNotFound
 }
 
 // Get は単一レコードの検索を行った結果を返します
@@ -22,7 +22,7 @@ func Get[T any](_ context.Context, db *gorm.DB) (*T, error) {
 	var s T
 	if err := db.First(&s).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, ErrRecordNotFound
+			return nil, errRecordNotFound
 		}
 		return nil, errs.Wrap("[database.Get]データ取得エラー", err)
 	}
@@ -69,7 +69,7 @@ func GetById[T any](ctx context.Context, db *gorm.DB, id uint32) (*T, error) {
 	var s T
 	if err := query.First(&s).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, ErrRecordNotFound
+			return nil, errRecordNotFound
 		}
 		return nil, errs.Wrap("[database.GetById]データ取得エラー", err)
 	}
