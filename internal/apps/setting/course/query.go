@@ -9,6 +9,6 @@ import (
 )
 
 type GetQuery interface {
-	// GetELearning はe-Learning口臭の情報を取得します
+	// GetELearning はe-Learningの概要情報を取得します
 	GetELearning(context.Context, *database.Conn, vo.CourseId) (*entity.Course, error)
 }
