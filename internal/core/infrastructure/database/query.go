@@ -14,7 +14,7 @@ var (
 
 // IsErrRecordNotFound はレコードが存在しない場合のエラーである場合にtrueを返します
 func IsErrRecordNotFound(err error) bool {
-	return err == errRecordNotFound
+	return errors.Is(errRecordNotFound, err)
 }
 
 // Get は単一レコードの検索を行った結果を返します
