@@ -8,7 +8,6 @@ stages:
 
 include:
   - project: 'ae/kgm'
-    ref: 'feature/echo_coverage_report'
     file: '/.gitlab/ci/kgm_template.yml'
 
 variables:
