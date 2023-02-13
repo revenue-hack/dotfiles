@@ -30,7 +30,7 @@ func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course
 
 	record, err := uc.query.GetELearning(ctx, conn, courseId)
 	if err != nil {
-		if err == database.ErrRecordNotFound {
+		if database.IsErrRecordNotFound(err) {
 			return nil, errs.NewNotFound("講習が存在しません")
 		}
 		return nil, errs.NewInternalError("failed to GetELearning from getELearning: %v", err)
