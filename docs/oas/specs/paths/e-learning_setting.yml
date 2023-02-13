@@ -1,7 +1,7 @@
 /courses/{course_id}/e_learning:
   get:
     tags:
-      - 設定 - e-Learning
+      - 講習設定(e-Learning)
     summary: e-Learningの基礎情報の取得
     description: e-Learningの基礎情報（タイトル、概要等）を取得します
     parameters:
