@@ -34,6 +34,10 @@ type Course struct {
 	CreatedBy          uint32
 	UpdatedAt          time.Time
 	UpdatedBy          uint32
+
+	// relations
+
+	CourseSchedules CourseSchedules
 }
 
 type Courses = []Course
