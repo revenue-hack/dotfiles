@@ -8,6 +8,7 @@ stages:
 
 include:
   - project: 'ae/kgm'
+    ref: feature/echo_coverage_report
     file: '/.gitlab/ci/kgm_template.yml'
 
 variables:
@@ -85,6 +86,7 @@ pages:
      - mkdir -p public/$CI_COMMIT_REF_NAME/oas
      - cp ./docs/oas/swagger.yml public/$CI_COMMIT_REF_NAME/oas/swagger.yml
      - cp ./docs/oas/index.html public/$CI_COMMIT_REF_NAME/oas/index.html
+     - mv ./coverage/coverage.html public/$CI_COMMIT_REF_NAME/coverage.html
    cache:
      paths:
        - public
