@@ -41,7 +41,7 @@ func (m *AuthenticateToken) Handler(ctx *gin.Context) {
 			return
 		}
 
-		logger.Error(ctx, errs.NewInternalError("トークン認証でエラーが発生しました: %v", err))
+		logger.Error(ctx, errs.Wrap("トークン認証でエラーが発生しました", err))
 		ctx.JSON(http.StatusBadRequest, gin.H{"errors": []string{"invalid token"}})
 		ctx.Abort()
 		return

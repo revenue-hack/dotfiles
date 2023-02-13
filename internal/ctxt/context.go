@@ -28,7 +28,7 @@ func AuthenticatedUser(ctx context.Context) (*authed.User, error) {
 func get[T any](ctx context.Context, k key) (T, error) {
 	v, ok := ctx.Value(k).(T)
 	if !ok {
-		return v, errs.NewInternalError("contextに%sが存在しません", k)
+		return v, errs.NewInternalError("[ctxt.get]contextに%sが存在しません", k)
 	}
 	return v, nil
 }

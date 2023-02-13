@@ -24,17 +24,17 @@ type createELearning struct {
 func (uc *createELearning) Exec(ctx context.Context) (*course.CreateOutput, error) {
 	conn, err := uc.connFactory.Create(ctx)
 	if err != nil {
-		return nil, errs.NewInternalError("failed to connFactory.Create from createELearning: %v", err)
+		return nil, errs.Wrap("[createElearning.Exec]connFactory.Createのエラー", err)
 	}
 
 	authedUser, err := ctxt.AuthenticatedUser(ctx)
 	if err != nil {
-		return nil, errs.NewInternalError("failed to ctxt.AuthenticatedUser from createELearning: %v", err)
+		return nil, errs.Wrap("[createElearning.Exec]ctxt.AuthenticatedUserのエラー", err)
 	}
 
 	newRecord, err := uc.repos.CreateELearning(ctx, conn, authedUser)
 	if err != nil {
-		return nil, errs.NewInternalError("failed to CreateELearning from createELearning: %v", err)
+		return nil, errs.Wrap("[createElearning.Exec]repos.CreateELearningのエラー", err)
 	}
 	return &course.CreateOutput{
 		Course: *newRecord,

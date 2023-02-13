@@ -7,6 +7,7 @@ import (
 	ae "gitlab.kaonavi.jp/ae/sardine/internal/apps/search/entity"
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search/model/searchparam"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
 func NewSearchRequiredQuery() search.Query {
@@ -48,5 +49,9 @@ func (h *searchRequiredQuery) Get(
 	// Where("courses.status = ?", entity.CourseStatusPublic)
 	// Where("courses.is_required = ?", entity.CourseIsRequired)
 
-	return database.GetAll[ae.Course](ctx, query)
+	records, err := database.GetAll[ae.Course](ctx, query)
+	if err != nil {
+		return nil, errs.Wrap("[searchRequiredQuery.Get]database.GetAllのエラー", err)
+	}
+	return records, nil
 }

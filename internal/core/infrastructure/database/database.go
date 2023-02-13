@@ -28,7 +28,7 @@ type Conn struct {
 func (c *Conn) init() error {
 	db, err := c.open(c.readSetting)
 	if err != nil {
-		return errs.NewInternalError("DBの読み込み用のホストへの接続に失敗しました: %v", err)
+		return errs.Wrap("[Conn.init]読み込みホストへの接続エラー", err)
 	}
 	c.dbRead = db
 	return nil
@@ -45,7 +45,7 @@ func (c *Conn) DB() *gorm.DB {
 func (c *Conn) Transaction(ctx context.Context, f func(tx *gorm.DB) error) (err error) {
 	db, err := c.open(c.writeSetting)
 	if err != nil {
-		return errs.NewInternalError("DBの書き込み用のホストへの接続に失敗しました: %v", err)
+		return errs.Wrap("[Conn.Transaction]読み込みホストへの接続エラー", err)
 	}
 	defer c.close(db)
 
@@ -53,7 +53,7 @@ func (c *Conn) Transaction(ctx context.Context, f func(tx *gorm.DB) error) (err 
 	defer func() {
 		if r := recover(); r != nil {
 			logger.Panic(ctx, r)
-			err = errs.NewInternalError("トランザクション処理中にpanicが発生しました: %v", r)
+			err = errs.NewInternalError("[Conn.Transaction]トランザクション処理中にpanicが発生しました: %v", r)
 		}
 
 		if err != nil {
@@ -62,7 +62,7 @@ func (c *Conn) Transaction(ctx context.Context, f func(tx *gorm.DB) error) (err 
 	}()
 
 	if err = f(tx); err != nil {
-		return err
+		return errs.Wrap("[Conn.Transaction]Closureの実行エラー", err)
 	}
 	return tx.Commit().Error
 }
@@ -89,7 +89,7 @@ func (c *Conn) open(setting *env.DbConnectSetting) (*gorm.DB, error) {
 		NowFunc: timer.Now,
 	})
 	if err != nil {
-		return nil, errs.NewInternalError("failed to open db connection: %v", err)
+		return nil, errs.Wrap("[Conn.open]DB接続エラー", err)
 	}
 	return db, nil
 }
