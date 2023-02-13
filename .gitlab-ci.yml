@@ -41,6 +41,7 @@ gomod:
   artifacts:
     paths:
       - internal/cmd/api/di/wire_gen.go
+      - vendor/
 
 golangcilint:
   stage: test
