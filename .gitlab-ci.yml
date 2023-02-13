@@ -8,8 +8,8 @@ stages:
 
 include:
   - project: 'ae/kgm'
-    file: '/.gitlab/ci/kgm_template.yml'
     ref: 'feature/echo_coverage_report'
+    file: '/.gitlab/ci/kgm_template.yml'
 
 variables:
   # gotestで利用するmysqlのrootユーザー作成用の変数
@@ -37,6 +37,10 @@ gomod:
   extends: .go-cache
   script:
     - go mod vendor
+    - make wire
+  artifacts:
+    paths:
+      - internal/cmd/api/di/wire_gen.go
 
 golangcilint:
   stage: test
