@@ -8,8 +8,8 @@ stages:
 
 include:
   - project: 'ae/kgm'
-    ref: feature/echo_coverage_report
     file: '/.gitlab/ci/kgm_template.yml'
+    ref: 'feature/echo_coverage_report'
 
 variables:
   # gotestで利用するmysqlのrootユーザー作成用の変数
