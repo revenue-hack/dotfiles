@@ -64,7 +64,7 @@ func (r *updateELearningRepository) getSchedule(
 	record, err := database.Get[entity.CourseSchedule](ctx, query)
 
 	if err != nil {
-		if err == database.ErrRecordNotFound {
+		if database.IsErrRecordNotFound(err) {
 			// レコードない場合はエラーではなく正常系として扱うので、登録用のデータを設定して値を返します
 			return &entity.CourseSchedule{
 				CreatedBy: authedUser.UserId(),
