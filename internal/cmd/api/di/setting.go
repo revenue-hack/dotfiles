@@ -26,7 +26,7 @@ func InitializeSettingUpdateELearningHandler() h.API {
 		ProviderSet,
 		handler.NewUpdateELearning,
 		usecase.NewUpdateELearning,
-		database.NewUpdateQuery,
+		database.NewUpdateELearningQuery,
 		database.NewUpdateELearningRepository,
 		service.NewUpdateELearning,
 	)

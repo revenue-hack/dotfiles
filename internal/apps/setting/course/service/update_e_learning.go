@@ -45,7 +45,7 @@ func (s *updateELearning) NewValidatedCourse(
 		if err != nil {
 			return nil, errs.Wrap("[updateELearning.NewValidatedCourse]query.ExistCategoryのエラー", err)
 		}
-		if exist {
+		if !exist {
 			ers.Add("カテゴリが存在しません")
 		}
 	}

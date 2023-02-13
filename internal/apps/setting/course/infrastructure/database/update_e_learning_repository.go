@@ -26,26 +26,32 @@ func (r *updateELearningRepository) Update(
 	courseId vo.CourseId,
 	in model.ValidatedCourse,
 ) error {
-	schedule, err := r.getSchedule(ctx, conn, authedUser, courseId, in)
+	schedule, elSchedule, err := r.getSchedule(ctx, conn, authedUser, courseId, in)
 	if err != nil {
 		return errs.Wrap("[updateELearningRepository.Update]getScheduleのエラー", err)
 	}
 
 	return conn.Transaction(ctx, func(tx *gorm.DB) error {
-		if err := tx.Updates(entity.Course{
-			Id:                 courseId.Value(),
-			Title:              in.Title,
-			Description:        in.Description,
-			ThumbnailImageName: in.ThumbnailImage,
-			IsRequired:         in.IsRequired,
-			CategoryId:         in.CategoryId,
-			UpdatedBy:          authedUser.UserId(),
+		// 構造体を使うとis_required=falseがゼロ値で無視されてしまうのでmapを使用しています
+		if err := tx.Model(&entity.Course{Id: courseId.Value()}).Updates(map[string]any{
+			"title":                in.Title,
+			"description":          in.Description,
+			"thumbnail_image_name": in.ThumbnailImage,
+			"is_required":          in.IsRequired,
+			"category_id":          in.CategoryId,
+			"updated_by":           authedUser.UserId(),
 		}).Error; err != nil {
 			return errs.Wrap("[updateELearningRepository.Update]coursesの更新エラー", err)
 		}
 
 		if err := tx.Save(schedule).Error; err != nil {
-			return errs.Wrap("[updateELearningRepository.Update]course_schedules, e_learning_schedulesの更新エラー", err)
+			return errs.Wrap("[updateELearningRepository.Update]course_schedulesの更新エラー", err)
+		}
+
+		// 更新の場合にIDがないとエラーになるので常に上書きしておく
+		elSchedule.CourseScheduleId = schedule.Id
+		if err := tx.Save(elSchedule).Error; err != nil {
+			return errs.Wrap("[updateELearningRepository.Update]e_learning_schedulesの更新エラー", err)
 		}
 		return nil
 	})
@@ -57,33 +63,37 @@ func (r *updateELearningRepository) getSchedule(
 	authedUser *authed.User,
 	courseId vo.CourseId,
 	in model.ValidatedCourse,
-) (*entity.CourseSchedule, error) {
+) (*entity.CourseSchedule, *entity.ELearningSchedule, error) {
 	query := conn.DB().
 		Preload("ELearningSchedule").
 		Where("course_schedules.course_id = ?", courseId.Value())
 	record, err := database.Get[entity.CourseSchedule](ctx, query)
 
-	if err != nil {
-		if database.IsErrRecordNotFound(err) {
-			// レコードない場合はエラーではなく正常系として扱うので、登録用のデータを設定して値を返します
-			return &entity.CourseSchedule{
-				CreatedBy: authedUser.UserId(),
-				UpdatedBy: authedUser.UserId(),
-				ELearningSchedule: entity.ELearningSchedule{
-					From:      in.From,
-					To:        in.To,
-					CreatedBy: authedUser.UserId(),
-					UpdatedBy: authedUser.UserId(),
-				},
-			}, nil
-		}
-		return nil, errs.Wrap("[updateELearningRepository.getSchedule]course_schedulesの取得エラー", err)
+	if err == nil {
+		record.UpdatedBy = authedUser.UserId()
+
+		// course_schedulesが存在する場合、必ずe_learning_schedulesは存在する
+		record.ELearningSchedule.From = in.From
+		record.ELearningSchedule.To = in.To
+		record.ELearningSchedule.UpdatedBy = authedUser.UserId()
+		return record, &record.ELearningSchedule, nil
 	}
 
-	// course_schedulesが存在する場合、必ずe_learning_schedulesは存在する
-	record.UpdatedBy = authedUser.UserId()
-	record.ELearningSchedule.From = in.From
-	record.ELearningSchedule.To = in.To
-	record.ELearningSchedule.UpdatedBy = authedUser.UserId()
-	return record, nil
+	if !database.IsErrRecordNotFound(err) {
+		return nil, nil, errs.Wrap("[updateELearningRepository.getSchedule]course_schedulesの取得エラー", err)
+	}
+
+	// レコードない場合はエラーではなく正常系として扱うので、登録用のデータを設定して値を返します
+	return &entity.CourseSchedule{
+			CourseId:  courseId.Value(),
+			CreatedBy: authedUser.UserId(),
+			UpdatedBy: authedUser.UserId(),
+		},
+		&entity.ELearningSchedule{
+			From:      in.From,
+			To:        in.To,
+			CreatedBy: authedUser.UserId(),
+			UpdatedBy: authedUser.UserId(),
+		},
+		nil
 }

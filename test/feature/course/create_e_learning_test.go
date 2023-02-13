@@ -26,7 +26,7 @@ func TestCreateELearning(t *testing.T) {
 	db := helper.OpenDb(t)
 	defer helper.CloseDb(t, db)
 
-	expectedCourse := entity.Course{
+	assert.EqualFirstRecord(t, db, entity.Course{
 		Id:                 1,
 		CourseType:         1,
 		Title:              "無題のe-Learning",
@@ -39,11 +39,5 @@ func TestCreateELearning(t *testing.T) {
 		CreatedBy:          helper.TestRequestDefaultUserId,
 		UpdatedAt:          helper.FixedMockTime,
 		UpdatedBy:          helper.TestRequestDefaultUserId,
-	}
-
-	var actualCourse entity.Course
-	if err := db.First(&actualCourse).Error; err != nil {
-		t.Fatal(err)
-	}
-	assert.Equal(t, actualCourse, expectedCourse)
+	})
 }
