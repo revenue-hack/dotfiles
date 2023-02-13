@@ -11,7 +11,7 @@ import (
 
 func TestSetting_GetELearning(t *testing.T) {
 	helper.InitDb(t)
-	helper.ExecSeeder(t, "setting/course/GetELearning")
+	helper.ExecSeeder(t, "setting/course/course")
 
 	testCases := []struct {
 		name         string
