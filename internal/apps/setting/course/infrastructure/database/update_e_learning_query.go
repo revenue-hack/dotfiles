@@ -16,7 +16,11 @@ func NewUpdateELearningQuery() course.UpdateQuery {
 
 type updateELearningQuery struct{}
 
-func (r *updateELearningQuery) ExistCourse(ctx context.Context, conn *database.Conn, courseId vo.CourseId) (bool, error) {
+func (r *updateELearningQuery) ExistCourse(
+	ctx context.Context,
+	conn *database.Conn,
+	courseId vo.CourseId,
+) (bool, error) {
 	query := conn.DB().
 		Where("id = ?", courseId.Value()).
 		Where("course_type = ?", entity.CourseTypeELearning)
@@ -28,7 +32,11 @@ func (r *updateELearningQuery) ExistCourse(ctx context.Context, conn *database.C
 	return exist, nil
 }
 
-func (r *updateELearningQuery) ExistCategory(ctx context.Context, conn *database.Conn, categoryId uint32) (bool, error) {
+func (r *updateELearningQuery) ExistCategory(
+	ctx context.Context,
+	conn *database.Conn,
+	categoryId uint32,
+) (bool, error) {
 	exist, err := database.ExistById[entity.Category](ctx, conn.DB(), categoryId)
 	if err != nil {
 		return exist, errs.Wrap("[updateELearningQuery.ExistCategory]database.ExistByIdのエラー", err)

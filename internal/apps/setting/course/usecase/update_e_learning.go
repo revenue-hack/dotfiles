@@ -42,7 +42,8 @@ func (uc *updateELearning) Exec(ctx context.Context, courseId vo.CourseId, in co
 		return errs.Wrap("[updateELearning.Exec]ctxt.AuthenticatedUserのエラー", err)
 	}
 
-	if exist, err := uc.query.ExistCourse(ctx, conn, courseId); err != nil {
+	exist, err := uc.query.ExistCourse(ctx, conn, courseId)
+	if err != nil {
 		return errs.Wrap("[updateELearning.Exec]query.ExistCourseのエラー", err)
 	} else if !exist {
 		return errs.NewNotFound("講習が存在しません")
