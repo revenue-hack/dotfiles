@@ -14,6 +14,8 @@ type GetQuery interface {
 }
 
 type UpdateQuery interface {
-	// ExistCourse は講習が存在するか
+	// ExistCourse は講習が存在する場合にtrueを返却します
 	ExistCourse(context.Context, *database.Conn, vo.CourseId) (bool, error)
+	// ExistCategory はカテゴリが存在する場合にtrueを返却します
+	ExistCategory(context.Context, *database.Conn, uint32) (bool, error)
 }

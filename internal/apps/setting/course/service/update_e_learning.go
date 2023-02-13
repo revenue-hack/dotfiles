@@ -12,13 +12,15 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/validate"
 )
 
-func NewUpdateELearning() course.UpdateELearningService {
-	return &updateELearning{}
+func NewUpdateELearning(query course.UpdateQuery) course.UpdateELearningService {
+	return &updateELearning{query: query}
 }
 
-type updateELearning struct{}
+type updateELearning struct {
+	query course.UpdateQuery
+}
 
-func (*updateELearning) NewValidatedCourse(
+func (s *updateELearning) NewValidatedCourse(
 	ctx context.Context,
 	conn *database.Conn,
 	in course.UpdateELearningInput,
@@ -28,17 +30,25 @@ func (*updateELearning) NewValidatedCourse(
 	ers.AddError(validate.StringOptional("講習の説明", in.Description, 1000))
 	ers.AddError(validate.StringOptional("サムネイル画像", in.ThumbnailImage, 100))
 
-	from, err := parseDatetime("期間（開始）", in.From)
+	from, err := s.parseDatetime("期間（開始）", in.From)
 	ers.AddError(err)
-	to, err := parseDatetime("期間（終了）", in.To)
+	to, err := s.parseDatetime("期間（終了）", in.To)
 	ers.AddError(err)
 
 	// 期間指定があれば to > from である必要がある
 	if from != nil && to != nil && to.Before(*from) {
-		ers.AddError(errs.NewInvalidParameter("期間（開始）は期間（終了）の過去日時を指定してください"))
+		ers.Add("期間（開始）は期間（終了）の過去日時を指定してください")
 	}
 
-	// TODO: カテゴリの検証
+	if in.CategoryId != nil {
+		exist, err := s.query.ExistCategory(ctx, conn, *in.CategoryId)
+		if err != nil {
+			return nil, errs.Wrap("[updateELearning.NewValidatedCourse]query.ExistCategoryのエラー", err)
+		}
+		if exist {
+			ers.Add("カテゴリが存在しません")
+		}
+	}
 
 	return errs.ErrorsOrNilWithValue(model.ValidatedCourse{
 		Title:          in.Title,
@@ -52,7 +62,7 @@ func (*updateELearning) NewValidatedCourse(
 }
 
 // 日付をパースします
-func parseDatetime(fieldName string, val *string) (*time.Time, error) {
+func (*updateELearning) parseDatetime(fieldName string, val *string) (*time.Time, error) {
 	if val == nil || *val == "" {
 		return nil, nil
 	}

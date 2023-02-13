@@ -23,3 +23,11 @@ func (r *updateQuery) ExistCourse(ctx context.Context, conn *database.Conn, cour
 	}
 	return exist, nil
 }
+
+func (r *updateQuery) ExistCategory(ctx context.Context, conn *database.Conn, categoryId uint32) (bool, error) {
+	exist, err := database.ExistById[entity.Category](ctx, conn.DB(), categoryId)
+	if err != nil {
+		return exist, errs.Wrap("[updateQuery.ExistCategory]database.ExistByIdのエラー", err)
+	}
+	return exist, nil
+}
