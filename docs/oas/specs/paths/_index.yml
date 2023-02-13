@@ -1,4 +1,5 @@
 $ref#category: "./category.yml"
 $ref#course: "./course.yml"
-$ref#e-learning_setting: "./e-learning_setting.yml"
+$ref#setting_e-learning: "./setting_e-learning.yml"
+$ref#setting_content: "./setting_content.yml"
 $ref#attend: "./attend.yml"

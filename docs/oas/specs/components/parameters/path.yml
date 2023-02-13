@@ -6,3 +6,12 @@ CourseId:
   schema:
     type: integer
     example: 1
+
+ContentId:
+  name: content_id
+  in: path
+  required: true
+  description: コンテンツID
+  schema:
+    type: integer
+    example: 2

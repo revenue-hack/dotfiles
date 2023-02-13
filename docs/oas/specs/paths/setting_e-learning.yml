@@ -1,14 +1,14 @@
 /courses/{course_id}/e_learning:
   get:
     tags:
-      - 講習設定(e-Learning)
+      - 講習設定（e-Learning）
     summary: e-Learningの基礎情報の取得
     description: e-Learningの基礎情報（タイトル、概要等）を取得します
     parameters:
       - $ref: "#/components/parameters/CourseId"
     responses:
       200:
-        description: No Content
+        description: OK
         content:
           application/json:
             schema:
@@ -42,9 +42,9 @@
                   example: 2023/05/31 18:00
                   nullable: true
 
-  put:
+  patch:
     tags:
-      - 講習設定(e-Learning)
+      - 講習設定（e-Learning）
     summary: e-Learningの基礎情報の更新
     description: e-Learningの基礎情報（タイトル、概要等）の更新を行います
     parameters:
