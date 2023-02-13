@@ -42,6 +42,7 @@ gomod:
     paths:
       - internal/cmd/api/di/wire_gen.go
       - vendor/
+    expire_in: 1 mos
 
 golangcilint:
   stage: test
@@ -78,6 +79,7 @@ gotest:
   artifacts:
     paths:
       - coverage
+      - internal/cmd/api/di/wire_gen.go
     expire_in: 1 mos
 
 pages:
