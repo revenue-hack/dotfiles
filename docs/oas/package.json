@@ -6,9 +6,21 @@
     "node": "16.15.0"
   },
   "scripts": {
-    "build": "swagger-merger -i ./specs/index.yml -o swagger.yml"
+    "build": "swagger-merger -i ./specs/index.yml -o swagger.yml",
+    "watch": "npm-watch build"
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "./specs"
+      ],
+      "extensions": "yml",
+      "delay": 0,
+      "quiet": false
+    }
   },
   "dependencies": {
+    "npm-watch": "^0.11.0",
     "swagger-merger": "^1.5.4"
   }
 }

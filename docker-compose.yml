@@ -31,6 +31,15 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
 
+  redoc:
+    image: redocly/redoc
+    ports:
+      - 28081:80
+    volumes:
+      - ./docs/oas/swagger.yml:/usr/share/nginx/html/swagger.yml
+    environment:
+      SPEC_URL: swagger.yml
+
   # ローカルでS3のモックするためのコンテナ
   # @see https://docs.min.io/docs/minio-docker-quickstart-guide.html
   minio:

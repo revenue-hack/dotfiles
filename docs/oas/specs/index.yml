@@ -8,14 +8,16 @@ servers:
 tags:
   - name: カテゴリ
   - name: 講習
-  - name: 講習設定(e-Learning)
+  - name: 講習設定（e-Learning）
+  - name: 講習設定（コンテンツ管理）
   - name: 受講
 x-tagGroups:
   - name: APIリファレンス
     tags:
       - カテゴリ
       - 講習
-      - 講習設定(e-Learning)
+      - 講習設定（e-Learning）
+      - 講習設定（コンテンツ管理）
       - 受講
 paths:
   $ref: "./paths/_index.yml"
