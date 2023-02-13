@@ -24,12 +24,12 @@ type searchRequired struct {
 func (uc *searchRequired) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
 	conn, err := uc.connFactory.Create(ctx)
 	if err != nil {
-		return nil, errs.NewInternalError("failed to connFactory.Create from searchRequired: %v", err)
+		return nil, errs.Wrap("[searchRequired.Exec]connFactory.Createのエラー", err)
 	}
 
 	courses, err := uc.query.Get(ctx, conn, nil)
 	if err != nil {
-		return nil, errs.NewInternalError("failed to query.Get from searchRequired: %v", err)
+		return nil, errs.Wrap("[searchRequired.Exec]query.Getのエラー", err)
 	}
 
 	// modelにつめかえ

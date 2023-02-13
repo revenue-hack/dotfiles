@@ -7,6 +7,7 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/vo"
 	"gitlab.kaonavi.jp/ae/sardine/internal/entity"
+	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
 func NewGetQuery() course.GetQuery {
@@ -35,5 +36,9 @@ func (r *getQuery) GetELearning(
 		Where("c.id = ?", courseId.Value()).
 		Where("c.course_type = ?", entity.CourseTypeELearning)
 
-	return database.Get[entity.Course](ctx, query)
+	record, err := database.Get[entity.Course](ctx, query)
+	if err != nil {
+		return nil, errs.Wrap("[getQuery.GetELearning]database.Getのエラー", err)
+	}
+	return record, nil
 }

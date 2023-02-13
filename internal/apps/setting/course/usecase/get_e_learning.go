@@ -30,18 +30,20 @@ func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course
 
 	record, err := uc.query.GetELearning(ctx, conn, courseId)
 	if err != nil {
-		if err == database.ErrRecordNotFound {
+		if database.IsErrRecordNotFound(err) {
 			return nil, errs.NewNotFound("講習が存在しません")
 		}
 		return nil, errs.Wrap("[getELearning.Exec]query.GetELearningのエラー", err)
 	}
 
 	var out course.GetELearningOutput
-	uc.bindOutput(record, &out)
+	if err = uc.bindOutput(record, &out); err != nil {
+		return nil, errs.Wrap("[getELearning.Exec]bindOutputのエラー", err)
+	}
 	return &out, nil
 }
 
-func (uc *getELearning) bindOutput(c *entity.Course, out *course.GetELearningOutput) {
+func (uc *getELearning) bindOutput(c *entity.Course, out *course.GetELearningOutput) error {
 	out.Id = c.Id
 	out.Title = c.Title
 	out.Description = c.Description
@@ -52,10 +54,12 @@ func (uc *getELearning) bindOutput(c *entity.Course, out *course.GetELearningOut
 
 	// 実施期間の指定がある場合のみFrom/Toをバインド
 	if len(c.CourseSchedules) == 0 {
-		return
+		return nil
 	}
 
 	// e-Learningは期間が1件しかないはずなので先頭データを使う
 	out.From = c.CourseSchedules[0].ELearningSchedule.From
 	out.To = c.CourseSchedules[0].ELearningSchedule.To
+
+	return nil
 }
