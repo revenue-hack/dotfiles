@@ -36,7 +36,7 @@ func (s *updateELearning) NewValidatedCourse(
 	ers.AddError(err)
 
 	// 期間指定があれば to > from である必要がある
-	if from != nil && to != nil && to.Before(*from) {
+	if from != nil && to != nil && (to.Equal(*from) || to.Before(*from)) {
 		ers.Add("期間（開始）は期間（終了）の過去日時を指定してください")
 	}
 
