@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course"
-	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course/model"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/authed"
 	dc "gitlab.kaonavi.jp/ae/sardine/internal/core/domain/course"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/domain/file"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/storage"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/vo"
 	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
@@ -24,12 +24,12 @@ func (h *thumbnailRepository) Create(
 	ctx context.Context,
 	authedUser *authed.User,
 	courseId vo.CourseId,
-	thumb *model.Thumbnail,
+	thumb *file.UploadFile,
 ) error {
 	client, err := h.factory.Create(ctx)
 	if err != nil {
 		return errs.Wrap("[thumbnailRepository.Create]factory.Clientのエラー", err)
 	}
-	path := dc.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, thumb.Name)
-	return client.Create(ctx, path, thumb.Content)
+	path := dc.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, thumb.HashedName())
+	return client.Create(ctx, path, thumb.Content())
 }

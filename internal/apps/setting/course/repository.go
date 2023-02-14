@@ -5,6 +5,7 @@ import (
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course/model"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/authed"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/domain/file"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/vo"
 )
@@ -16,5 +17,5 @@ type UpdateELearningRepository interface {
 
 type ThumbnailRepository interface {
 	// Create はサムネイル画像を生成します
-	Create(context.Context, *authed.User, vo.CourseId, *model.Thumbnail) error
+	Create(context.Context, *authed.User, vo.CourseId, *file.UploadFile) error
 }

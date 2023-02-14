@@ -41,8 +41,8 @@ func (r *updateELearningRepository) Update(
 	}
 	// サムネイル画像の更新 or 削除（値をnullにするだけ）
 	if in.Thumbnail != nil {
-		courseParams["thumbnail_delivery_file_name"] = in.Thumbnail.Name
-		courseParams["thumbnail_original_file_name"] = in.Thumbnail.OriginalName
+		courseParams["thumbnail_delivery_file_name"] = in.Thumbnail.HashedName()
+		courseParams["thumbnail_original_file_name"] = in.Thumbnail.OriginalName()
 	} else if in.IsRemoveThumbnail {
 		courseParams["thumbnail_delivery_file_name"] = gorm.Expr("NULL")
 		courseParams["thumbnail_original_file_name"] = gorm.Expr("NULL")

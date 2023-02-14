@@ -2,28 +2,15 @@ package service
 
 import (
 	"context"
-	"encoding/base64"
-	"fmt"
-	"net/http"
-	"path/filepath"
-	"strings"
 	"time"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course"
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course/model"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/domain/file"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
 	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
-	"gitlab.kaonavi.jp/ae/sardine/internal/utils/hash"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/timer"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/validate"
-)
-
-var (
-	validMimeTypes = map[string]struct{}{
-		"image/jpeg": {},
-		"image/png":  {},
-		"image/gif":  {},
-	}
 )
 
 func NewUpdateELearning(query course.UpdateQuery) course.UpdateELearningService {
@@ -64,8 +51,11 @@ func (s *updateELearning) NewValidatedCourse(
 	}
 
 	// サムネイル画像
-	thumb, thumbErs := s.parseThumbnail(in.Thumbnail)
-	ers.Append(thumbErs)
+	var thumb *file.UploadFile
+	if in.Thumbnail != nil {
+		thumb, err = file.NewUploadImage(in.Thumbnail.Name, in.Thumbnail.Content)
+		ers.AddError(err)
+	}
 
 	return errs.ErrorsOrNilWithValue(model.ValidatedCourse{
 		Title:             in.Title,
@@ -89,42 +79,4 @@ func (*updateELearning) parseDatetime(fieldName string, val *string) (*time.Time
 		return nil, errs.NewInvalidParameter("%sの日付形式が不正です", fieldName)
 	}
 	return &t, nil
-}
-
-func (*updateELearning) parseThumbnail(in *course.UpdateThumbnailInput) (*model.Thumbnail, *errs.Errors) {
-	if in == nil {
-		return nil, nil
-	}
-
-	ers := errs.NewErrors()
-
-	// 念の為ファイル名だけにしておく
-	name := filepath.Base(in.Name)
-	ers.AddError(validate.StringRequired("サムネイル画像名", &name, 50))
-
-	// TODO: 拡張子の検証
-
-	// コンテンツをDecodeして検証します
-	decodedContent, err := base64.StdEncoding.DecodeString(in.Content)
-	if err != nil {
-		ers.Add("サムネイル画像が不正な形式です")
-		return nil, ers
-	}
-
-	// MIME-Typeを検証
-	if _, ok := validMimeTypes[http.DetectContentType(decodedContent)]; !ok {
-		ers.Add("サムネイル画像はjpeg/png/gifを指定してください")
-	}
-
-	if ers.HasError() {
-		return nil, ers
-	}
-
-	// 元のファイル名を元にハッシュ化
-	fileName := fmt.Sprintf("%s%s", hash.Make(name), strings.ToLower(filepath.Ext(name)))
-	return &model.Thumbnail{
-		OriginalName: name,
-		Name:         fileName,
-		Content:      decodedContent,
-	}, nil
 }
