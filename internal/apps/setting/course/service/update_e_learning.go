@@ -28,7 +28,7 @@ func (s *updateELearning) NewValidatedCourse(
 	ers := errs.NewErrors()
 	ers.AddError(validate.StringRequired("講習タイトル", &in.Title, 50))
 	ers.AddError(validate.StringOptional("講習の説明", in.Description, 1000))
-	ers.AddError(validate.StringOptional("サムネイル画像", in.ThumbnailImage, 100))
+	// TODO: サムネイル画像の検証
 
 	from, err := s.parseDatetime("期間（開始）", in.From)
 	ers.AddError(err)
@@ -51,13 +51,12 @@ func (s *updateELearning) NewValidatedCourse(
 	}
 
 	return errs.ErrorsOrNilWithValue(model.ValidatedCourse{
-		Title:          in.Title,
-		Description:    in.Description,
-		ThumbnailImage: in.ThumbnailImage,
-		IsRequired:     in.IsRequired,
-		CategoryId:     in.CategoryId,
-		From:           from,
-		To:             to,
+		Title:       in.Title,
+		Description: in.Description,
+		IsRequired:  in.IsRequired,
+		CategoryId:  in.CategoryId,
+		From:        from,
+		To:          to,
 	}, ers)
 }
 
