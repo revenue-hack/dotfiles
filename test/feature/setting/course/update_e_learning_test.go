@@ -30,7 +30,7 @@ func TestSetting_UpdateELearning(t *testing.T) {
 {
 	"title": "ロジカルシンキング研修",
 	"description": "ロジカルな思考をゲット",
-	"thumbnailImage": null,
+	"thumbnail": null,
 	"isRemoveThumbnailImage": false,
 	"isRequired": true,
 	"categoryId": 2,
@@ -45,18 +45,19 @@ func TestSetting_UpdateELearning(t *testing.T) {
 
 				// 講習の値が等しいこと
 				assert.EqualFirstRecord(t, db.Where("id = 1"), entity.Course{
-					Id:                 1,
-					CourseType:         1,
-					Title:              "ロジカルシンキング研修",
-					Description:        helper.P("ロジカルな思考をゲット"),
-					ThumbnailImageName: nil,
-					IsRequired:         true,
-					CategoryId:         helper.P[uint32](2),
-					Status:             1,
-					CreatedAt:          helper.FixedTime,
-					CreatedBy:          1,
-					UpdatedAt:          helper.FixedMockTime,
-					UpdatedBy:          helper.TestRequestDefaultUserId,
+					Id:                        1,
+					CourseType:                1,
+					Title:                     "ロジカルシンキング研修",
+					Description:               helper.P("ロジカルな思考をゲット"),
+					ThumbnailDeliveryFileName: helper.P("delivery1.png"),
+					ThumbnailOriginalFileName: helper.P("original1.png"),
+					IsRequired:                true,
+					CategoryId:                helper.P[uint32](2),
+					Status:                    1,
+					CreatedAt:                 helper.FixedTime,
+					CreatedBy:                 1,
+					UpdatedAt:                 helper.FixedMockTime,
+					UpdatedBy:                 helper.TestRequestDefaultUserId,
 				})
 				// 講習に紐づくスケジュール（親）が等しいこと
 				assert.EqualFirstRecord(t, db.Where("course_id = 1"), entity.CourseSchedule{
@@ -87,7 +88,7 @@ func TestSetting_UpdateELearning(t *testing.T) {
 {
 	"title": "ロジカルシンキング研修",
 	"description": "ロジカルな思考をゲット",
-	"thumbnailImage": null,
+	"thumbnail": null,
 	"isRemoveThumbnailImage": false,
 	"isRequired": false,
 	"categoryId": 1,
@@ -102,18 +103,19 @@ func TestSetting_UpdateELearning(t *testing.T) {
 
 				// 講習の値が等しいこと
 				assert.EqualFirstRecord(t, db.Where("id = 2"), entity.Course{
-					Id:                 2,
-					CourseType:         1,
-					Title:              "ロジカルシンキング研修",
-					Description:        helper.P("ロジカルな思考をゲット"),
-					ThumbnailImageName: nil,
-					IsRequired:         false,
-					CategoryId:         helper.P[uint32](1),
-					Status:             2,
-					CreatedAt:          helper.FixedTime,
-					CreatedBy:          1,
-					UpdatedAt:          helper.FixedMockTime,
-					UpdatedBy:          helper.TestRequestDefaultUserId,
+					Id:                        2,
+					CourseType:                1,
+					Title:                     "ロジカルシンキング研修",
+					Description:               helper.P("ロジカルな思考をゲット"),
+					ThumbnailDeliveryFileName: nil,
+					ThumbnailOriginalFileName: nil,
+					IsRequired:                false,
+					CategoryId:                helper.P[uint32](1),
+					Status:                    2,
+					CreatedAt:                 helper.FixedTime,
+					CreatedBy:                 1,
+					UpdatedAt:                 helper.FixedMockTime,
+					UpdatedBy:                 helper.TestRequestDefaultUserId,
 				})
 				// 講習に紐づくスケジュール（親）が新規追加されていて等しいこと
 				assert.EqualFirstRecord(t, db.Where("course_id = 2"), entity.CourseSchedule{

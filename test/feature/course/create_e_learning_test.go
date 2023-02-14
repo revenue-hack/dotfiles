@@ -27,17 +27,18 @@ func TestCreateELearning(t *testing.T) {
 	defer helper.CloseDb(t, db)
 
 	assert.EqualFirstRecord(t, db, entity.Course{
-		Id:                 1,
-		CourseType:         1,
-		Title:              "無題のe-Learning",
-		Description:        nil,
-		ThumbnailImageName: nil,
-		IsRequired:         false,
-		CategoryId:         nil,
-		Status:             1,
-		CreatedAt:          helper.FixedMockTime,
-		CreatedBy:          helper.TestRequestDefaultUserId,
-		UpdatedAt:          helper.FixedMockTime,
-		UpdatedBy:          helper.TestRequestDefaultUserId,
+		Id:                        1,
+		CourseType:                1,
+		Title:                     "無題のe-Learning",
+		Description:               nil,
+		ThumbnailDeliveryFileName: nil,
+		ThumbnailOriginalFileName: nil,
+		IsRequired:                false,
+		CategoryId:                nil,
+		Status:                    1,
+		CreatedAt:                 helper.FixedMockTime,
+		CreatedBy:                 helper.TestRequestDefaultUserId,
+		UpdatedAt:                 helper.FixedMockTime,
+		UpdatedBy:                 helper.TestRequestDefaultUserId,
 	})
 }

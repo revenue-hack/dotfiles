@@ -316,10 +316,21 @@ paths:
                     description: カテゴリID
                     example: 10
                     nullable: true
-                  thumbnailImageUrl:
-                    type: string
-                    description: サムネイル画像URL
-                    example: null
+                  thumbnail:
+                    type: object
+                    description: |
+                      サムネイル画像に関する情報をまとめるオブジェクトです<br>
+                      サムネイル画像が未設定の場合はnullを返却します
+                    nullable: true
+                    properties:
+                      name:
+                        type: string
+                        description: サムネイル画像名
+                        example: thumbnail.png
+                      url:
+                        type: string
+                        description: サムネイル画像URL
+                        example: http://localhost/path/to/thumbnail.png
                   from:
                     type: string
                     description: 受講開始（YYYY/MM/DD hh:mm形式）
@@ -356,14 +367,21 @@ paths:
                   description: カテゴリID
                   example: 10
                   nullable: true
-                thumbnailImage:
-                  type: string
+                thumbnail:
+                  type: object
                   description: |
-                    サムネイル画像（base64エンコード）<br>
+                    サムネイル画像に関する情報をまとめるオブジェクトです<br>
                     画像を更新が必要な場合のみ送信してください。未設定の場合はサムネイル画像の更新は行いません。<br>
                   nullable: true
-                  example: null
-                isRemoveThumbnailImage:
+                  properties:
+                    name:
+                      type: string
+                      description: サムネイル画像名
+                      example: thumbnail.png
+                    content:
+                      type: string
+                      description: Base64エンコードした像
+                isRemoveThumbnail:
                   type: boolean
                   description: >
                     設定されているサムネイル画像を削除する場合にtrueを設定してください。<br>

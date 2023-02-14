@@ -50,7 +50,6 @@ func (uc *getELearning) bindOutput(c *entity.Course, out *course.GetELearningOut
 	out.IsRequired = c.IsRequired
 	out.CategoryId = c.CategoryId
 	// TODO: サムネイル画像がある場合は配信用のURLに変換する
-	out.ThumbnailUrl = c.ThumbnailImageName
 
 	// 実施期間の指定がある場合のみFrom/Toをバインド
 	if len(c.CourseSchedules) == 0 {

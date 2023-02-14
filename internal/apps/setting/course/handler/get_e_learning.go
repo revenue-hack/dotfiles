@@ -42,22 +42,25 @@ func (h *getELearning) exec(ctx *gin.Context) handler.ResponseData {
 }
 
 func (h *getELearning) makeResponse(out *course.GetELearningOutput) ([]byte, error) {
+	type thumbnail struct {
+		Name string `json:"name"`
+		Url  string `json:"url"`
+	}
 	resp := struct {
-		Id           uint32  `json:"id"`
-		Title        string  `json:"title"`
-		Description  *string `json:"description"`
-		ThumbnailUrl *string `json:"thumbnailUrl"`
-		IsRequired   bool    `json:"isRequired"`
-		CategoryId   *uint32 `json:"categoryId"`
-		From         *string `json:"from"`
-		To           *string `json:"to"`
+		Id          uint32     `json:"id"`
+		Title       string     `json:"title"`
+		Description *string    `json:"description"`
+		Thumbnail   *thumbnail `json:"thumbnail"`
+		IsRequired  bool       `json:"isRequired"`
+		CategoryId  *uint32    `json:"categoryId"`
+		From        *string    `json:"from"`
+		To          *string    `json:"to"`
 	}{
-		Id:           out.Id,
-		Title:        out.Title,
-		Description:  out.Description,
-		ThumbnailUrl: out.ThumbnailUrl,
-		IsRequired:   out.IsRequired,
-		CategoryId:   out.CategoryId,
+		Id:          out.Id,
+		Title:       out.Title,
+		Description: out.Description,
+		IsRequired:  out.IsRequired,
+		CategoryId:  out.CategoryId,
 	}
 
 	format := func(t time.Time) *string {
@@ -69,6 +72,13 @@ func (h *getELearning) makeResponse(out *course.GetELearningOutput) ([]byte, err
 	}
 	if out.To != nil {
 		resp.To = format(*out.To)
+	}
+
+	if out.Thumbnail != nil {
+		resp.Thumbnail = &thumbnail{
+			Name: out.Thumbnail.Name,
+			Url:  out.Thumbnail.Url,
+		}
 	}
 
 	return json.Marshal(&resp)
