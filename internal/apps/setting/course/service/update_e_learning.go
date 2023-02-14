@@ -3,8 +3,10 @@ package service
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course"
@@ -68,7 +70,7 @@ func (s *updateELearning) NewValidatedCourse(
 	return errs.ErrorsOrNilWithValue(model.ValidatedCourse{
 		Title:             in.Title,
 		Description:       in.Description,
-		ThumbnailImage:    thumb,
+		Thumbnail:         thumb,
 		IsRemoveThumbnail: in.IsRemoveThumbnailImage,
 		IsRequired:        in.IsRequired,
 		CategoryId:        in.CategoryId,
@@ -89,7 +91,7 @@ func (*updateELearning) parseDatetime(fieldName string, val *string) (*time.Time
 	return &t, nil
 }
 
-func (*updateELearning) parseThumbnail(in *course.UpdateThumbnailInput) (*model.ThumbnailImage, *errs.Errors) {
+func (*updateELearning) parseThumbnail(in *course.UpdateThumbnailInput) (*model.Thumbnail, *errs.Errors) {
 	if in == nil {
 		return nil, nil
 	}
@@ -118,9 +120,11 @@ func (*updateELearning) parseThumbnail(in *course.UpdateThumbnailInput) (*model.
 		return nil, ers
 	}
 
-	return &model.ThumbnailImage{
+	// 元のファイル名を元にハッシュ化
+	fileName := fmt.Sprintf("%s%s", hash.Make(name), strings.ToLower(filepath.Ext(name)))
+	return &model.Thumbnail{
 		OriginalName: name,
-		Name:         hash.Make(name), // 元のファイル名を元にハッシュ化
+		Name:         fileName,
 		Content:      decodedContent,
 	}, nil
 }

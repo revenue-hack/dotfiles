@@ -24,12 +24,12 @@ func (h *thumbnailRepository) Create(
 	ctx context.Context,
 	authedUser *authed.User,
 	courseId vo.CourseId,
-	thumb *model.ThumbnailImage,
+	thumb *model.Thumbnail,
 ) error {
 	client, err := h.factory.Create(ctx)
 	if err != nil {
 		return errs.Wrap("[thumbnailRepository.Create]factory.Clientのエラー", err)
 	}
-	path := dc.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, "")
+	path := dc.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, thumb.Name)
 	return client.Create(ctx, path, thumb.Content)
 }

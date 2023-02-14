@@ -1,3 +1,5 @@
+//go:build !feature_test
+
 package hash
 
 import (
@@ -10,7 +12,7 @@ import (
 var chars = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
 func Make(s string) string {
-	// ランダムな12文字のキーを生成（厳密な乱数でなくてよいのでmath/randを使用）
+	// ランダムな12文字のsaltを生成
 	salt := make([]rune, 12)
 	for i := 0; i < 12; i++ {
 		v, _ := rand.Int(rand.Reader, big.NewInt(int64(len(chars))))

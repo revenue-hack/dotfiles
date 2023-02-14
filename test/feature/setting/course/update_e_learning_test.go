@@ -141,6 +141,42 @@ func TestSetting_UpdateELearning(t *testing.T) {
 		},
 
 		{
+			name:     "サムネイル画像を指定した場合、講習情報の更新と画像アップロードができるできる",
+			courseId: 1,
+			requestBody: fmt.Sprintf(`
+{
+	"title": "ロジカルシンキング研修",
+	"thumbnail": {"name": "thumbnail.png", "content": "%s"},
+	"isRemoveThumbnailImage": false,
+	"isRequired": true
+}`, helper.GetBase64Image(t, "thumbnail.png")),
+			statusCode: http.StatusNoContent,
+			after: func(t *testing.T) {
+				// DBに保存されたデータを検証
+				db := helper.OpenDb(t)
+				defer helper.CloseDb(t, db)
+
+				// 講習の値が等しいこと
+				assert.EqualFirstRecord(t, db.Where("id = 1"), entity.Course{
+					Id:                        1,
+					CourseType:                1,
+					Title:                     "ロジカルシンキング研修",
+					Description:               nil,
+					ThumbnailDeliveryFileName: helper.P("thumbnail-png-hashed.png"),
+					ThumbnailOriginalFileName: helper.P("thumbnail.png"),
+					IsRequired:                true,
+					CategoryId:                nil,
+					Status:                    1,
+					CreatedAt:                 helper.FixedTime,
+					CreatedBy:                 1,
+					UpdatedAt:                 helper.FixedMockTime,
+					UpdatedBy:                 helper.TestRequestDefaultUserId,
+				})
+
+			},
+		},
+
+		{
 			name:         "タイトルを送信しない場合、422エラーが返却される",
 			courseId:     1,
 			requestBody:  `{}`,

@@ -16,5 +16,5 @@ type UpdateELearningRepository interface {
 
 type ThumbnailRepository interface {
 	// Create はサムネイル画像を生成します
-	Create(context.Context, *authed.User, vo.CourseId, *model.ThumbnailImage) error
+	Create(context.Context, *authed.User, vo.CourseId, *model.Thumbnail) error
 }

@@ -62,8 +62,8 @@ func (uc *updateELearning) Exec(ctx context.Context, courseId vo.CourseId, in co
 	}
 
 	// サムネイル画像がある場合だけ生成
-	if valid.ThumbnailImage != nil {
-		if err = uc.thumbRepos.Create(ctx, authedUser, courseId, valid.ThumbnailImage); err != nil {
+	if valid.Thumbnail != nil {
+		if err = uc.thumbRepos.Create(ctx, authedUser, courseId, valid.Thumbnail); err != nil {
 			return errs.Wrap("[updateELearning.Exec]thumbRepos.Createのエラー", err)
 		}
 	}

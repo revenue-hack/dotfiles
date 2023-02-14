@@ -8,7 +8,7 @@ import (
 type ValidatedCourse struct {
 	Title             string
 	Description       *string
-	ThumbnailImage    *ThumbnailImage
+	Thumbnail         *Thumbnail
 	IsRemoveThumbnail bool
 	IsRequired        bool
 	CategoryId        *uint32
@@ -16,8 +16,7 @@ type ValidatedCourse struct {
 	To                *time.Time
 }
 
-// ThumbnailImage はサムネイル画像
-type ThumbnailImage struct {
+type Thumbnail struct {
 	OriginalName string
 	Name         string
 	Content      []byte
