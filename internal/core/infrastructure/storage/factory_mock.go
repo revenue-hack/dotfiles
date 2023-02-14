@@ -16,6 +16,6 @@ type factory struct{}
 
 func (*factory) Create(ctx context.Context) (Client, error) {
 	return &mockClient{
-		bucket: fmt.Sprintf("%s/storage", env.GetString("TEST_BASE_DIR")),
+		baseDir: fmt.Sprintf("%s/storage", env.GetString("TEST_BASE_DIR")),
 	}, nil
 }
