@@ -14,12 +14,14 @@ func NewUpdateELearning(
 	connFactory database.ConnFactory,
 	query course.UpdateQuery,
 	repos course.UpdateELearningRepository,
+	thumbRepos course.ThumbnailRepository,
 	service course.UpdateELearningService,
 ) course.UpdateELearningUseCase {
 	return &updateELearning{
 		connFactory: connFactory,
 		query:       query,
 		repos:       repos,
+		thumbRepos:  thumbRepos,
 		service:     service,
 	}
 }
@@ -28,6 +30,7 @@ type updateELearning struct {
 	connFactory database.ConnFactory
 	query       course.UpdateQuery
 	repos       course.UpdateELearningRepository
+	thumbRepos  course.ThumbnailRepository
 	service     course.UpdateELearningService
 }
 
@@ -56,6 +59,13 @@ func (uc *updateELearning) Exec(ctx context.Context, courseId vo.CourseId, in co
 
 	if err = uc.repos.Update(ctx, conn, authedUser, courseId, *valid); err != nil {
 		return errs.Wrap("[updateELearning.Exec]repos.Updateのエラー", err)
+	}
+
+	// サムネイル画像がある場合だけ生成
+	if valid.ThumbnailImage != nil {
+		if err = uc.thumbRepos.Create(ctx, authedUser, courseId, valid.ThumbnailImage); err != nil {
+			return errs.Wrap("[updateELearning.Exec]thumbRepos.Createのエラー", err)
+		}
 	}
 
 	return nil
