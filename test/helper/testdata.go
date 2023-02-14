@@ -16,3 +16,16 @@ func GetBase64Image(t *testing.T, fileName string) string {
 	}
 	return base64.StdEncoding.EncodeToString(b)
 }
+
+// GetTestStorageFilePath はテスト用のファイル配置先に置かれたファイルを読み込みます
+func GetTestStorageFilePath(fileName string) string {
+	return fmt.Sprintf("%s/.teststorage/%s/%s", os.Getenv("TEST_BASE_DIR"), dbName, fileName)
+}
+
+// CleanTestStorage はテスト用のファイル配置先を掃除します
+func CleanTestStorage(t *testing.T) {
+	path := fmt.Sprintf("%s/.teststorage/%s", os.Getenv("TEST_BASE_DIR"), dbName)
+	if err := os.RemoveAll(path); err != nil {
+		t.Error(err)
+	}
+}

@@ -31,6 +31,7 @@ func (r *updateELearningRepository) Update(
 		return errs.Wrap("[updateELearningRepository.Update]getScheduleのエラー", err)
 	}
 
+	// 構造体を使うとis_required=falseがゼロ値で無視されてしまうのでmapを使用しています
 	courseParams := map[string]any{
 		"title":       in.Title,
 		"description": in.Description,
@@ -38,14 +39,16 @@ func (r *updateELearningRepository) Update(
 		"category_id": in.CategoryId,
 		"updated_by":  authedUser.UserId(),
 	}
+	// サムネイル画像の更新 or 削除（値をnullにするだけ）
 	if in.Thumbnail != nil {
 		courseParams["thumbnail_delivery_file_name"] = in.Thumbnail.Name
 		courseParams["thumbnail_original_file_name"] = in.Thumbnail.OriginalName
+	} else if in.IsRemoveThumbnail {
+		courseParams["thumbnail_delivery_file_name"] = gorm.Expr("NULL")
+		courseParams["thumbnail_original_file_name"] = gorm.Expr("NULL")
 	}
 
 	return conn.Transaction(ctx, func(tx *gorm.DB) error {
-		// 構造体を使うとis_required=falseがゼロ値で無視されてしまうのでmapを使用しています
-		// TODO: サムネイル情報を更新する
 		if err := tx.Model(&entity.Course{Id: courseId.Value()}).Updates(courseParams).Error; err != nil {
 			return errs.Wrap("[updateELearningRepository.Update]coursesの更新エラー", err)
 		}

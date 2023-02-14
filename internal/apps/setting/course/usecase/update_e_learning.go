@@ -61,7 +61,9 @@ func (uc *updateELearning) Exec(ctx context.Context, courseId vo.CourseId, in co
 		return errs.Wrap("[updateELearning.Exec]repos.Updateのエラー", err)
 	}
 
-	// サムネイル画像がある場合だけ生成
+	// サムネイル画像がある場合だけ送信された画像をアップロードする
+	// inputとしてはサムネイル画像の削除が存在するが、画像の物理削除は行わない
+	// ※データ復旧等でDBをある時点の状態に戻した時に画像の復旧が行えなくなるため
 	if valid.Thumbnail != nil {
 		if err = uc.thumbRepos.Create(ctx, authedUser, courseId, valid.Thumbnail); err != nil {
 			return errs.Wrap("[updateELearning.Exec]thumbRepos.Createのエラー", err)
