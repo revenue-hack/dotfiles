@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "16.15.0"
+    "node": "16.16.0"
   },
   "scripts": {
     "build": "swagger-merger -i ./specs/index.yml -o swagger.yml",
@@ -22,5 +22,9 @@
   "dependencies": {
     "npm-watch": "^0.11.0",
     "swagger-merger": "^1.5.4"
+  },
+  "volta": {
+    "node": "16.16.0",
+    "yarn": "1.22.19"
   }
 }
