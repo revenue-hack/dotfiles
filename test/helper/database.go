@@ -57,7 +57,7 @@ func ExecSeeder(t *testing.T, name string) {
 	db := OpenDb(t)
 	defer CloseDb(t, db)
 
-	path := fmt.Sprintf("%s/%s.sql", os.Getenv("SEEDER_DIR"), name)
+	path := fmt.Sprintf("%s/seeds/%s.sql", os.Getenv("TEST_BASE_DIR"), name)
 	f, err := os.ReadFile(filepath.Clean(path))
 	if err != nil {
 		t.Fatal(err)

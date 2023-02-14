@@ -1,3 +1,5 @@
+//go:build !feature_test
+
 package storage
 
 import (
