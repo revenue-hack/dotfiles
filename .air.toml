@@ -19,7 +19,7 @@ exclude_dir = ["internal/cmd/cli"]
 # Watch these directories if you specified.
 include_dir = ["cmd", "internal"]
 # Exclude files.
-# exclude_file = ["internal/cmd/api/di/wire_gen.go"]
+exclude_file = ["internal/cmd/api/di/wire_gen.go"]
 # Exclude unchanged files.
 exclude_unchanged = true
 # This log file places in your tmp_dir.
