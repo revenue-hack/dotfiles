@@ -6,6 +6,7 @@ import (
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course"
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course/model"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/domain/file"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
 	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 	"gitlab.kaonavi.jp/ae/sardine/internal/utils/timer"
@@ -28,7 +29,6 @@ func (s *updateELearning) NewValidatedCourse(
 	ers := errs.NewErrors()
 	ers.AddError(validate.StringRequired("講習タイトル", &in.Title, 50))
 	ers.AddError(validate.StringOptional("講習の説明", in.Description, 1000))
-	// TODO: サムネイル画像の検証
 
 	from, err := s.parseDatetime("期間（開始）", in.From)
 	ers.AddError(err)
@@ -41,22 +41,31 @@ func (s *updateELearning) NewValidatedCourse(
 	}
 
 	if in.CategoryId != nil {
-		exist, err := s.query.ExistCategory(ctx, conn, *in.CategoryId)
-		if err != nil {
-			return nil, errs.Wrap("[updateELearning.NewValidatedCourse]query.ExistCategoryのエラー", err)
+		exist, qErr := s.query.ExistCategory(ctx, conn, *in.CategoryId)
+		if qErr != nil {
+			return nil, errs.Wrap("[updateELearning.NewValidatedCourse]query.ExistCategoryのエラー", qErr)
 		}
 		if !exist {
 			ers.Add("カテゴリが存在しません")
 		}
 	}
 
+	// サムネイル画像
+	var thumb *file.UploadFile
+	if in.Thumbnail != nil {
+		thumb, err = file.NewUploadImage(ctx, in.Thumbnail.Name, in.Thumbnail.Content)
+		ers.AddError(err)
+	}
+
 	return errs.ErrorsOrNilWithValue(model.ValidatedCourse{
-		Title:       in.Title,
-		Description: in.Description,
-		IsRequired:  in.IsRequired,
-		CategoryId:  in.CategoryId,
-		From:        from,
-		To:          to,
+		Title:             in.Title,
+		Description:       in.Description,
+		Thumbnail:         thumb,
+		IsRemoveThumbnail: in.IsRemoveThumbnailImage,
+		IsRequired:        in.IsRequired,
+		CategoryId:        in.CategoryId,
+		From:              from,
+		To:                to,
 	}, ers)
 }
 

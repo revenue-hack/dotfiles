@@ -14,12 +14,14 @@ func NewUpdateELearning(
 	connFactory database.ConnFactory,
 	query course.UpdateQuery,
 	repos course.UpdateELearningRepository,
+	thumbRepos course.ThumbnailRepository,
 	service course.UpdateELearningService,
 ) course.UpdateELearningUseCase {
 	return &updateELearning{
 		connFactory: connFactory,
 		query:       query,
 		repos:       repos,
+		thumbRepos:  thumbRepos,
 		service:     service,
 	}
 }
@@ -28,6 +30,7 @@ type updateELearning struct {
 	connFactory database.ConnFactory
 	query       course.UpdateQuery
 	repos       course.UpdateELearningRepository
+	thumbRepos  course.ThumbnailRepository
 	service     course.UpdateELearningService
 }
 
@@ -56,6 +59,15 @@ func (uc *updateELearning) Exec(ctx context.Context, courseId vo.CourseId, in co
 
 	if err = uc.repos.Update(ctx, conn, authedUser, courseId, *valid); err != nil {
 		return errs.Wrap("[updateELearning.Exec]repos.Updateのエラー", err)
+	}
+
+	// サムネイル画像がある場合だけ送信された画像をアップロードする
+	// inputとしてはサムネイル画像の削除が存在するが、画像の物理削除は行わない
+	// ※データ復旧等でDBをある時点の状態に戻した時に画像の復旧が行えなくなるため
+	if valid.Thumbnail != nil {
+		if err = uc.thumbRepos.Create(ctx, authedUser, courseId, valid.Thumbnail); err != nil {
+			return errs.Wrap("[updateELearning.Exec]thumbRepos.Createのエラー", err)
+		}
 	}
 
 	return nil

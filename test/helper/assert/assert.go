@@ -3,6 +3,7 @@ package assert
 import (
 	"bytes"
 	"encoding/json"
+	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -51,4 +52,16 @@ func EqualFirstRecord[T any](t *testing.T, query *gorm.DB, expected T) {
 		return
 	}
 	Equal(t, actual, expected)
+}
+
+// FileExist はファイルが存在することを検証します
+func FileExist(t *testing.T, path string) {
+	sts, err := os.Stat(path)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if sts.IsDir() {
+		t.Errorf("path %q is a directory", path)
+	}
 }
