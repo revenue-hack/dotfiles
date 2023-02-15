@@ -40,15 +40,19 @@ func (h *searchHandler) exec(ctx *gin.Context) handler.ResponseData {
 }
 
 func (h *searchHandler) makeResponse(out *search.Output) ([]byte, error) {
+	type respThumbnail struct {
+		Name string `json:"name"`
+		Url  string `json:"url"`
+	}
 	type respCourse struct {
-		Id           uint32  `json:"id"`
-		Title        string  `json:"title"`
-		ThumbnailUrl string  `json:"thumbnailUrl"`
-		CategoryName *string `json:"categoryName"`
-		ExpireAt     *string `json:"expireAt"`
-		Recommend    *uint32 `json:"recommend"`
-		IsRequired   bool    `json:"isRequired"`
-		IsFixed      bool    `json:"isFixed"`
+		Id           uint32         `json:"id"`
+		Title        string         `json:"title"`
+		Thumbnail    *respThumbnail `json:"thumbnail"`
+		CategoryName *string        `json:"categoryName"`
+		ExpireAt     *string        `json:"expireAt"`
+		Recommend    *uint32        `json:"recommend"`
+		IsRequired   bool           `json:"isRequired"`
+		IsFixed      bool           `json:"isFixed"`
 	}
 
 	resp := struct {
@@ -67,16 +71,23 @@ func (h *searchHandler) makeResponse(out *search.Output) ([]byte, error) {
 			exp := c.ExpireAt.Format("2006/01/02 15:04:05")
 			expireAt = &exp
 		}
-		resp.Courses = append(resp.Courses, respCourse{
+		rc := respCourse{
 			Id:           c.Id,
 			Title:        c.Title,
-			ThumbnailUrl: c.ThumbnailUrl,
 			CategoryName: c.CategoryName,
 			ExpireAt:     expireAt,
 			Recommend:    c.Recommend,
 			IsRequired:   c.IsRequired,
 			IsFixed:      c.IsFixed,
-		})
+		}
+
+		if c.Thumbnail != nil {
+			rc.Thumbnail = &respThumbnail{
+				Name: c.Thumbnail.Name,
+				Url:  c.Thumbnail.Url,
+			}
+		}
+		resp.Courses = append(resp.Courses, rc)
 	}
 	return json.Marshal(&resp)
 }

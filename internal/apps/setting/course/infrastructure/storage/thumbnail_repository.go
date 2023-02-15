@@ -29,6 +29,6 @@ func (h *thumbnailRepository) Create(
 	if err != nil {
 		return errs.Wrap("[thumbnailRepository.Create]factory.Clientのエラー", err)
 	}
-	path := storage.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, thumb.HashedName())
+	path := storage.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId.Value(), thumb.HashedName())
 	return client.Create(ctx, path, thumb.Content())
 }

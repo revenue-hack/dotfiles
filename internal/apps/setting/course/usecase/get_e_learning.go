@@ -46,7 +46,7 @@ func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course
 		return nil, errs.Wrap("[getELearning.Exec]query.GetELearningのエラー", err)
 	}
 
-	out, err := uc.makeOutput(ctx, courseId, record)
+	out, err := uc.makeOutput(ctx, record)
 	if err != nil {
 		return nil, errs.Wrap("[getELearning.Exec]makeOutputのエラー", err)
 	}
@@ -55,7 +55,6 @@ func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course
 
 func (uc *getELearning) makeOutput(
 	ctx context.Context,
-	courseId vo.CourseId,
 	c *entity.Course,
 ) (*course.GetELearningOutput, error) {
 	out := &course.GetELearningOutput{
@@ -84,7 +83,7 @@ func (uc *getELearning) makeOutput(
 	}
 	// TODO: 画像パスをDBに保存したほうが楽かも
 	url, err := client.CreateUrl(
-		storage.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, *c.ThumbnailDeliveryFileName))
+		storage.MakeThumbnailImagePath(authedUser.CustomerCode(), c.Id, *c.ThumbnailDeliveryFileName))
 	if err != nil {
 		return nil, errs.Wrap("[getELearning.bindOutput]client.CreateUrlのエラー", err)
 	}
