@@ -47,6 +47,8 @@ func Route() *gin.Engine {
 		// 概要取得・更新
 		authGroup.GET("/settings/:course_id/e_learning", di.InitializeSettingGetELearningHandler().Handler)
 		authGroup.PATCH("/settings/:course_id/e_learning", di.InitializeSettingUpdateELearningHandler().Handler)
+		// コンテンツ管理
+		authGroup.GET("/settings/:course_id/contents", di.InitializeSettingListContentHandler().Handler)
 	}
 
 	return e
