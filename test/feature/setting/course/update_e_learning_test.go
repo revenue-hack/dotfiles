@@ -146,10 +146,10 @@ func TestSetting_UpdateELearning(t *testing.T) {
 			requestBody: fmt.Sprintf(`
 {
 	"title": "ロジカルシンキング研修",
-	"thumbnail": {"name": "thumbnail.png", "content": "%s"},
+	"thumbnail": {"name": "thumbnail_200_200.png", "content": "%s"},
 	"isRemoveThumbnailImage": true,
 	"isRequired": true
-}`, helper.GetBase64Image(t, "thumbnail.png")),
+}`, helper.GetBase64Image(t, "thumbnail_200_200.png")),
 			statusCode: http.StatusNoContent,
 			after: func(t *testing.T) {
 				// DBに保存されたデータを検証
@@ -162,8 +162,8 @@ func TestSetting_UpdateELearning(t *testing.T) {
 					CourseType:                1,
 					Title:                     "ロジカルシンキング研修",
 					Description:               nil,
-					ThumbnailDeliveryFileName: helper.P("thumbnail-png-hashed.png"),
-					ThumbnailOriginalFileName: helper.P("thumbnail.png"),
+					ThumbnailDeliveryFileName: helper.P("thumbnail_200_200-png-hashed.png"),
+					ThumbnailOriginalFileName: helper.P("thumbnail_200_200.png"),
 					IsRequired:                true,
 					CategoryId:                nil,
 					Status:                    1,
@@ -174,7 +174,7 @@ func TestSetting_UpdateELearning(t *testing.T) {
 				})
 
 				// ファイルが存在することを検証
-				path := helper.GetTestStorageFilePath("1/thumbnail-png-hashed.png")
+				path := helper.GetTestStorageFilePath("1/thumbnail_200_200-png-hashed.png")
 				assert.FileExist(t, path)
 			},
 		},
