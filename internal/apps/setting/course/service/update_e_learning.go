@@ -53,7 +53,7 @@ func (s *updateELearning) NewValidatedCourse(
 	// サムネイル画像
 	var thumb *file.UploadFile
 	if in.Thumbnail != nil {
-		thumb, err = file.NewUploadImage(in.Thumbnail.Name, in.Thumbnail.Content)
+		thumb, err = file.NewUploadImage(ctx, in.Thumbnail.Name, in.Thumbnail.Content)
 		ers.AddError(err)
 	}
 
