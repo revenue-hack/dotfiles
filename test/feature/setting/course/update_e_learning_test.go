@@ -146,10 +146,10 @@ func TestSetting_UpdateELearning(t *testing.T) {
 			requestBody: fmt.Sprintf(`
 {
 	"title": "ロジカルシンキング研修",
-	"thumbnail": {"name": "thumbnail.png", "content": "%s"},
+	"thumbnail": {"name": "thumbnail_200_200.png", "content": "%s"},
 	"isRemoveThumbnailImage": true,
 	"isRequired": true
-}`, helper.GetBase64Image(t, "thumbnail.png")),
+}`, helper.GetBase64Image(t, "thumbnail_200_200.png")),
 			statusCode: http.StatusNoContent,
 			after: func(t *testing.T) {
 				// DBに保存されたデータを検証
@@ -162,8 +162,8 @@ func TestSetting_UpdateELearning(t *testing.T) {
 					CourseType:                1,
 					Title:                     "ロジカルシンキング研修",
 					Description:               nil,
-					ThumbnailDeliveryFileName: helper.P("thumbnail-png-hashed.png"),
-					ThumbnailOriginalFileName: helper.P("thumbnail.png"),
+					ThumbnailDeliveryFileName: helper.P("thumbnail_200_200-png-hashed.png"),
+					ThumbnailOriginalFileName: helper.P("thumbnail_200_200.png"),
 					IsRequired:                true,
 					CategoryId:                nil,
 					Status:                    1,
@@ -174,7 +174,7 @@ func TestSetting_UpdateELearning(t *testing.T) {
 				})
 
 				// ファイルが存在することを検証
-				path := helper.GetTestStorageFilePath("1/thumbnail-png-hashed.png")
+				path := helper.GetTestStorageFilePath("1/thumbnail_200_200-png-hashed.png")
 				assert.FileExist(t, path)
 			},
 		},
@@ -211,6 +211,127 @@ func TestSetting_UpdateELearning(t *testing.T) {
 					UpdatedBy:                 helper.TestRequestDefaultUserId,
 				})
 			},
+		},
+
+		{
+			name:        "ファイルの拡張子がpngの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_200_200.png")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がPNGの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.PNG", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail.PNG")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がjpgの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.jpg", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_200_200.jpg")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がJPGの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.JPG", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail.JPG")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がjpegの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.jpeg", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_200_200.jpeg")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がJPEGの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.JPEG", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail.JPEG")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がgifの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.gif", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_200_200.gif")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:        "ファイルの拡張子がGIFの場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.GIF", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail.GIF")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:         "ファイルの拡張子がsvgの場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.svg", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail.svg")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["許可されていない画像の拡張子が指定されています"]}`,
+			after:        func(t *testing.T) {},
+		},
+		{
+			name:         "ファイルの拡張子がpngで、実態がsvgの場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail.svg")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["不正な画像形式のファイルです"]}`,
+			after:        func(t *testing.T) {},
+		},
+
+		{
+			name:         "横幅が200px未満の画像を指定した場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_199_200.jpeg")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["縦横が200px ~ 2000pxの画像を指定してください"]}`,
+			after:        func(t *testing.T) {},
+		},
+		{
+			name:         "縦幅が200px未満の画像を指定した場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_200_199.jpeg")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["縦横が200px ~ 2000pxの画像を指定してください"]}`,
+			after:        func(t *testing.T) {},
+		},
+		{
+			name:        "縦横幅が2000pxの画像を指定した場合、講習情報の更新ができる",
+			courseId:    1,
+			requestBody: fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_2000_2000.jpeg")),
+			statusCode:  http.StatusNoContent,
+			after:       func(t *testing.T) {},
+		},
+		{
+			name:         "横幅が2000pxを超える画像を指定した場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_2001_2000.jpeg")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["縦横が200px ~ 2000pxの画像を指定してください"]}`,
+			after:        func(t *testing.T) {},
+		},
+		{
+			name:         "縦幅が2000pxを超える画像を指定した場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_2000_2001.jpeg")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["縦横が200px ~ 2000pxの画像を指定してください"]}`,
+			after:        func(t *testing.T) {},
+		},
+		{
+			name:         "上限値を超える画像を指定した場合、422エラーが返却される",
+			courseId:     1,
+			requestBody:  fmt.Sprintf(`{"title": "ロジカルシンキング研修", "thumbnail": {"name": "thumbnail.png", "content": "%s"}}`, helper.GetBase64Image(t, "thumbnail_large.png")),
+			statusCode:   http.StatusUnprocessableEntity,
+			expectedBody: `{"errors": ["1MB以内の画像を指定してください"]}`,
+			after:        func(t *testing.T) {},
 		},
 
 		{

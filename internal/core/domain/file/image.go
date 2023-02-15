@@ -16,8 +16,6 @@ import (
 )
 
 const (
-	// 画像の最大サイズ(MB)
-	imageSizeLimit = 25 << 20
 	imageMinWidth  = 200
 	imageMaxWidth  = 2000
 	imageMinHeight = 200
@@ -61,7 +59,7 @@ func NewUploadImage(ctx context.Context, name, content string) (*UploadFile, err
 
 	// サイズ・縦横のチェック
 	if r.Size() > imageSizeLimit {
-		return nil, errs.NewInvalidParameter("25MB以内の画像を指定してください")
+		return nil, errs.NewInvalidParameter("%dMB以内の画像を指定してください", imageSizeLimit>>20)
 	}
 	width := img.Bounds().Dx()
 	height := img.Bounds().Dy()
