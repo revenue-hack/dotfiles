@@ -214,10 +214,21 @@ paths:
                           type: string
                           description: 講習タイトル
                           example: ロジカルシンキング研修
-                        thumbnailUrl:
-                          type: string
-                          description: サムネイル画像URL
-                          example: http://localhost/path/to/img
+                        thumbnail:
+                          type: object
+                          description: |
+                            サムネイル画像に関する情報をまとめるオブジェクトです<br>
+                            サムネイル画像が未設定の場合はnullを返却します
+                          nullable: true
+                          properties:
+                            name:
+                              type: string
+                              description: サムネイル画像名
+                              example: thumbnail.png
+                            url:
+                              type: string
+                              description: サムネイル画像URL
+                              example: http://localhost/path/to/thumbnail.png
                         categoryName:
                           type: string
                           description: |

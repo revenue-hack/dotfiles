@@ -62,6 +62,7 @@ func (uc *searchRequired) Exec(ctx context.Context, in search.Input) (*search.Ou
 			IsFixed:    false, // 期限内のデータしかないはずなので固定値
 		}
 
+		// TODO: サムネ有無の判定はここ以外のどこかでやりたいが、とりあえず他の検索API作る時に考える
 		if c.ThumbnailOriginalFileName != nil && c.ThumbnailDeliveryFileName != nil {
 			// TODO: 画像パスをDBに保存したほうが楽かも
 			url, err := cdnClient.CreateUrl(
