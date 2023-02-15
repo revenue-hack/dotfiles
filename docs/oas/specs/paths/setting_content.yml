@@ -1,4 +1,4 @@
-/courses/{course_id}/contents:
+/settings/{course_id}/contents:
   get:
     tags:
       - 講習設定（コンテンツ管理）
@@ -94,7 +94,7 @@
                             description: URL
                             example: https://www.youtube.com/watch?v=HPgx7r_I-Ko
 
-/courses/{course_id}/contents/urls:
+/settings/{course_id}/contents/urls:
   post:
     tags:
       - 講習設定（コンテンツ管理）
@@ -129,7 +129,7 @@
                   description: コンテンツID
                   example: 2
 
-/courses/{course_id}/contents/urls/{content_id}:
+/settings/{course_id}/contents/urls/{content_id}:
   patch:
     tags:
       - 講習設定（コンテンツ管理）

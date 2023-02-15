@@ -1,4 +1,4 @@
-/courses/{course_id}/e_learning:
+/settings/{course_id}/e_learning:
   get:
     tags:
       - 講習設定（e-Learning）
