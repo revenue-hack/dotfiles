@@ -42,3 +42,14 @@ type Course struct {
 }
 
 type Courses = []Course
+
+// HasSchedule は開催時期の情報をが存在する場合にtrueを返します
+func (e *Course) HasSchedule() bool {
+	return len(e.CourseSchedules) > 0
+}
+
+// HasThumbnail はサムネイル画像が設定されている場合にtrueを返します
+func (e *Course) HasThumbnail() bool {
+	// 片方しか無いことはありえないはずだが、一応両方チェックしておく
+	return e.ThumbnailOriginalFileName != nil && e.ThumbnailDeliveryFileName != nil
+}

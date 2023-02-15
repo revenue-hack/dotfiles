@@ -4,21 +4,31 @@ import (
 	"context"
 
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/setting/course"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/domain/elearning"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/cdn"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/database"
+	"gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/storage"
 	"gitlab.kaonavi.jp/ae/sardine/internal/core/vo"
+	"gitlab.kaonavi.jp/ae/sardine/internal/ctxt"
 	"gitlab.kaonavi.jp/ae/sardine/internal/entity"
 	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
 func NewGetELearning(
 	connFactory database.ConnFactory,
+	cdnFactory cdn.Factory,
 	query course.GetQuery,
 ) course.GetELearningUseCase {
-	return &getELearning{connFactory: connFactory, query: query}
+	return &getELearning{
+		connFactory: connFactory,
+		cdnFactory:  cdnFactory,
+		query:       query,
+	}
 }
 
 type getELearning struct {
 	connFactory database.ConnFactory
+	cdnFactory  cdn.Factory
 	query       course.GetQuery
 }
 
@@ -36,29 +46,52 @@ func (uc *getELearning) Exec(ctx context.Context, courseId vo.CourseId) (*course
 		return nil, errs.Wrap("[getELearning.Exec]query.GetELearningのエラー", err)
 	}
 
-	var out course.GetELearningOutput
-	if err = uc.bindOutput(record, &out); err != nil {
-		return nil, errs.Wrap("[getELearning.Exec]bindOutputのエラー", err)
+	out, err := uc.makeOutput(ctx, courseId, record)
+	if err != nil {
+		return nil, errs.Wrap("[getELearning.Exec]makeOutputのエラー", err)
 	}
-	return &out, nil
+	return out, nil
 }
 
-func (uc *getELearning) bindOutput(c *entity.Course, out *course.GetELearningOutput) error {
-	out.Id = c.Id
-	out.Title = c.Title
-	out.Description = c.Description
-	out.IsRequired = c.IsRequired
-	out.CategoryId = c.CategoryId
-	// TODO: サムネイル画像がある場合は配信用のURLに変換する
-
-	// 実施期間の指定がある場合のみFrom/Toをバインド
-	if len(c.CourseSchedules) == 0 {
-		return nil
+func (uc *getELearning) makeOutput(
+	ctx context.Context,
+	courseId vo.CourseId,
+	c *entity.Course,
+) (*course.GetELearningOutput, error) {
+	out := &course.GetELearningOutput{
+		Id:          c.Id,
+		Title:       c.Title,
+		Description: c.Description,
+		IsRequired:  c.IsRequired,
+		CategoryId:  c.CategoryId,
+		From:        elearning.GetFrom(c),
+		To:          elearning.GetTo(c),
 	}
 
-	// e-Learningは期間が1件しかないはずなので先頭データを使う
-	out.From = c.CourseSchedules[0].ELearningSchedule.From
-	out.To = c.CourseSchedules[0].ELearningSchedule.To
+	if !c.HasThumbnail() {
+		return out, nil
+	}
 
-	return nil
+	authedUser, err := ctxt.AuthenticatedUser(ctx)
+	if err != nil {
+		return nil, errs.Wrap("[getELearning.bindOutput]ctxt.AuthenticatedUserのエラー", err)
+	}
+
+	// サムネイル画像がある場合は配信用のURLに変換する
+	client, err := uc.cdnFactory.Create(ctx)
+	if err != nil {
+		return nil, errs.Wrap("[getELearning.bindOutput]cdnFactory.Createのエラー", err)
+	}
+	// TODO: 画像パスをDBに保存したほうが楽かも
+	url, err := client.CreateUrl(
+		storage.MakeThumbnailImagePath(authedUser.CustomerCode(), courseId, *c.ThumbnailDeliveryFileName))
+	if err != nil {
+		return nil, errs.Wrap("[getELearning.bindOutput]client.CreateUrlのエラー", err)
+	}
+
+	out.Thumbnail = &course.GetELearningThumbnailOutput{
+		Name: *c.ThumbnailOriginalFileName,
+		Url:  url,
+	}
+	return out, nil
 }
