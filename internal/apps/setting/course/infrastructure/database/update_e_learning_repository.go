@@ -33,13 +33,13 @@ func (r *updateELearningRepository) Update(
 
 	return conn.Transaction(ctx, func(tx *gorm.DB) error {
 		// 構造体を使うとis_required=falseがゼロ値で無視されてしまうのでmapを使用しています
+		// TODO: サムネイル情報を更新する
 		if err := tx.Model(&entity.Course{Id: courseId.Value()}).Updates(map[string]any{
-			"title":                in.Title,
-			"description":          in.Description,
-			"thumbnail_image_name": in.ThumbnailImage,
-			"is_required":          in.IsRequired,
-			"category_id":          in.CategoryId,
-			"updated_by":           authedUser.UserId(),
+			"title":       in.Title,
+			"description": in.Description,
+			"is_required": in.IsRequired,
+			"category_id": in.CategoryId,
+			"updated_by":  authedUser.UserId(),
 		}).Error; err != nil {
 			return errs.Wrap("[updateELearningRepository.Update]coursesの更新エラー", err)
 		}

@@ -22,18 +22,19 @@ const (
 )
 
 type Course struct {
-	Id                 uint32
-	CourseType         uint8
-	Title              string
-	Description        *string
-	ThumbnailImageName *string
-	IsRequired         bool
-	CategoryId         *uint32
-	Status             uint8
-	CreatedAt          time.Time
-	CreatedBy          uint32
-	UpdatedAt          time.Time
-	UpdatedBy          uint32
+	Id                        uint32
+	CourseType                uint8
+	Title                     string
+	Description               *string
+	ThumbnailDeliveryFileName *string
+	ThumbnailOriginalFileName *string
+	IsRequired                bool
+	CategoryId                *uint32
+	Status                    uint8
+	CreatedAt                 time.Time
+	CreatedBy                 uint32
+	UpdatedAt                 time.Time
+	UpdatedBy                 uint32
 
 	// relations
 

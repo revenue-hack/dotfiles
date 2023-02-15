@@ -34,7 +34,8 @@ func (h *searchRequiredQuery) Get(
 		Select([]string{
 			"courses.id",
 			"courses.title",
-			"courses.thumbnail_image_name",
+			"courses.thumbnail_delivery_file_name",
+			"courses.thumbnail_original_file_name",
 			"categories.name as category_name",
 			"els.from",
 			"els.to",

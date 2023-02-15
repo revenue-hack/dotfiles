@@ -26,7 +26,8 @@ func (r *getQuery) GetELearning(
 			"c.id",
 			"c.title",
 			"c.description",
-			"c.thumbnail_image_name",
+			"c.thumbnail_delivery_file_name",
+			"c.thumbnail_original_file_name",
 			"c.is_required",
 			"c.category_id",
 		}).
