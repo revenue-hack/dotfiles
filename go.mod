@@ -7,6 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.17.4
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.12
+	github.com/aws/aws-sdk-go-v2/feature/cloudfront/sign v1.3.35
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.2
 	github.com/aws/aws-secretsmanager-caching-go v1.1.0
 	github.com/gin-contrib/cors v1.4.0

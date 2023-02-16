@@ -3,8 +3,6 @@ package storage
 import (
 	"context"
 	"fmt"
-
-	"gitlab.kaonavi.jp/ae/sardine/internal/core/vo"
 )
 
 const (
@@ -27,6 +25,6 @@ type Client interface {
 }
 
 // MakeThumbnailImagePath サムネイル画像を配置するためのパスを返却します
-func MakeThumbnailImagePath(customerCode string, courseId vo.CourseId, imageName string) string {
-	return fmt.Sprintf(thumbnailImagePath, customerCode, courseId.Value(), imageName)
+func MakeThumbnailImagePath(customerCode string, courseId uint32, imageName string) string {
+	return fmt.Sprintf(thumbnailImagePath, customerCode, courseId, imageName)
 }

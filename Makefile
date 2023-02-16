@@ -49,3 +49,8 @@ migrate_down:
 		-database "mysql://$(DB_USER_NAME):$(DB_PASSWORD)@tcp($(DB_WRITE_HOST_NAME):3306)/$(MYSQL_DATABASE)?parseTime=true&loc=Asia%2FTokyo" \
 		-path ./build/migrate \
 		down
+
+build_oas:
+	cd docs/oas; yarn build
+watch_oas:
+	cd docs/oas; yarn watch
