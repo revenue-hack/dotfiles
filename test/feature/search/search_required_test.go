@@ -1,6 +1,7 @@
 package search
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -18,7 +19,7 @@ func TestSearchRequired(t *testing.T) {
 		Body:   `{}`,
 	})
 
-	expected := `
+	expected := fmt.Sprintf(`
 {
 	"maxPageSize": 0,
 	"nextPageToken": null,
@@ -26,7 +27,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 1,
 			"title": "e-Learning 1",
-			"thumbnailUrl": "",
+			"thumbnail": {"name": "original1.png", "url": "%s"},
 			"categoryName": null,
 			"expireAt": "2023/03/01 18:30:00",
 			"recommend": null,
@@ -36,7 +37,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 2,
 			"title": "e-Learning 2",
-			"thumbnailUrl": "",
+			"thumbnail": null,
 			"categoryName": null,
 			"expireAt": "2023/03/02 18:30:00",
 			"recommend": null,
@@ -46,7 +47,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 3,
 			"title": "e-Learning 3",
-			"thumbnailUrl": "",
+			"thumbnail": null,
 			"categoryName": null,
 			"expireAt": null,
 			"recommend": null,
@@ -56,7 +57,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 4,
 			"title": "e-Learning 4",
-			"thumbnailUrl": "",
+			"thumbnail": null,
 			"categoryName": null,
 			"expireAt": null,
 			"recommend": null,
@@ -66,7 +67,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 5,
 			"title": "e-Learning 5",
-			"thumbnailUrl": "",
+			"thumbnail": {"name": "original5.png", "url": "%s"},
 			"categoryName": null,
 			"expireAt": "2023/03/05 18:30:00",
 			"recommend": null,
@@ -76,7 +77,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 6,
 			"title": "e-Learning 6",
-			"thumbnailUrl": "",
+			"thumbnail": null,
 			"categoryName": null,
 			"expireAt": "2023/03/06 18:30:00",
 			"recommend": null,
@@ -86,7 +87,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 7,
 			"title": "e-Learning 7",
-			"thumbnailUrl": "",
+			"thumbnail": null,
 			"categoryName": null,
 			"expireAt": null,
 			"recommend": null,
@@ -96,7 +97,7 @@ func TestSearchRequired(t *testing.T) {
 		{
 			"id": 8,
 			"title": "e-Learning 8",
-			"thumbnailUrl": "",
+			"thumbnail": null,
 			"categoryName": null,
 			"expireAt": null,
 			"recommend": null,
@@ -104,7 +105,10 @@ func TestSearchRequired(t *testing.T) {
 			"isFixed": false
 		}
 	]
-}`
+}`,
+		helper.GetThumbnailDeliveryUrl(1, "delivery1.png"),
+		helper.GetThumbnailDeliveryUrl(5, "delivery5.png"),
+	)
 
 	assert.Equal(t, res.StatusCode, http.StatusOK)
 	assert.EqualJson(t, string(res.Body), expected)

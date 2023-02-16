@@ -1,15 +1,15 @@
 -- 講習の検索APIの検証用のテストデータ
 
-INSERT INTO `courses` (`id`, `course_type`, `title`, `description`, `is_required`, `category_id`, `status`, `created_by`, `updated_by`)
+INSERT INTO `courses` (`id`, `course_type`, `title`, `description`, `thumbnail_delivery_file_name`, `thumbnail_original_file_name`, `is_required`, `category_id`, `status`, `created_by`, `updated_by`)
 VALUES
-    (1, 1, 'e-Learning 1', '', 0, 1,    1, 1, 1),
-    (2, 1, 'e-Learning 2', '', 0, 1,    2, 1, 1),
-    (3, 1, 'e-Learning 3', '', 0, null, 1, 1, 1),
-    (4, 1, 'e-Learning 4', '', 0, null, 2, 1, 1),
-    (5, 1, 'e-Learning 5', '', 1, 2,    1, 1, 1),
-    (6, 1, 'e-Learning 6', '', 1, 2,    2, 1, 1),
-    (7, 1, 'e-Learning 7', '', 1, null, 1, 1, 1),
-    (8, 1, 'e-Learning 8', '', 1, null, 2, 1, 1);
+    (1, 1, 'e-Learning 1', 'e-Learningの説明1', 'delivery1.png', 'original1.png', 0, 1, 1, 1, 1),
+    (2, 1, 'e-Learning 2', '', null, null, 0, 1, 2, 1, 1),
+    (3, 1, 'e-Learning 3', '', null, null, 0, null, 1, 1, 1),
+    (4, 1, 'e-Learning 4', '', null, null, 0, null, 2, 1, 1),
+    (5, 1, 'e-Learning 5', 'e-Learningの説明5', 'delivery5.png', 'original5.png', 1, 2, 1, 1, 1),
+    (6, 1, 'e-Learning 6', '', null, null, 1, 2, 2, 1, 1),
+    (7, 1, 'e-Learning 7', '', null, null, 1, null, 1, 1, 1),
+    (8, 1, 'e-Learning 8', '', null, null, 1, null, 2, 1, 1);
 
 INSERT INTO `course_schedules` (`id`, `course_id`, `created_by`, `updated_by`)
 VALUES

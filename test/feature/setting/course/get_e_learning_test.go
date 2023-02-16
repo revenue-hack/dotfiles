@@ -23,17 +23,17 @@ func TestSetting_GetELearning(t *testing.T) {
 			name:       "期間が存在する講習IDを指定した場合",
 			courseId:   1,
 			statusCode: http.StatusOK,
-			expectedBody: `
+			expectedBody: fmt.Sprintf(`
 {
 	"id": 1,
 	"title": "e-Learning 1",
 	"description": "e-Learningの説明1",
-	"thumbnail": null,
+	"thumbnail": {"name": "original1.png", "url": "%s"},
 	"isRequired": false,
 	"categoryId": 1,
 	"from": "2023/02/01 10:00",
 	"to": "2023/03/01 18:30"
-}`,
+}`, helper.GetThumbnailDeliveryUrl(1, "delivery1.png")),
 		},
 		{
 			name:       "期間が存在しない講習IDを指定した場合、From/Toはnullが返却される",

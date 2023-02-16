@@ -8,6 +8,7 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search/infrastructure/database"
 	"gitlab.kaonavi.jp/ae/sardine/internal/apps/search/usecase"
 	h "gitlab.kaonavi.jp/ae/sardine/internal/core/handler"
+	coreCdn "gitlab.kaonavi.jp/ae/sardine/internal/core/infrastructure/cdn"
 )
 
 func InitializeSearchRequiredHandler() h.API {
@@ -16,6 +17,7 @@ func InitializeSearchRequiredHandler() h.API {
 		handler.New,
 		usecase.NewSearchRequired,
 		database.NewSearchRequiredQuery,
+		coreCdn.NewFactory,
 	)
 	return nil
 }
