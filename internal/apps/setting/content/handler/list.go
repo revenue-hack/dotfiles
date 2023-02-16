@@ -40,7 +40,7 @@ func (h *list) exec(ctx *gin.Context) handler.ResponseData {
 	return handler.ResponseData{Status: http.StatusOK, Body: body}
 }
 
-func (h *list) makeResponse(out *content.GetOutput) ([]byte, error) {
+func (h *list) makeResponse(out *content.ListOutput) ([]byte, error) {
 	type respUrl struct {
 		Title string `json:"title"`
 		Url   string `json:"url"`

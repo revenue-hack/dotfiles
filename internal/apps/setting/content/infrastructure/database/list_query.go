@@ -10,13 +10,13 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/errs"
 )
 
-func NewGetQuery() content.GetQuery {
-	return &getQuery{}
+func NewListQuery() content.ListQuery {
+	return &listQuery{}
 }
 
-type getQuery struct{}
+type listQuery struct{}
 
-func (r *getQuery) ExistCourse(
+func (r *listQuery) ExistCourse(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,
@@ -26,12 +26,12 @@ func (r *getQuery) ExistCourse(
 
 	exist, err := database.Exist[entity.Course](ctx, query)
 	if err != nil {
-		return exist, errs.Wrap("[getQuery.ExistCourse]database.Existのエラー", err)
+		return exist, errs.Wrap("[listQuery.ExistCourse]database.Existのエラー", err)
 	}
 	return exist, nil
 }
 
-func (r *getQuery) GetAll(
+func (r *listQuery) GetAll(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,
@@ -48,7 +48,7 @@ func (r *getQuery) GetAll(
 
 	record, err := database.GetAll[entity.Content](ctx, query)
 	if err != nil {
-		return nil, errs.Wrap("[getQuery.GetAll]database.GetAllのエラー", err)
+		return nil, errs.Wrap("[listQuery.GetAll]database.GetAllのエラー", err)
 	}
 	return record, nil
 }

@@ -8,7 +8,7 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/entity"
 )
 
-type GetQuery interface {
+type ListQuery interface {
 	// ExistCourse は講習が存在する場合にtrueを返却します
 	ExistCourse(context.Context, *database.Conn, vo.CourseId) (bool, error)
 	// GetAll は全種別のコンテンツ情報をまとめて取得します

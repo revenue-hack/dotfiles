@@ -7,5 +7,5 @@ import (
 )
 
 type ListUseCase interface {
-	Exec(context.Context, vo.CourseId) (*GetOutput, error)
+	Exec(context.Context, vo.CourseId) (*ListOutput, error)
 }

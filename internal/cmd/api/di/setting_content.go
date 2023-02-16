@@ -15,7 +15,7 @@ func InitializeSettingListContentHandler() h.API {
 		ProviderSet,
 		handler.NewList,
 		usecase.NewList,
-		database.NewGetQuery,
+		database.NewListQuery,
 	)
 	return nil
 }

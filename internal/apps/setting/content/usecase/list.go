@@ -11,7 +11,7 @@ import (
 
 func NewList(
 	connFactory database.ConnFactory,
-	query content.GetQuery,
+	query content.ListQuery,
 ) content.ListUseCase {
 	return &list{
 		connFactory: connFactory,
@@ -21,10 +21,10 @@ func NewList(
 
 type list struct {
 	connFactory database.ConnFactory
-	query       content.GetQuery
+	query       content.ListQuery
 }
 
-func (uc *list) Exec(ctx context.Context, courseId vo.CourseId) (*content.GetOutput, error) {
+func (uc *list) Exec(ctx context.Context, courseId vo.CourseId) (*content.ListOutput, error) {
 	conn, err := uc.connFactory.Create(ctx)
 	if err != nil {
 		return nil, errs.Wrap("[list.Exec]connFactory.Createのエラー", err)
@@ -42,7 +42,7 @@ func (uc *list) Exec(ctx context.Context, courseId vo.CourseId) (*content.GetOut
 		return nil, errs.Wrap("[list.Exec]query.GetAllのエラー", err)
 	}
 
-	return &content.GetOutput{
+	return &content.ListOutput{
 		Contents: contents,
 	}, nil
 }
