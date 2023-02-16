@@ -30,6 +30,13 @@ func (uc *list) Exec(ctx context.Context, courseId vo.CourseId) (*content.GetOut
 		return nil, errs.Wrap("[list.Exec]connFactory.Createのエラー", err)
 	}
 
+	exist, err := uc.query.ExistCourse(ctx, conn, courseId)
+	if err != nil {
+		return nil, errs.Wrap("[list.Exec]query.ExistCourseのエラー", err)
+	} else if !exist {
+		return nil, errs.NewNotFound("講習が存在しません")
+	}
+
 	contents, err := uc.query.GetAll(ctx, conn, courseId)
 	if err != nil {
 		return nil, errs.Wrap("[list.Exec]query.GetAllのエラー", err)

@@ -3,7 +3,8 @@ SET @at = '2023-02-09 10:00:00';
 
 INSERT INTO `courses` (`id`, `course_type`, `title`, `description`, `thumbnail_delivery_file_name`, `thumbnail_original_file_name`, `is_required`, `category_id`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`)
 VALUES
-    (1, 1, 'e-Learning', null, null, null, 1, 1, 1, @at, 1, @at, 1);
+    (1, 1, 'e-Learning1', null, null, null, 1, 1, 1, @at, 1, @at, 1),
+    (2, 1, 'e-Learning2', null, null, null, 1, 1, 1, @at, 1, @at, 1);
 
 INSERT INTO `contents` (`id`, `course_id`, `content_type`, `display_order`, `created_at`, `created_by`, `updated_at`, `updated_by`)
 VALUES

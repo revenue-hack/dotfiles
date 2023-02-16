@@ -1,6 +1,7 @@
 package content
 
 import (
+	"fmt"
 	"net/http"
 	"testing"
 
@@ -12,7 +13,17 @@ func TestSetting_ListContent(t *testing.T) {
 	helper.InitDb(t)
 	helper.ExecSeeder(t, "setting/content/list")
 
-	expected := `
+	testCases := []struct {
+		name         string
+		courseId     int
+		statusCode   int
+		expectedBody string
+	}{
+		{
+			name:       "コンテンツが設定されている講習IDを指定した場合、一覧が取得できる",
+			courseId:   1,
+			statusCode: http.StatusOK,
+			expectedBody: `
 {
 	"contents": [
 		{
@@ -31,12 +42,30 @@ func TestSetting_ListContent(t *testing.T) {
 			"url": {"title": "kaonavi Tech Talk #2", "url": "https://www.youtube.com/watch?v=3Cs-PVZXsyU"}
 		}
 	]
-}`
+}`,
+		},
+		{
+			name:         "コンテンツが設定されていない講習IDを指定した場合、一覧が空で取得できる",
+			courseId:     2,
+			statusCode:   http.StatusOK,
+			expectedBody: `{"contents": []}`,
+		},
+		{
+			name:         "存在しない講習IDを指定した場合、404エラーが返却される",
+			courseId:     999,
+			statusCode:   http.StatusNotFound,
+			expectedBody: `{"errors": ["講習が存在しません"]}`,
+		},
+	}
 
-	res := helper.DoRequest(t, helper.ApiRequest{
-		Method: http.MethodGet,
-		Path:   "/settings/1/contents",
-	})
-	assert.Equal(t, res.StatusCode, http.StatusOK)
-	assert.EqualJson(t, string(res.Body), expected)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(tt *testing.T) {
+			res := helper.DoRequest(t, helper.ApiRequest{
+				Method: http.MethodGet,
+				Path:   fmt.Sprintf("/settings/%d/contents", tc.courseId),
+			})
+			assert.Equal(t, res.StatusCode, tc.statusCode)
+			assert.EqualJson(t, string(res.Body), tc.expectedBody)
+		})
+	}
 }

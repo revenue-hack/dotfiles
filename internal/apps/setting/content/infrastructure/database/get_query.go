@@ -16,6 +16,21 @@ func NewGetQuery() content.GetQuery {
 
 type getQuery struct{}
 
+func (r *getQuery) ExistCourse(
+	ctx context.Context,
+	conn *database.Conn,
+	courseId vo.CourseId,
+) (bool, error) {
+	query := conn.DB().
+		Where("id = ?", courseId.Value())
+
+	exist, err := database.Exist[entity.Course](ctx, query)
+	if err != nil {
+		return exist, errs.Wrap("[getQuery.ExistCourse]database.Existのエラー", err)
+	}
+	return exist, nil
+}
+
 func (r *getQuery) GetAll(
 	ctx context.Context,
 	conn *database.Conn,
