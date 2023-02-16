@@ -67,7 +67,7 @@ func TestSetting_GetELearning(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			res := helper.DoRequest(t, helper.ApiRequest{
+			res := helper.DoRequest(tt, helper.ApiRequest{
 				Method: http.MethodGet,
 				Path:   fmt.Sprintf("/settings/%d/e_learning", tc.courseId),
 			})

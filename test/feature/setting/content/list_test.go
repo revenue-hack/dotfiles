@@ -11,7 +11,7 @@ import (
 
 func TestSetting_ListContent(t *testing.T) {
 	helper.InitDb(t)
-	helper.ExecSeeder(t, "setting/content/list")
+	helper.ExecSeeder(t, "setting/content/content")
 
 	testCases := []struct {
 		name         string
@@ -60,12 +60,12 @@ func TestSetting_ListContent(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			res := helper.DoRequest(t, helper.ApiRequest{
+			res := helper.DoRequest(tt, helper.ApiRequest{
 				Method: http.MethodGet,
 				Path:   fmt.Sprintf("/settings/%d/contents", tc.courseId),
 			})
-			assert.Equal(t, res.StatusCode, tc.statusCode)
-			assert.EqualJson(t, string(res.Body), tc.expectedBody)
+			assert.Equal(tt, res.StatusCode, tc.statusCode)
+			assert.EqualJson(tt, string(res.Body), tc.expectedBody)
 		})
 	}
 }
