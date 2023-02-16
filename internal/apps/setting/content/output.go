@@ -7,3 +7,7 @@ import (
 type ListOutput struct {
 	Contents entity.Contents
 }
+
+type CreateOutput struct {
+	ContentId uint32
+}

@@ -436,9 +436,9 @@ func TestSetting_UpdateELearning(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			defer helper.CleanTestStorage(t)
+			defer helper.CleanTestStorage(tt)
 
-			res := helper.DoRequest(t, helper.ApiRequest{
+			res := helper.DoRequest(tt, helper.ApiRequest{
 				Method: http.MethodPatch,
 				Path:   fmt.Sprintf("/settings/%d/e_learning", tc.courseId),
 				Body:   tc.requestBody,
