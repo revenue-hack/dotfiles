@@ -13,3 +13,7 @@ type ListUseCase interface {
 type UrlCreateUseCase interface {
 	Exec(context.Context, vo.CourseId, UrlInput) (*CreateOutput, error)
 }
+
+type UrlUpdateUseCase interface {
+	Exec(context.Context, vo.CourseId, vo.ContentId, UrlInput) error
+}

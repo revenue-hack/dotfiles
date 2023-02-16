@@ -11,6 +11,8 @@ import (
 type Query interface {
 	// ExistCourse は講習が存在する場合にtrueを返却します
 	ExistCourse(context.Context, *database.Conn, vo.CourseId) (bool, error)
+	// ExistUrl は外部URLコンテンツが存在する場合にtrueを返却します
+	ExistUrl(context.Context, *database.Conn, vo.CourseId, vo.ContentId) (bool, error)
 }
 
 type ListQuery interface {
