@@ -51,6 +51,7 @@ func Route() *gin.Engine {
 		authGroup.GET("/settings/:course_id/contents", di.InitializeSettingListContentHandler().Handler)
 		authGroup.POST("/settings/:course_id/contents/urls", di.InitializeSettingUrlCreateHandler().Handler)
 		authGroup.PATCH("/settings/:course_id/contents/urls/:content_id", di.InitializeSettingUrlUpdateHandler().Handler)
+		authGroup.DELETE("/settings/:course_id/contents/urls/:content_id", di.InitializeSettingUrlDeleteHandler().Handler)
 	}
 
 	return e

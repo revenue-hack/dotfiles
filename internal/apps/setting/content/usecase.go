@@ -17,3 +17,7 @@ type UrlCreateUseCase interface {
 type UrlUpdateUseCase interface {
 	Exec(context.Context, vo.CourseId, vo.ContentId, UrlInput) error
 }
+
+type UrlDeleteUseCase interface {
+	Exec(context.Context, vo.CourseId, vo.ContentId) error
+}
