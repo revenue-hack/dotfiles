@@ -30,8 +30,13 @@ func NotEqual(t *testing.T, actual, expected any) {
 func EqualJson(t *testing.T, actual, expected string) {
 	t.Helper()
 	compactJson := func(s string) string {
+		if s == "" {
+			return s
+		}
+
 		buf := bytes.NewBuffer(nil)
 		if err := json.Compact(buf, []byte(s)); err != nil {
+			t.Error(err)
 			return s
 		} else {
 			return buf.String()

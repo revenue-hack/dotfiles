@@ -43,7 +43,8 @@ COMMENT = '講習の基礎情報を管理';
 CREATE TABLE `contents` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'PK',
   `course_id` INT UNSIGNED NOT NULL COMMENT 'courses.id',
-  `display_order` SMALLINT UNSIGNED NOT NULL,
+  `content_type` SMALLINT UNSIGNED NOT NULL COMMENT 'コンテンツ種別\n  1: 動画\n  2: ファイル\n  3: 外部URL',
+  `display_order` SMALLINT UNSIGNED NOT NULL COMMENT '並び順',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '作成日時',
   `created_by` INT UNSIGNED NOT NULL COMMENT '作成者ID（login_users.id）',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新日時',
