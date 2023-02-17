@@ -1,0 +1,79 @@
+ContentList:
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: コンテンツのID
+        example: 900
+      type:
+        type: integer
+        description: |
+          コンテンツの種別<br>
+          種別毎に各キーに値を設定して返却します<br>
+            1: 動画<br>
+            2: ファイル<br>
+            3: 外部コンテンツ<br>
+        example: 1
+      movie:
+        type: object
+        description: |
+          動画コンテンツの設定値<br>
+          コンテンツの種別が1(動画)の場合のみフィールドを返却します。
+        nullable: true
+        properties:
+          id:
+            type: integer
+            description: 動画コンテンツのID
+            example: 901
+          title:
+            type: string
+            description: ファイル名（オリジナル）
+            example: ロジカルシンキング研修.mp4
+          thumbnailUrl:
+            type: string
+            description: サムネイル画像URL
+            example: http://localhost/path/to/img
+          url:
+            type: string
+            description: 配信用URL
+            example: http://localhost/path/to/xxxx.m3u8
+      file:
+        type: object
+        description: |
+          ファイルコンテンツの設定値<br>
+          コンテンツの種別が2(ファイル)の場合のみフィールドを返却します。
+        nullable: true
+        properties:
+          id:
+            type: integer
+            description: ファイルコンテンツのID
+            example: 902
+          title:
+            type: string
+            description: ファイル名（オリジナル）
+            example: 研修の注意事項.pptx
+          url:
+            type: string
+            description: 配信用URL
+            example: http://localhost/path/to/xxxx.pptx
+      url:
+        type: object
+        description: |
+          外部URLコンテンツの設定値<br>
+          コンテンツの種別が3(外部URL)の場合のみフィールドを返却します。
+        nullable: true
+        properties:
+          id:
+            type: integer
+            description: 外部URLコンテンツのID
+            example: 903
+          title:
+            type: string
+            description: タイトル
+            example: 'kaonavi Tech Talk #11'
+          url:
+            type: string
+            description: URL
+            example: https://www.youtube.com/watch?v=HPgx7r_I-Ko

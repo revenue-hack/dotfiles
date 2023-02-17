@@ -431,84 +431,7 @@ paths:
                 type: object
                 properties:
                   contents:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          description: コンテンツのID
-                          example: 900
-                        type:
-                          type: integer
-                          description: |
-                            コンテンツの種別<br>
-                            種別毎に各キーに値を設定して返却します<br>
-                              1: 動画<br>
-                              2: ファイル<br>
-                              3: 外部コンテンツ<br>
-                          example: 1
-                        movie:
-                          type: object
-                          description: |
-                            動画コンテンツの設定値<br>
-                            コンテンツの種別が1(動画)の場合のみフィールドを返却します。
-                          nullable: true
-                          properties:
-                            id:
-                              type: integer
-                              description: 動画コンテンツのID
-                              example: 901
-                            title:
-                              type: string
-                              description: ファイル名（オリジナル）
-                              example: ロジカルシンキング研修.mp4
-                            thumbnailUrl:
-                              type: string
-                              description: サムネイル画像URL
-                              example: http://localhost/path/to/img
-                            url:
-                              type: string
-                              description: 配信用URL
-                              example: http://localhost/path/to/xxxx.m3u8
-                        file:
-                          type: object
-                          description: |
-                            ファイルコンテンツの設定値<br>
-                            コンテンツの種別が2(ファイル)の場合のみフィールドを返却します。
-                          nullable: true
-                          properties:
-                            id:
-                              type: integer
-                              description: ファイルコンテンツのID
-                              example: 902
-                            title:
-                              type: string
-                              description: ファイル名（オリジナル）
-                              example: 研修の注意事項.pptx
-                            url:
-                              type: string
-                              description: 配信用URL
-                              example: http://localhost/path/to/xxxx.pptx
-                        url:
-                          type: object
-                          description: |
-                            外部URLコンテンツの設定値<br>
-                            コンテンツの種別が3(外部URL)の場合のみフィールドを返却します。
-                          nullable: true
-                          properties:
-                            id:
-                              type: integer
-                              description: 外部URLコンテンツのID
-                              example: 903
-                            title:
-                              type: string
-                              description: タイトル
-                              example: 'kaonavi Tech Talk #11'
-                            url:
-                              type: string
-                              description: URL
-                              example: https://www.youtube.com/watch?v=HPgx7r_I-Ko
+                    $ref: '#/components/schemas/ContentList'
   /settings/{course_id}/contents/urls:
     post:
       tags:
@@ -604,16 +527,34 @@ paths:
                     type: string
                     description: 講習の詳細
                     example: ロジカルシンキング研修の詳細
+                  from:
+                    type: string
+                    description: |
+                      受講期間（開始）<br>
+                      期間がない場合はnullを返却します<br>
+                    nullable: true
+                    example: 2023/02/17 10:00
+                  to:
+                    type: string
+                    description: |
+                      受講期間（終了）<br>
+                      期間がない場合はnullを返却します<br>
+                    nullable: true
+                    example: 2023/03/15 18:00
                   isFixed:
                     type: boolean
-                    description: 受講完了済みを表すフラグ
+                    description: 受講済みを表すフラグ
                     example: true
-                  hasTest:
+                  hasForm:
                     type: boolean
                     description: テストフォームが存在するかを表すフラグ
                     example: true
                   form:
                     type: object
+                    description: |
+                      テストフォームの詳細情報です<br>
+                      hasFormがfalseの場合はnullを返却します<br>
+                    nullable: true
                     properties:
                       id:
                         type: number
@@ -623,32 +564,33 @@ paths:
                         type: string
                         description: フォームタイトル
                         example: 確認テスト
+                      answeredCount:
+                        type: number
+                        description: 受講者自身がテストフォームに回答した回数
+                        example: 1
+                      answerLimit:
+                        type: number
+                        description: |
+                          回答数の上限<br>
+                          回答数の上限がない場合はnullを返却します<br>
+                        nullable: true
+                        example: 10
+                      answerTimeLimit:
+                        type: number
+                        description: |
+                          制限時間<br>
+                          制限時間がない場合はnullを返却します<br>
+                        nullable: true
+                        example: 10
+                      passPoint:
+                        type: number
+                        description: |
+                          合格点<br>
+                          合格点がない場合はnullを返却します<br>
+                        nullable: true
+                        example: 10
                   contents:
-                    type: array
-                    description: 講習に設定されている動画・ファイル・外部URLです
-                    items:
-                      type: object
-                      properties:
-                        contentType:
-                          type: number
-                          description: |
-                            コンテンツの種別<br>
-                              1: 動画<br>
-                              2: ファイル<br>
-                              3: 外部URL<br>
-                          enum:
-                            - 1
-                            - 2
-                            - 3
-                          example: 1
-                        title:
-                          type: string
-                          description: コンテンツタイトル
-                          example: 研修動画①
-                        url:
-                          type: string
-                          description: コンテンツ配信用URL
-                          example: https://localhost/path/to/movie.m3u8
+                    $ref: '#/components/schemas/ContentList'
 components:
   securitySchemes:
     bearerAuth:
@@ -673,5 +615,85 @@ components:
       schema:
         type: integer
         example: 2
+  schemas:
+    ContentList:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: コンテンツのID
+            example: 900
+          type:
+            type: integer
+            description: |
+              コンテンツの種別<br>
+              種別毎に各キーに値を設定して返却します<br>
+                1: 動画<br>
+                2: ファイル<br>
+                3: 外部コンテンツ<br>
+            example: 1
+          movie:
+            type: object
+            description: |
+              動画コンテンツの設定値<br>
+              コンテンツの種別が1(動画)の場合のみフィールドを返却します。
+            nullable: true
+            properties:
+              id:
+                type: integer
+                description: 動画コンテンツのID
+                example: 901
+              title:
+                type: string
+                description: ファイル名（オリジナル）
+                example: ロジカルシンキング研修.mp4
+              thumbnailUrl:
+                type: string
+                description: サムネイル画像URL
+                example: http://localhost/path/to/img
+              url:
+                type: string
+                description: 配信用URL
+                example: http://localhost/path/to/xxxx.m3u8
+          file:
+            type: object
+            description: |
+              ファイルコンテンツの設定値<br>
+              コンテンツの種別が2(ファイル)の場合のみフィールドを返却します。
+            nullable: true
+            properties:
+              id:
+                type: integer
+                description: ファイルコンテンツのID
+                example: 902
+              title:
+                type: string
+                description: ファイル名（オリジナル）
+                example: 研修の注意事項.pptx
+              url:
+                type: string
+                description: 配信用URL
+                example: http://localhost/path/to/xxxx.pptx
+          url:
+            type: object
+            description: |
+              外部URLコンテンツの設定値<br>
+              コンテンツの種別が3(外部URL)の場合のみフィールドを返却します。
+            nullable: true
+            properties:
+              id:
+                type: integer
+                description: 外部URLコンテンツのID
+                example: 903
+              title:
+                type: string
+                description: タイトル
+                example: 'kaonavi Tech Talk #11'
+              url:
+                type: string
+                description: URL
+                example: https://www.youtube.com/watch?v=HPgx7r_I-Ko
 security:
   - bearerAuth: []

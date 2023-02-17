@@ -33,7 +33,7 @@ components:
     $ref#path: "./components/parameters/path.yml"
   #requestBodies:
     #$ref: "./components/requestBodies/_index.yml"
-  #schemas:
-    #$ref: "./components/schemas/_index.yml"
+  schemas:
+    $ref: "./components/schemas.yml"
 security:
   - bearerAuth: []
