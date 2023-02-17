@@ -1,4 +1,4 @@
-package course
+package url_test
 
 import (
 	"testing"

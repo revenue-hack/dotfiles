@@ -1,4 +1,4 @@
-package search
+package content_test
 
 import (
 	"testing"
