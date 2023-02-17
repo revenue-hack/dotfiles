@@ -10,20 +10,20 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/internal/flags"
 )
 
-func Info(ctx context.Context, msg Message, params ...parameter) {
+func Info(ctx context.Context, msg Message, params ...Parameter) {
 	l.Info(msg, fields(ctx, params...)...)
 }
 
-func Error(ctx context.Context, err error, params ...parameter) {
+func Error(ctx context.Context, err error, params ...Parameter) {
 	l.Error(err, fields(ctx, params...)...)
 }
 
-func Panic(ctx context.Context, err interface{}, params ...parameter) {
+func Panic(ctx context.Context, err interface{}, params ...Parameter) {
 	l.Panic(err, fields(ctx, params...)...)
 }
 
 // ログにカスタムパラメータを追加する
-func fields(ctx context.Context, params ...parameter) []log.Field {
+func fields(ctx context.Context, params ...Parameter) []log.Field {
 	// 固定で追加するフィールド数分capを追加で確保する
 	fields := make([]log.Field, 0, len(params)+3)
 	for _, param := range params {

@@ -16,7 +16,7 @@ func NewQuery() content.Query {
 
 type query struct{}
 
-func (r *query) ExistCourse(
+func (*query) ExistCourse(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,
@@ -31,7 +31,7 @@ func (r *query) ExistCourse(
 	return exist, nil
 }
 
-func (r *query) ExistUrl(
+func (*query) ExistUrl(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,

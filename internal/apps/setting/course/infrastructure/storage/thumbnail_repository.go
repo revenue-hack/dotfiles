@@ -19,13 +19,13 @@ type thumbnailRepository struct {
 	factory storage.Factory
 }
 
-func (h *thumbnailRepository) Create(
+func (r *thumbnailRepository) Create(
 	ctx context.Context,
 	authedUser *authed.User,
 	courseId vo.CourseId,
 	thumb *file.UploadFile,
 ) error {
-	client, err := h.factory.Create(ctx)
+	client, err := r.factory.Create(ctx)
 	if err != nil {
 		return errs.Wrap("[thumbnailRepository.Create]factory.Clientのエラー", err)
 	}

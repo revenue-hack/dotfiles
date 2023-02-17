@@ -13,11 +13,11 @@ func NewInternalError(format string, args ...any) *InternalError {
 	return &InternalError{msg: fmt.Sprintf(format, args...)}
 }
 
-func (r *InternalError) Error() string {
-	return r.msg
+func (e *InternalError) Error() string {
+	return e.msg
 }
 
-func (r *InternalError) Is(err error) bool {
+func (*InternalError) Is(err error) bool {
 	var e *InternalError
 	return errors.As(err, &e)
 }

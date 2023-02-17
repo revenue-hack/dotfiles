@@ -16,7 +16,7 @@ func NewSearchCompletedQuery() search.Query {
 type searchCompletedQuery struct {
 }
 
-func (h *searchCompletedQuery) GetMaxPageCount(
+func (*searchCompletedQuery) GetMaxPageCount(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,
@@ -24,7 +24,7 @@ func (h *searchCompletedQuery) GetMaxPageCount(
 	return 0, nil
 }
 
-func (h *searchCompletedQuery) Get(
+func (*searchCompletedQuery) Get(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,

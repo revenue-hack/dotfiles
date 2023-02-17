@@ -17,7 +17,7 @@ func NewSearchRequiredQuery() search.Query {
 type searchRequiredQuery struct {
 }
 
-func (h *searchRequiredQuery) GetMaxPageCount(
+func (*searchRequiredQuery) GetMaxPageCount(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,
@@ -25,7 +25,7 @@ func (h *searchRequiredQuery) GetMaxPageCount(
 	return 0, nil
 }
 
-func (h *searchRequiredQuery) Get(
+func (*searchRequiredQuery) Get(
 	ctx context.Context,
 	conn *database.Conn,
 	_ searchparam.SearchParam,

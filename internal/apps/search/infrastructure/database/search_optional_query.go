@@ -16,7 +16,7 @@ func NewSearchOptionalQuery() search.Query {
 type searchOptionalQuery struct {
 }
 
-func (h *searchOptionalQuery) GetMaxPageCount(
+func (*searchOptionalQuery) GetMaxPageCount(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,
@@ -24,7 +24,7 @@ func (h *searchOptionalQuery) GetMaxPageCount(
 	return 0, nil
 }
 
-func (h *searchOptionalQuery) Get(
+func (*searchOptionalQuery) Get(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,

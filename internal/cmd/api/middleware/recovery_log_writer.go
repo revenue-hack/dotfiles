@@ -22,7 +22,7 @@ func NewRecoveryLogWriter() *RecoveryLogWriter {
 
 // Handler はリカバリログを出力します
 // https://github.com/gin-gonic/gin/blob/master/recovery.go の RecoveryWithWriter の処理を一部移植
-func (r *RecoveryLogWriter) Handler(ctx *gin.Context) {
+func (w *RecoveryLogWriter) Handler(ctx *gin.Context) {
 	defer func() {
 		err := recover()
 		if err == nil {
@@ -31,7 +31,7 @@ func (r *RecoveryLogWriter) Handler(ctx *gin.Context) {
 
 		httpRequest, _ := httputil.DumpRequest(ctx.Request, false)
 
-		if r.isSyscallError(err) {
+		if w.isSyscallError(err) {
 			logger.Error(
 				ctx,
 				errs.NewInternalError("syscall error: %v", err),
@@ -64,7 +64,7 @@ func (r *RecoveryLogWriter) Handler(ctx *gin.Context) {
 
 // Check for a broken connection, as it is not really a
 // condition that warrants a panic stack trace.
-func (r *RecoveryLogWriter) isSyscallError(err any) bool {
+func (*RecoveryLogWriter) isSyscallError(err any) bool {
 	if ne, ok := err.(*net.OpError); ok {
 		if se, ok := ne.Err.(*os.SyscallError); ok {
 			if strings.Contains(strings.ToLower(se.Error()), "broken pipe") ||

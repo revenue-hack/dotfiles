@@ -22,31 +22,31 @@ func New(accessToken, customerCode, loginAddress, client string, userId uint32, 
 }
 
 // AccessToken 外部APIを実行するためのアクセストークンを返却します
-func (p User) AccessToken() string {
-	return p.accessToken
+func (u User) AccessToken() string {
+	return u.accessToken
 }
 
 // CustomerCode 顧客コードを返却します
-func (p User) CustomerCode() string {
-	return p.customerCode
+func (u User) CustomerCode() string {
+	return u.customerCode
 }
 
 // LoginAddress メールアドレスを返却します
-func (p User) LoginAddress() string {
-	return p.loginAddress
+func (u User) LoginAddress() string {
+	return u.loginAddress
 }
 
 // Client ユーザー固有の職別値を返却します
-func (p User) Client() string {
-	return p.client
+func (u User) Client() string {
+	return u.client
 }
 
 // UserId ユーザーIDを返却します
-func (p User) UserId() uint32 {
-	return p.userId
+func (u User) UserId() uint32 {
+	return u.userId
 }
 
 // RoleType ユーザーのロール種別を返却します
-func (p User) RoleType() uint8 {
-	return p.roleType
+func (u User) RoleType() uint8 {
+	return u.roleType
 }

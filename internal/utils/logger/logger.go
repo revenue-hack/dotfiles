@@ -8,7 +8,7 @@ import (
 
 type (
 	Message   = log.Message
-	parameter = log.Field
+	Parameter = log.Field
 )
 
 var (
@@ -29,8 +29,8 @@ func MakeMessage(format string, args ...interface{}) Message {
 }
 
 // MakeParameter はログ出力用のパラメータを生成します
-func MakeParameter(key string, value interface{}) parameter {
-	return parameter{
+func MakeParameter(key string, value interface{}) Parameter {
+	return Parameter{
 		Key:   key,
 		Value: value,
 	}

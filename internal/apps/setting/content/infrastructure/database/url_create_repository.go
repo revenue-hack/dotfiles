@@ -19,7 +19,7 @@ func NewUrlCreateRepository() content.UrlCreateRepository {
 
 type urlCreateRepository struct{}
 
-func (r *urlCreateRepository) Create(
+func (*urlCreateRepository) Create(
 	ctx context.Context,
 	conn *database.Conn,
 	authedUser *authed.User,

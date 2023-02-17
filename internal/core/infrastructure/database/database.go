@@ -94,7 +94,7 @@ func (c *Conn) open(setting *env.DbConnectSetting) (*gorm.DB, error) {
 	return db, nil
 }
 
-func (c *Conn) close(db *gorm.DB) {
+func (*Conn) close(db *gorm.DB) {
 	db2, err := db.DB()
 	if err != nil {
 		return

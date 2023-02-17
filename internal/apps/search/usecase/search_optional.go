@@ -19,6 +19,6 @@ type searchOptional struct {
 	connFactory database.ConnFactory
 }
 
-func (h *searchOptional) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
+func (uc *searchOptional) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
 	return &search.Output{}, nil
 }

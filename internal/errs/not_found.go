@@ -13,11 +13,11 @@ func NewNotFound(format string, args ...any) *NotFound {
 	return &NotFound{msg: fmt.Sprintf(format, args...)}
 }
 
-func (r *NotFound) Error() string {
-	return r.msg
+func (e *NotFound) Error() string {
+	return e.msg
 }
 
-func (r *NotFound) Is(err error) bool {
+func (*NotFound) Is(err error) bool {
 	var e *NotFound
 	return errors.As(err, &e)
 }
