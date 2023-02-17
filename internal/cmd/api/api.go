@@ -40,6 +40,9 @@ func Route() *gin.Engine {
 		authGroup.POST("/search/expired", di.InitializeSearchExpiredHandler().Handler)
 		authGroup.POST("/search/completed", di.InitializeSearchCompletedHandler().Handler)
 
+		// 受講画面
+		authGroup.GET("/attend/:course_id/e_learning", di.InitializeAttendGetELearningHandler().Handler)
+
 		// 講習の新規作成
 		authGroup.POST("/courses/e_learning", di.InitializeCreateELearningHandler().Handler)
 
