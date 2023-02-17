@@ -21,7 +21,7 @@ func (*getQuery) GetELearning(
 	conn *database.Conn,
 	courseId vo.CourseId,
 ) (*entity.Course, error) {
-	query := conn.DB().
+	query := conn.DB().Debug().
 		Select([]string{
 			"c.id",
 			"c.title",
@@ -32,7 +32,6 @@ func (*getQuery) GetELearning(
 			"c.category_id",
 		}).
 		Table("courses c").
-		Preload("CourseSchedules").
 		Preload("CourseSchedules.ELearningSchedule").
 		Where("c.id = ?", courseId.Value()).
 		Where("c.course_type = ?", entity.CourseTypeELearning)
