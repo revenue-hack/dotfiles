@@ -21,7 +21,7 @@ func NewAuthenticateToken(a ka.Authenticator) *AuthenticateToken {
 	return &AuthenticateToken{auth: a}
 }
 
-func (m *AuthenticateToken) Handler(ctx *gin.Context) {
+func (t *AuthenticateToken) Handler(ctx *gin.Context) {
 	keys, err := env.GetTokenKey()
 	if err != nil {
 		logger.Error(ctx, err)
@@ -30,7 +30,7 @@ func (m *AuthenticateToken) Handler(ctx *gin.Context) {
 		return
 	}
 
-	token, err := m.auth.ValidRequest(ctx.Request, ka.Key{
+	token, err := t.auth.ValidRequest(ctx.Request, ka.Key{
 		Encrypt: keys.EncryptKey,
 		Signing: keys.SigningKey,
 	})

@@ -35,7 +35,7 @@ func NewAccessLogWriter() *AccessLogWriter {
 
 // Handler はアクセスログを出力します
 // https://github.com/gin-gonic/gin/blob/master/logger.go の LoggerWithConfig の処理を一部移植
-func (m *AccessLogWriter) Handler(ctx *gin.Context) {
+func (w *AccessLogWriter) Handler(ctx *gin.Context) {
 	// Start timer
 	start := timer.Now()
 	path := ctx.Request.URL.Path
@@ -45,7 +45,7 @@ func (m *AccessLogWriter) Handler(ctx *gin.Context) {
 	ctx.Next()
 
 	// Log only when path is not being skipped
-	if _, ok := m.skip[path]; !ok {
+	if _, ok := w.skip[path]; !ok {
 		// Stop timer
 		timeStamp := timer.Now()
 		latency := timeStamp.Sub(start)

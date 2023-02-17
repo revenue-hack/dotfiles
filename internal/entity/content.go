@@ -33,16 +33,16 @@ type Content struct {
 type Contents = []Content
 
 // IsMovie は動画コンテンツの場合にtrueを返します
-func (e *Content) IsMovie() bool {
-	return e.ContentType == ContentTypeMovie
+func (c *Content) IsMovie() bool {
+	return c.ContentType == ContentTypeMovie
 }
 
 // IsFile はファイルコンテンツの場合にtrueを返します
-func (e *Content) IsFile() bool {
-	return e.ContentType == ContentTypeFile
+func (c *Content) IsFile() bool {
+	return c.ContentType == ContentTypeFile
 }
 
 // IsUrl は外部URLコンテンツの場合にtrueを返します
-func (e *Content) IsUrl() bool {
-	return e.ContentType == ContentTypeUrl
+func (c *Content) IsUrl() bool {
+	return c.ContentType == ContentTypeUrl
 }
