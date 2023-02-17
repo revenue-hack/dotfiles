@@ -62,22 +62,6 @@ func InitDb(t *testing.T, seeds ...string) {
 	}
 }
 
-// ExecSeeder テストデータを投入するためのSQLファイルを実行します
-// 引数の名前に.sqlは不要です
-func ExecSeeder(t *testing.T, name string) {
-	db := OpenDb(t)
-	defer CloseDb(t, db)
-
-	path := fmt.Sprintf("%s/seeds/%s.sql", os.Getenv("TEST_BASE_DIR"), name)
-	f, err := os.ReadFile(filepath.Clean(path))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err = db.Exec(string(f)).Error; err != nil {
-		t.Fatal(err)
-	}
-}
-
 // マイグレーション用のDB接続
 func openDb(dbName string) (*gorm.DB, error) {
 	// multiStatements=trueがないと1ファイルに複数クエリ記述されている場合にエラーになる（migration用）
