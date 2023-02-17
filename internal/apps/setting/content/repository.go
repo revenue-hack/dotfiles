@@ -19,3 +19,8 @@ type UrlUpdateRepository interface {
 	// Update は外部URLコンテンツを更新します
 	Update(context.Context, *database.Conn, *authed.User, vo.ContentId, *model.ValidatedUrl) error
 }
+
+type UrlDeleteRepository interface {
+	// Delete は外部URLコンテンツを削除します
+	Delete(context.Context, *database.Conn, vo.ContentId) error
+}

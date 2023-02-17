@@ -59,6 +59,20 @@ func EqualFirstRecord[T any](t *testing.T, query *gorm.DB, expected T) {
 	Equal(t, actual, expected)
 }
 
+// RecordNotFound は指定条件で検索した結果が存在しないことを検証します
+func RecordNotFound[T any](t *testing.T, query *gorm.DB, model T) {
+	t.Helper()
+	if err := query.First(&model).Error; err != nil {
+		if err != gorm.ErrRecordNotFound {
+			t.Error(err)
+			return
+		}
+		// レコード無しは正常なので終了
+		return
+	}
+	t.Error("record should not exist")
+}
+
 // FileExist はファイルが存在することを検証します
 func FileExist(t *testing.T, path string) {
 	sts, err := os.Stat(path)

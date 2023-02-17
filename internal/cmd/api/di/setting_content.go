@@ -45,3 +45,14 @@ func InitializeSettingUrlUpdateHandler() h.API {
 	)
 	return nil
 }
+
+func InitializeSettingUrlDeleteHandler() h.API {
+	wire.Build(
+		ProviderSet,
+		handler.NewUrlDelete,
+		usecase.NewUrlDelete,
+		database.NewQuery,
+		database.NewUrlDeleteRepository,
+	)
+	return nil
+}
