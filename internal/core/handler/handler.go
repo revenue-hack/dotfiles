@@ -70,9 +70,9 @@ func NewErrorResponseData(ctx context.Context, err error) ResponseData {
 	default:
 		status = http.StatusInternalServerError
 		resp.Errors = append(resp.Errors, "internal server error")
+		logger.Error(ctx, err)
 	}
 
-	logger.Error(ctx, err)
 	body, marshalErr := json.Marshal(resp)
 	if marshalErr != nil {
 		// jsonエンコードが失敗することはないはずだが一応失敗したら固定文言を返すようにしておく

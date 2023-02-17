@@ -11,6 +11,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	gormysql "gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var (
@@ -74,7 +75,9 @@ func openDb(dbName string) (*gorm.DB, error) {
 		"Asia%2FTokyo",
 	)
 
-	db, err := gorm.Open(gormysql.Open(dsn))
+	db, err := gorm.Open(gormysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		return nil, err
 	}
