@@ -17,7 +17,7 @@ func NewUrlDeleteRepository() content.UrlDeleteRepository {
 
 type urlDeleteRepository struct{}
 
-func (r *urlDeleteRepository) Delete(ctx context.Context, conn *database.Conn, contentId vo.ContentId) error {
+func (*urlDeleteRepository) Delete(ctx context.Context, conn *database.Conn, contentId vo.ContentId) error {
 	err := conn.Transaction(ctx, func(tx *gorm.DB) error {
 		if txErr := tx.Delete(&entity.Content{Id: contentId.Value()}).Error; txErr != nil {
 			return errs.Wrap("[urlUpdateRepository.Update]contentsの削除に失敗", txErr)

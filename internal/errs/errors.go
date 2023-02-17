@@ -12,37 +12,37 @@ func NewErrors() *Errors {
 	return &Errors{}
 }
 
-func (r *Errors) Error() string {
-	return strings.Join(*r, "\n")
+func (e *Errors) Error() string {
+	return strings.Join(*e, "\n")
 }
 
-func (r *Errors) Errors() []string {
-	return *r
+func (e *Errors) Errors() []string {
+	return *e
 }
 
-func (r *Errors) HasError() bool {
-	return len(*r) > 0
+func (e *Errors) HasError() bool {
+	return len(*e) > 0
 }
 
-func (r *Errors) Add(format string, args ...any) {
-	*r = append(*r, fmt.Sprintf(format, args...))
+func (e *Errors) Add(format string, args ...any) {
+	*e = append(*e, fmt.Sprintf(format, args...))
 }
 
-func (r *Errors) AddError(err error) {
+func (e *Errors) AddError(err error) {
 	if err == nil {
 		return
 	}
-	*r = append(*r, err.Error())
+	*e = append(*e, err.Error())
 }
 
-func (r *Errors) Append(ers *Errors) {
+func (e *Errors) Append(ers *Errors) {
 	if ers == nil {
 		return
 	}
-	*r = append(*r, *ers...)
+	*e = append(*e, *ers...)
 }
 
-func (r *Errors) Is(err error) bool {
+func (*Errors) Is(err error) bool {
 	var e *Errors
 	return errors.As(err, &e)
 }

@@ -18,7 +18,7 @@ func NewFactory() ConnFactory {
 
 type connFactory struct{}
 
-func (c *connFactory) Create(ctx context.Context) (*Conn, error) {
+func (*connFactory) Create(ctx context.Context) (*Conn, error) {
 	authedUser, err := ctxt.AuthenticatedUser(ctx)
 	if err != nil {
 		return nil, errs.Wrap("[connFactory.Create]ctxt.AuthenticatedUserのエラー", err)

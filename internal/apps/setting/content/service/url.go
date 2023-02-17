@@ -23,7 +23,7 @@ func NewUrl() content.UrlService {
 
 type urlService struct{}
 
-func (u urlService) NewValidatedUrl(in content.UrlInput) (*model.ValidatedUrl, error) {
+func (*urlService) NewValidatedUrl(in content.UrlInput) (*model.ValidatedUrl, error) {
 	ers := errs.NewErrors()
 	ers.AddError(validate.StringRequired("タイトル", &in.Title, 50))
 	if err := validate.StringRequired("URL", &in.Url, 255); err != nil {

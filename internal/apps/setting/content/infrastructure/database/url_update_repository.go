@@ -19,7 +19,7 @@ func NewUrlUpdateRepository() content.UrlUpdateRepository {
 
 type urlUpdateRepository struct{}
 
-func (r *urlUpdateRepository) Update(
+func (*urlUpdateRepository) Update(
 	ctx context.Context,
 	conn *database.Conn,
 	authedUser *authed.User,

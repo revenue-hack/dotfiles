@@ -17,7 +17,7 @@ func NewCreateRepository() course.CreateRepository {
 
 type createRepository struct{}
 
-func (r *createRepository) CreateELearning(
+func (*createRepository) CreateELearning(
 	ctx context.Context,
 	conn *database.Conn,
 	authedUser *authed.User,

@@ -13,11 +13,11 @@ func NewInvalidParameter(format string, args ...any) *InvalidParameter {
 	return &InvalidParameter{msg: fmt.Sprintf(format, args...)}
 }
 
-func (r *InvalidParameter) Error() string {
-	return r.msg
+func (e *InvalidParameter) Error() string {
+	return e.msg
 }
 
-func (r *InvalidParameter) Is(err error) bool {
+func (*InvalidParameter) Is(err error) bool {
 	var e *InvalidParameter
 	return errors.As(err, &e)
 }

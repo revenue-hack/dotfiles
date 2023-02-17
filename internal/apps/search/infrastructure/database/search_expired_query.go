@@ -16,7 +16,7 @@ func NewSearchExpiredQuery() search.Query {
 type searchExpiredQuery struct {
 }
 
-func (h *searchExpiredQuery) GetMaxPageCount(
+func (*searchExpiredQuery) GetMaxPageCount(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,
@@ -24,7 +24,7 @@ func (h *searchExpiredQuery) GetMaxPageCount(
 	return 0, nil
 }
 
-func (h *searchExpiredQuery) Get(
+func (*searchExpiredQuery) Get(
 	ctx context.Context,
 	conn *database.Conn,
 	param searchparam.SearchParam,

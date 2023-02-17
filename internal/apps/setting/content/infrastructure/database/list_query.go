@@ -16,7 +16,7 @@ func NewListQuery() content.ListQuery {
 
 type listQuery struct{}
 
-func (r *listQuery) ExistCourse(
+func (*listQuery) ExistCourse(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,
@@ -31,7 +31,7 @@ func (r *listQuery) ExistCourse(
 	return exist, nil
 }
 
-func (r *listQuery) GetAll(
+func (*listQuery) GetAll(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,

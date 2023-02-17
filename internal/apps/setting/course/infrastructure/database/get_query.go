@@ -16,7 +16,7 @@ func NewGetQuery() course.GetQuery {
 
 type getQuery struct{}
 
-func (r *getQuery) GetELearning(
+func (*getQuery) GetELearning(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,

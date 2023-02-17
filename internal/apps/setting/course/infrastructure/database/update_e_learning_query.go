@@ -16,7 +16,7 @@ func NewUpdateELearningQuery() course.UpdateQuery {
 
 type updateELearningQuery struct{}
 
-func (r *updateELearningQuery) ExistCourse(
+func (*updateELearningQuery) ExistCourse(
 	ctx context.Context,
 	conn *database.Conn,
 	courseId vo.CourseId,
@@ -32,7 +32,7 @@ func (r *updateELearningQuery) ExistCourse(
 	return exist, nil
 }
 
-func (r *updateELearningQuery) ExistCategory(
+func (*updateELearningQuery) ExistCategory(
 	ctx context.Context,
 	conn *database.Conn,
 	categoryId uint32,

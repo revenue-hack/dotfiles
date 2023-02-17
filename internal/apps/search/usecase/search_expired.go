@@ -19,6 +19,6 @@ type searchExpired struct {
 	connFactory database.ConnFactory
 }
 
-func (h *searchExpired) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
+func (uc *searchExpired) Exec(ctx context.Context, in search.Input) (*search.Output, error) {
 	return &search.Output{}, nil
 }

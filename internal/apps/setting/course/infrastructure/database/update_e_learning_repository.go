@@ -66,7 +66,7 @@ func (r *updateELearningRepository) Update(
 	})
 }
 
-func (r *updateELearningRepository) getSchedule(
+func (*updateELearningRepository) getSchedule(
 	ctx context.Context,
 	conn *database.Conn,
 	authedUser *authed.User,
