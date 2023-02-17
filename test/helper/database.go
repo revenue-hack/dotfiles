@@ -46,9 +46,20 @@ func TruncateAll(t *testing.T) {
 
 // InitDb はテスト用のデータベースを初期状態に戻します
 // 全テーブルのTruncateと、初期マスタデータの流し込みを行います
-func InitDb(t *testing.T) {
+func InitDb(t *testing.T, seeds ...string) {
 	TruncateAll(t)
-	ExecSeeder(t, "master_data")
+
+	db := OpenDb(t)
+	defer CloseDb(t, db)
+	for _, path := range seeds {
+		f, err := os.ReadFile(filepath.Clean(path))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err = db.Exec(string(f)).Error; err != nil {
+			t.Fatal(err)
+		}
+	}
 }
 
 // ExecSeeder テストデータを投入するためのSQLファイルを実行します

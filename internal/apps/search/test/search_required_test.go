@@ -1,4 +1,4 @@
-package search
+package test
 
 import (
 	"fmt"
@@ -10,8 +10,7 @@ import (
 )
 
 func TestSearchRequired(t *testing.T) {
-	helper.InitDb(t)
-	helper.ExecSeeder(t, "search/search")
+	helper.InitDb(t, "testdata/testdata.sql")
 
 	res := helper.DoRequest(t, helper.ApiRequest{
 		Method: http.MethodPost,

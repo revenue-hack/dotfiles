@@ -1,4 +1,4 @@
-package course
+package test
 
 import (
 	"fmt"
@@ -10,8 +10,7 @@ import (
 )
 
 func TestSetting_GetELearning(t *testing.T) {
-	helper.InitDb(t)
-	helper.ExecSeeder(t, "setting/course/course")
+	helper.InitDb(t, "testdata/testdata.sql")
 
 	testCases := []struct {
 		name         string

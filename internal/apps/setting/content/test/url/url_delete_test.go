@@ -1,4 +1,4 @@
-package content
+package url
 
 import (
 	"fmt"
@@ -62,7 +62,7 @@ func TestSetting_UrlDelete(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			helper.InitDb(tt)
-			helper.ExecSeeder(tt, "setting/content/content")
+			helper.InitDb(t, "../testdata/testdata.sql")
 
 			res := helper.DoRequest(tt, helper.ApiRequest{
 				Method: http.MethodDelete,

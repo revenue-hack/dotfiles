@@ -1,4 +1,4 @@
-package search
+package test
 
 import (
 	"net/http"
@@ -7,10 +7,10 @@ import (
 	"gitlab.kaonavi.jp/ae/sardine/test/helper"
 )
 
-func TestSearchOptional(t *testing.T) {
+func TestSearchExpired(t *testing.T) {
 	res := helper.DoRequest(t, helper.ApiRequest{
 		Method: http.MethodPost,
-		Path:   "/search/optional",
+		Path:   "/search/expired",
 		Body:   `{}`,
 	})
 

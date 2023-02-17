@@ -1,4 +1,4 @@
-package content
+package test
 
 import (
 	"fmt"
@@ -10,8 +10,7 @@ import (
 )
 
 func TestSetting_ListContent(t *testing.T) {
-	helper.InitDb(t)
-	helper.ExecSeeder(t, "setting/content/content")
+	helper.InitDb(t, "testdata/testdata.sql")
 
 	testCases := []struct {
 		name         string

@@ -20,18 +20,18 @@ lint:
 	golangci-lint run ./... --timeout=2m
 
 gotest:
-	$(MAKE) feature_test
+	$(MAKE) apps_test
 	$(MAKE) unit_test
 
-feature_test:
-	go test ./test/feature/... -tags=feature_test -p=5 -count=1 ${ARG} -run=${RUN}
+apps_test:
+	go test ./internal/... -tags=feature_test -p=5 -count=1 ${ARG} -run=${RUN}
 
 unit_test:
-	go test ./test/unit/... -count=1 ${ARG} -run=${RUN}
+	go test ./test/... -count=1 ${ARG} -run=${RUN}
 
 gotest_cover:
 	mkdir -p coverage
-	go test -coverpkg=./internal/... -coverprofile=coverage/coverage.out ./test/feature/... -tags=feature_test
+	go test -coverpkg=./internal/... -coverprofile=coverage/coverage.out ./internal/... -tags=feature_test
 	go tool cover -html=coverage/coverage.out -o ./coverage/coverage.html
 
 install_wire:
