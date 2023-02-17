@@ -33,3 +33,15 @@ func InitializeSettingUrlCreateHandler() h.API {
 	)
 	return nil
 }
+
+func InitializeSettingUrlUpdateHandler() h.API {
+	wire.Build(
+		ProviderSet,
+		handler.NewUrlUpdate,
+		usecase.NewUrlUpdate,
+		database.NewQuery,
+		database.NewUrlUpdateRepository,
+		service.NewUrl,
+	)
+	return nil
+}

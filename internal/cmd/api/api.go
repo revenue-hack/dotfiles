@@ -50,6 +50,7 @@ func Route() *gin.Engine {
 		// コンテンツ管理
 		authGroup.GET("/settings/:course_id/contents", di.InitializeSettingListContentHandler().Handler)
 		authGroup.POST("/settings/:course_id/contents/urls", di.InitializeSettingUrlCreateHandler().Handler)
+		authGroup.PATCH("/settings/:course_id/contents/urls/:content_id", di.InitializeSettingUrlUpdateHandler().Handler)
 	}
 
 	return e
