@@ -22,16 +22,34 @@
                   type: string
                   description: 講習の詳細
                   example: ロジカルシンキング研修の詳細
+                from:
+                  type: string
+                  description: |
+                    受講期間（開始）<br>
+                    期間がない場合はnullを返却します<br>
+                  nullable: true
+                  example: 2023/02/17 10:00
+                to:
+                  type: string
+                  description: |
+                    受講期間（終了）<br>
+                    期間がない場合はnullを返却します<br>
+                  nullable: true
+                  example: 2023/03/15 18:00
                 isFixed:
                   type: boolean
-                  description: 受講完了済みを表すフラグ
+                  description: 受講済みを表すフラグ
                   example: true
-                hasTest:
+                hasForm:
                   type: boolean
                   description: テストフォームが存在するかを表すフラグ
                   example: true
                 form:
                   type: object
+                  description: |
+                    テストフォームの詳細情報です<br>
+                    hasFormがfalseの場合はnullを返却します<br>
+                  nullable: true
                   properties:
                     id:
                       type: number
@@ -41,26 +59,30 @@
                       type: string
                       description: フォームタイトル
                       example: 確認テスト
+                    answeredCount:
+                      type: number
+                      description: 受講者自身がテストフォームに回答した回数
+                      example: 1
+                    answerLimit:
+                      type: number
+                      description: |
+                        回答数の上限<br>
+                        回答数の上限がない場合はnullを返却します<br>
+                      nullable: true
+                      example: 10
+                    answerTimeLimit:
+                      type: number
+                      description: |
+                        制限時間<br>
+                        制限時間がない場合はnullを返却します<br>
+                      nullable: true
+                      example: 10
+                    passPoint:
+                      type: number
+                      description: |
+                        合格点<br>
+                        合格点がない場合はnullを返却します<br>
+                      nullable: true
+                      example: 10
                 contents:
-                  type: array
-                  description: 講習に設定されている動画・ファイル・外部URLです
-                  items:
-                    type: object
-                    properties:
-                      contentType:
-                        type: number
-                        description: |
-                          コンテンツの種別<br>
-                            1: 動画<br>
-                            2: ファイル<br>
-                            3: 外部URL<br>
-                        enum: [1, 2, 3]
-                        example: 1
-                      title:
-                        type: string
-                        description: コンテンツタイトル
-                        example: 研修動画①
-                      url:
-                        type: string
-                        description: コンテンツ配信用URL
-                        example: https://localhost/path/to/movie.m3u8
+                  $ref: "#/components/schemas/ContentList"
