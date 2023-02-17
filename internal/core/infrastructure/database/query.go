@@ -20,11 +20,12 @@ func IsErrRecordNotFound(err error) bool {
 // Get は単一レコードの検索を行った結果を返します
 func Get[T any](_ context.Context, db *gorm.DB) (*T, error) {
 	var s T
-	if err := db.First(&s).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errRecordNotFound
-		}
-		return nil, errs.Wrap("[database.Get]データ取得エラー", err)
+	ret := db.Limit(1).Find(&s)
+	if ret.Error != nil {
+		return nil, errs.Wrap("[database.Get]データ取得エラー", ret.Error)
+	}
+	if ret.RowsAffected == 0 {
+		return nil, errRecordNotFound
 	}
 	return &s, nil
 }
@@ -39,39 +40,34 @@ func GetAll[T any](_ context.Context, db *gorm.DB) ([]T, error) {
 }
 
 // Exist は検索を行った結果が存在する場合はnil、存在しない場合はerrorを返却します
-func Exist[T any](ctx context.Context, db *gorm.DB) (bool, error) {
+func Exist[T any](_ context.Context, db *gorm.DB) (bool, error) {
 	var s T
-	if err := db.First(&s).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return false, nil
-		}
-		return false, errs.Wrap("[database.Exist]データ取得エラー", err)
+	ret := db.Limit(1).Find(&s)
+	if ret.Error != nil {
+		return false, errs.Wrap("[database.Exist]データ取得エラー", ret.Error)
 	}
-	return true, nil
+	return ret.RowsAffected > 0, nil
 }
 
 // ExistById は指定IDのレコードが存在する場合はnil、存在しない場合はerrorを返却します
 func ExistById[T any](ctx context.Context, db *gorm.DB, id uint32) (bool, error) {
-	query := db.Where("id = ?", id)
-	var s T
-	if err := query.First(&s).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return false, nil
-		}
-		return false, errs.Wrap("[database.ExistById]データ取得エラー", err)
+	var s []T
+	ret := db.Where("id = ?", id).Limit(1).Find(&s)
+	if ret.Error != nil {
+		return false, errs.Wrap("[database.ExistById]データ取得エラー", ret.Error)
 	}
-	return true, nil
+	return len(s) > 0, nil
 }
 
 // GetById は指定IDのレコードを返却します
 func GetById[T any](ctx context.Context, db *gorm.DB, id uint32) (*T, error) {
-	query := db.Where("id = ?", id)
 	var s T
-	if err := query.First(&s).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errRecordNotFound
-		}
-		return nil, errs.Wrap("[database.GetById]データ取得エラー", err)
+	ret := db.Where("id = ?", id).Limit(1).Find(&s)
+	if ret.Error != nil {
+		return nil, errs.Wrap("[database.GetById]データ取得エラー", ret.Error)
+	}
+	if ret.RowsAffected == 0 {
+		return nil, errRecordNotFound
 	}
 	return &s, nil
 }

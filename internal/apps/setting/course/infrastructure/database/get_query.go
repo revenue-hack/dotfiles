@@ -21,7 +21,7 @@ func (*getQuery) GetELearning(
 	conn *database.Conn,
 	courseId vo.CourseId,
 ) (*entity.Course, error) {
-	query := conn.DB().Debug().
+	query := conn.DB().
 		Select([]string{
 			"c.id",
 			"c.title",
