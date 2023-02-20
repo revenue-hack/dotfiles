@@ -641,10 +641,6 @@ components:
               コンテンツの種別が1(動画)の場合のみフィールドを返却します。
             nullable: true
             properties:
-              id:
-                type: integer
-                description: 動画コンテンツのID
-                example: 901
               title:
                 type: string
                 description: ファイル名（オリジナル）
@@ -664,10 +660,6 @@ components:
               コンテンツの種別が2(ファイル)の場合のみフィールドを返却します。
             nullable: true
             properties:
-              id:
-                type: integer
-                description: ファイルコンテンツのID
-                example: 902
               title:
                 type: string
                 description: ファイル名（オリジナル）
@@ -683,10 +675,6 @@ components:
               コンテンツの種別が3(外部URL)の場合のみフィールドを返却します。
             nullable: true
             properties:
-              id:
-                type: integer
-                description: 外部URLコンテンツのID
-                example: 903
               title:
                 type: string
                 description: タイトル

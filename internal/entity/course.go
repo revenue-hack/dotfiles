@@ -39,6 +39,7 @@ type Course struct {
 	// relations
 
 	CourseSchedules CourseSchedules
+	Contents        Contents
 }
 
 type Courses = []Course
