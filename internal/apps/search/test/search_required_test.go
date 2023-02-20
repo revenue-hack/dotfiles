@@ -14,7 +14,7 @@ func TestSearchRequired(t *testing.T) {
 
 	res := helper.DoRequest(t, helper.ApiRequest{
 		Method: http.MethodPost,
-		Path:   "/search/required",
+		Path:   "/courses/search/required",
 		Body:   `{}`,
 	})
 

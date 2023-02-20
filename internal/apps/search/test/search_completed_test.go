@@ -10,7 +10,7 @@ import (
 func TestSearchCompleted(t *testing.T) {
 	res := helper.DoRequest(t, helper.ApiRequest{
 		Method: http.MethodPost,
-		Path:   "/search/completed",
+		Path:   "/courses/search/completed",
 		Body:   `{}`,
 	})
 

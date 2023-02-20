@@ -35,13 +35,15 @@ func Route() *gin.Engine {
 	authGroup := e.Group("", di.InitializeAuthenticateToken().Handler)
 	{
 		// 検索処理
-		authGroup.POST("/search/required", di.InitializeSearchRequiredHandler().Handler)
-		authGroup.POST("/search/optional", di.InitializeSearchOptionalHandler().Handler)
-		authGroup.POST("/search/expired", di.InitializeSearchExpiredHandler().Handler)
-		authGroup.POST("/search/completed", di.InitializeSearchCompletedHandler().Handler)
+		authGroup.POST("/courses/search/required", di.InitializeSearchRequiredHandler().Handler)
+		authGroup.POST("/courses/search/optional", di.InitializeSearchOptionalHandler().Handler)
+		authGroup.POST("/courses/search/expired", di.InitializeSearchExpiredHandler().Handler)
+		authGroup.POST("/courses/search/completed", di.InitializeSearchCompletedHandler().Handler)
 
 		// 受講画面
 		authGroup.GET("/attend/:course_id/e_learning", di.InitializeAttendGetELearningHandler().Handler)
+
+		// TODO: これ以降のルーティングは編集権限を持つ場合のみ利用可能なので、別のgroupにして別途ミドルウェアを設定
 
 		// 講習の新規作成
 		authGroup.POST("/courses/e_learning", di.InitializeCreateELearningHandler().Handler)
