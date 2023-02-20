@@ -10,7 +10,7 @@ import (
 func TestSearchExpired(t *testing.T) {
 	res := helper.DoRequest(t, helper.ApiRequest{
 		Method: http.MethodPost,
-		Path:   "/search/expired",
+		Path:   "/courses/search/expired",
 		Body:   `{}`,
 	})
 
