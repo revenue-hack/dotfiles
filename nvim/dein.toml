@@ -1,8 +1,6 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 [[plugins]]
-repo = 'bronson/vim-trailing-whitespace'
-[[plugins]]
 repo = 'scrooloose/nerdtree'
 [[plugins]]
 repo = 'tomasr/molokai'

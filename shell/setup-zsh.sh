@@ -4,5 +4,6 @@ if [ ! -d "$HOME/.oh-my-zsh" ] ; then
   rm -rf ~/.zshrc
   ln -s ~/dotfiles/.zshrc ~/.zshrc
 fi
-source ~/.zshrc > /dev/null
+#exec $SHELL
+#source ~/.zshrc > /dev/null
 

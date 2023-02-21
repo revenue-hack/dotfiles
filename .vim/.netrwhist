@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/pc-0251-n/Desktop/work/su-www.skincare-univ.com/www.skincare-univ.com/htdocs/scu-mark'
-let g:netrw_dirhist_2='/Users/pc-0251-n/Desktop/work/development/navias-crm'
-let g:netrw_dirhist_3='/Users/pc-0251-n/Desktop/work/su-www.skincare-univ.com/www.skincare-univ.com/htdocs/inc/twig/sp/type'
-let g:netrw_dirhist_4='/Users/pc-0251-n/Desktop/work/su-www.skincare-univ.com/www.skincare-univ.com/htdocs/inc/templates'
-let g:netrw_dirhist_5='/Users/pc-0251-n/Desktop/private/phpunit/htdocs/vendor/phpunit/phpunit-selenium/PHPUnit/Extensions/Selenium2TestCase'
-let g:netrw_dirhist_6='/Users/pc-0251-n/dotfiles/.vim/bundle/vim-php-cs-fixer'
-let g:netrw_dirhist_7='/Users/ko1014/dotfiles'

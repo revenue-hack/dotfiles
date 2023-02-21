@@ -4,7 +4,7 @@ all: main
 
 main: setup
 
-setup: setup-brew setup-git setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
+setup: setup-brew setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
 
 setup-git:
 	./shell/setup-git.sh
@@ -19,7 +19,6 @@ setup-ghq:
 	brew install ghq
 	brew install peco
 	git config --global ghq.root ${GOPATH}/src
-	source ~/.zshrc
 
 setup-goenv:
 	./shell/setup-goenv.sh
@@ -29,6 +28,9 @@ setup-anyenv:
 
 setup-neovim:
 	./shell/setup-nvim.sh
+
+setup-npm:
+	./shell/install-npm.sh
 
 setup-gitignore-global:
 	git config --global core.excludesfile ${PWD}/.gitignore_global

@@ -9,40 +9,31 @@ if [ -d "$HOME/.anyenv" ] ; then
   export ANYENV_ROOT="$HOME/.anyenv"
   export PATH="$HOME/.anyenv/bin:$PATH"
   eval "$(anyenv init - zsh)"
+  anyenv install --init
 fi
 
 if !(type "pyenv" > /dev/null 2>&1); then
-  anyenv install pyenv
+  anyenv install pyenv > /dev/null
+  exec $SHELL -l
 fi
 
-if !(type "nodenv" > /dev/null 2>&1); then
-  anyenv install nodenv
+if !(type "volta" > /dev/null 2>&1); then
+  curl https://get.volta.sh | bash
 fi
 
-if [ -d $HOME/.anyenv/envs/nodenv/bin ] ; then
-  export PATH="$PATH:$HOME/.anyenv/envs/nodenv/bin"
-  eval "$(nodenv init - zsh)"
-fi
-
-if type "nodenv" > /dev/null 2>&1 ; then
-  nodenv install 12.10.0
-  nodenv global 12.10.0
-
-  if type "npm" > /dev/null 2>&1 ; then
-    ./install-npm.sh
-  else
-    echo "npm not found"
-  fi
-else
-  echo "nodenv not found"
+if [ -d $HOME/.volta/bin/volta ] ; then
+  exec $SHELL -l
+  volta install node
 fi
 
 if !(type "phpenv" > /dev/null 2>&1); then
-  anyenv install phpenv
+  anyenv install phpenv > /dev/null
+  exec $SHELL -l
 fi
 
 if !(type "rbenv" > /dev/null 2>&1); then
-  anyenv install rbenv
+  anyenv install rbenv > /dev/null
+  exec $SHELL -l
 fi
 
 if [ -d $HOME/.anyenv/envs/rbenv/bin ] ; then
@@ -55,13 +46,13 @@ fi
 #  source ~/.zshrc > /dev/null 2>&1
 #fi
 
-if type "rbenv" > /dev/null 2>&1 ; then
-  rbenv install 3.0.0
-  source ~/.zshrc > /dev/null 2>&1
-  gem install solargraph
-else
-  echo "rbenv not found"
-fi
+#if type "rbenv" > /dev/null 2>&1 ; then
+#  rbenv install 3.0.0
+#  source ~/.zshrc > /dev/null 2>&1
+#  gem install solargraph
+#else
+#  echo "rbenv not found"
+#fi
 
-source ~/.zshrc > /dev/null 2>&1
+exec $SHELL -l
 

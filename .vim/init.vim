@@ -1,1 +1,0 @@
-/Users/ko1014/dotfiles/nvim/init.vim
