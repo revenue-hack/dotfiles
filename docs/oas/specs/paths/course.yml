@@ -157,6 +157,29 @@
                   description: 講習ID
                   example: 10
 
+/courses/{course_id}/publish:
+  patch:
+    tags:
+      - 講習
+    summary: 講習の公開/非公開を行います
+    description: 講習の公開/非公開を行います
+    parameters:
+      - $ref: "#/components/parameters/CourseId"
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+                description: 公開フラグ(1:公開,2:非公開)
+                required: true
+                example: 1
+    responses:
+      204:
+        description: No Content
+
 /courses/{course_id}:
   delete:
     tags:
