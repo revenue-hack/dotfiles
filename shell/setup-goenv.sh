@@ -18,6 +18,7 @@ if type "goenv" > /dev/null 2>&1 ; then
   go install  github.com/golang/protobuf/protoc-gen-go
   go install google.golang.org/grpc
   go install honnef.co/go/tools/cmd/staticcheck
+  go install github.com/go-delve/delve/cmd/dlv@latest
   # terraform LSP
   git clone https://github.com/juliosueiras/terraform-lsp.git
   cd terraform-lsp
