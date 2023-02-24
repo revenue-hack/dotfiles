@@ -15,3 +15,4 @@ brew install bloomrpc --cask
 
 brew install starship
 brew install ripgrep
+brew install golangci-lint

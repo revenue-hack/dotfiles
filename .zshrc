@@ -17,7 +17,9 @@ export CATALINA_HOME="/Applications/apache-tomcat-8.0.41"
 export PATH="$CATALINA_HOME/bin:$CATALINA_HOME/lib:$PATH"
 export PATH=/usr/local/bin:$PATH
 export PATH=$HOME/google-cloud-sdk/bin:$PATH
-#export PATH=/usr/local/opt/mysql@5.7/bin:$PATH
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+export PATH="$HOME/.rd/bin:$PATH"
 
 if [ -d $HOME/.pyenv/shims ] ; then
   export PATH=$HOME/.pyenv/shims:$PATH
