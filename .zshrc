@@ -138,7 +138,6 @@ export SDKMAN_DIR="~/.sdkman"
 [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 export DOCKER_BUILDKIT=1
-export GO111MODULE=auto
 # nvim
 export XDG_CONFIG_HOME=$HOME/.config
 
