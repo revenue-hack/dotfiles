@@ -22,6 +22,9 @@ hook_add = '''
 
 [[plugins]]
 repo = 'github/copilot.vim'
+hook_add = '''
+nmap cp :Copilot setup<CR>
+'''
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
