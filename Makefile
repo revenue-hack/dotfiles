@@ -4,7 +4,7 @@ all: main
 
 main: setup
 
-setup: setup-brew setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global
+setup: setup-brew setup-zsh setup-ghq setup-anyenv setup-neovim setup-goenv setup-gitignore-global setup-node
 
 setup-git:
 	./shell/setup-git.sh
@@ -29,8 +29,9 @@ setup-anyenv:
 setup-neovim:
 	./shell/setup-nvim.sh
 
-setup-npm:
-	./shell/install-npm.sh
+setup-node:
+	curl https://get.volta.sh | bash
+	volta install node
 
 setup-gitignore-global:
 	git config --global core.excludesfile ${PWD}/.gitignore_global
