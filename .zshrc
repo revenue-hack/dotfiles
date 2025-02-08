@@ -20,6 +20,9 @@ export PATH=$HOME/google-cloud-sdk/bin:$PATH
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$HOME/.rd/bin:$PATH"
+export PATH="/Users/ko1014/.local/bin:$PATH"
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+
 
 if [ -d $HOME/.pyenv/shims ] ; then
   export PATH=$HOME/.pyenv/shims:$PATH
@@ -69,12 +72,6 @@ fi
 export EDITOR=nvim
 if type "direnv" > /dev/null 2>&1 ; then
   eval "$(direnv hook zsh)"
-fi
-
-if [ -d $HOME/.goenv/bin ] ; then
-  export GOENV_ROOT="$HOME/.goenv"
-  export PATH="$GOENV_ROOT/bin:$PATH"
-  eval "$(goenv init -)"
 fi
 
 export GOPATH=$HOME/go
