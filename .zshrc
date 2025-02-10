@@ -194,3 +194,5 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+export GOENV_ROOT=$HOME/.goenv
+
