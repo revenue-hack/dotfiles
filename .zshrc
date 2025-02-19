@@ -71,11 +71,11 @@ if type "direnv" > /dev/null 2>&1 ; then
   eval "$(direnv hook zsh)"
 fi
 
-if [ -d $HOME/.goenv/bin ] ; then
+#if [ -d $HOME/.goenv/bin ] ; then
   export GOENV_ROOT="$HOME/.goenv"
   export PATH="$GOENV_ROOT/bin:$PATH"
   eval "$(goenv init -)"
-fi
+#fi
 
 export GOPATH=$HOME/go
 export PATH=$GOROOT/bin:$PATH
