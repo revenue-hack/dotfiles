@@ -7,3 +7,4 @@ vendor
 .nvimlog
 .go-version
 .node-version
+.vim
