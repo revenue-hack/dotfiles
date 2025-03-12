@@ -55,4 +55,5 @@ set title
 set wildmenu
 " 入力中のコマンドを表示する
 set showcmd
-
+" クリップボードへのコピー
+set clipboard=unnamedplus

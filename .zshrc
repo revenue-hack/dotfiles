@@ -20,6 +20,9 @@ export PATH=$HOME/google-cloud-sdk/bin:$PATH
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$HOME/.rd/bin:$PATH"
+export PATH="/Users/ko1014/.local/bin:$PATH"
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+
 
 if [ -d $HOME/.pyenv/shims ] ; then
   export PATH=$HOME/.pyenv/shims:$PATH
@@ -146,7 +149,7 @@ function peco-src() {
   #local src=$( ghq list --full-path | peco --query "$LBUFFER")
   local src=$( find $(ghq root)/*/*/* -type d -prune | sed -e 's#'$(ghq root)'/##' | peco --query "$LBUFFER")
   if [ -n "$src" ]; then
-    BUFFER="cd $GOPATH/src/$src"
+    BUFFER="cd ~/go/src/$src"
     zle accept-line
   fi
   zle -R -c
@@ -197,3 +200,6 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+export GOENV_ROOT=$HOME/.goenv
+export PATH=$GOENV_ROOT/bin:$PATH
+eval "$(goenv init -)"
