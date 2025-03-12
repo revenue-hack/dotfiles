@@ -143,7 +143,7 @@ function peco-src() {
   #local src=$( ghq list --full-path | peco --query "$LBUFFER")
   local src=$( find $(ghq root)/*/*/* -type d -prune | sed -e 's#'$(ghq root)'/##' | peco --query "$LBUFFER")
   if [ -n "$src" ]; then
-    BUFFER="cd $GOPATH/src/$src"
+    BUFFER="cd ~/go/src/$src"
     zle accept-line
   fi
   zle -R -c
@@ -195,4 +195,5 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 export GOENV_ROOT=$HOME/.goenv
-
+export PATH=$GOENV_ROOT/bin:$PATH
+eval "$(goenv init -)"
