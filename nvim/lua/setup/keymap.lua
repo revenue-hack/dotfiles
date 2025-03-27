@@ -6,8 +6,6 @@ map("i", "{", "{}<Left>", { noremap = true })
 map("i", "[", "[]<Left>", { noremap = true })
 map("i", "(", "()<Left>", { noremap = true })
 
--- NERDTree toggle
-map("n", "<C-e>", ":NERDTreeToggle<CR>", opts)
 
 -- ウィンドウ移動（左右上下）
 map("n", "<C-h>", "<C-w>h", opts)

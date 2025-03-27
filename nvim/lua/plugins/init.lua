@@ -1,7 +1,47 @@
 return {
-  { "scrooloose/nerdtree" },
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    lazy = false,
+    config = function()
+      require("catppuccin").setup({
+        flavour = "mocha", -- latte, frappe, macchiato, mocha
+        transparent_background = false,
+        term_colors = true,
+      })
+      vim.cmd.colorscheme("catppuccin")
+    end,
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",  -- 安定版
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- アイコン表示
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      require("neo-tree").setup({
+        window = {
+          width = 30,
+          mappings = {
+            ["<space>"] = "none",
+          },
+        },
+        filesystem = {
+          filtered_items = {
+            visible = true,
+            hide_dotfiles = false,
+            hide_gitignored = false,
+          },
+        },
+      })
 
-  { "tomasr/molokai" },
+      -- おすすめキーマップ（必要に応じて）
+      vim.keymap.set("n", "<C-e>", ":Neotree toggle<CR>", { desc = "Toggle NeoTree", silent = true })
+    end,
+  },
 
   { "GutenYe/json5.vim" },
 
@@ -116,18 +156,6 @@ return {
     ft = "toml",
   },
 
-  -- TypeScript
-  {
-    "leafgarland/typescript-vim",
-    ft = { "typescriptreact", "typescript" },
-  },
-
-  -- JSX/TSX
-  {
-    "peitalin/vim-jsx-typescript",
-    ft = { "tsx", "jsx", "typescriptreact" },
-  },
-
   -- ALE（Linter + Fixer）
   {
     "w0rp/ale",
@@ -155,21 +183,13 @@ return {
         end,
       },
       {
-        "williamboman/mason.nvim",
-        build = ":MasonUpdate", -- optional
-        config = function()
-          require("mason").setup()
-        end,
-      },
-
-      {
         "williamboman/mason-lspconfig.nvim",
         dependencies = { "mason.nvim", "neovim/nvim-lspconfig" },
         config = function()
           require("mason-lspconfig").setup({
             ensure_installed = {
               "lua_ls",
-              "tsserver",
+              "ts_ls",
               "gopls",
               "intelephense",
               "solargraph",
@@ -193,26 +213,62 @@ return {
       },
 
       {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "mason.nvim", "neovim/nvim-lspconfig" },
-        config = function()
-          require("mason-lspconfig").setup({
-            ensure_installed = {
-              "lua_ls",
-              "tsserver",
-              "gopls",
-              "intelephense",
-              "solargraph",
-              "bashls",
-              "vimls",
-              "dockerls",
-              "terraformls",
-              "sqlls",
+        "yetone/avante.nvim",
+        event = "VeryLazy",
+        version = false, -- Never set this value to "*"! Never!
+        opts = {
+          -- add any opts here
+          -- for example
+          provider = "openai",
+          openai = {
+            endpoint = "https://api.openai.com/v1",
+            model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
+            timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+            temperature = 0,
+            max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+          },
+        },
+        -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+        build = "make",
+        -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+        dependencies = {
+          "nvim-treesitter/nvim-treesitter",
+          "stevearc/dressing.nvim",
+          "nvim-lua/plenary.nvim",
+          "MunifTanjim/nui.nvim",
+          --- The below dependencies are optional,
+          "echasnovski/mini.pick", -- for file_selector provider mini.pick
+          "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+          "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+          "ibhagwan/fzf-lua", -- for file_selector provider fzf
+          "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+          "zbirenbaum/copilot.lua", -- for providers='copilot'
+          {
+            -- support for image pasting
+            "HakonHarnes/img-clip.nvim",
+            event = "VeryLazy",
+            opts = {
+              -- recommended settings
+              default = {
+                embed_image_as_base64 = false,
+                prompt_for_file_name = false,
+                drag_and_drop = {
+                  insert_mode = true,
+                },
+                -- required for Windows users
+                use_absolute_path = true,
+              },
             },
-            automatic_installation = true,
-          })
-        end,
-      }
-
-
+          },
+          {
+            -- Make sure to set this up properly if you have lazy=true
+            'MeanderingProgrammer/render-markdown.nvim',
+            opts = {
+              file_types = { "markdown", "Avante" },
+            },
+            ft = { "markdown", "Avante" },
+          },
+        },
+      },
     }
