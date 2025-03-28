@@ -228,6 +228,9 @@ return {
             max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
             --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
           },
+          behaviour = {
+            auto_apply_diff_after_generation = true
+          },
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = "make",
