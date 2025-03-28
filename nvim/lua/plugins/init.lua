@@ -109,10 +109,25 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      -- capabilities（cmpとの連携用。無くても最低限動く）
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      -- LSPがアタッチされたときのキーマップ
+      local on_attach = function(_, bufnr)
+        local opts = { buffer = bufnr, silent = true }
+
+        vim.keymap.set("n", "<Tab>]", vim.lsp.buf.definition, opts)
+        vim.keymap.set("n", "<Tab>[", vim.lsp.buf.declaration, opts)
+        vim.keymap.set("n", "<Tab>i", vim.lsp.buf.implementation, opts)
+        vim.keymap.set("n", "<C-r>", vim.lsp.buf.references, opts)
+        vim.keymap.set("n", "K",  vim.lsp.buf.hover, opts)
+      end
       -- LSPサーバーの設定をここで行う
       local lspconfig = require("lspconfig")
 
       lspconfig.intelephense.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
         settings = {
           intelephense = {
             environment = {
@@ -120,6 +135,74 @@ return {
             },
           },
         },
+      })
+
+      -- Go (gopls)
+      lspconfig.gopls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- TypeScript / JavaScript (ts_ls)
+      lspconfig.ts_ls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- Ruby (solargraph)
+      lspconfig.solargraph.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+      -- Shell (bash)
+      lspconfig.bashls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- Lua (Neovim Lua 用設定推奨)
+      lspconfig.lua_ls.setup({
+        settings = {
+          Lua = {
+            runtime = {
+              version = "LuaJIT",
+            },
+            diagnostics = {
+              globals = { "vim" }, -- `vim` グローバルを未定義と警告しないように
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      })
+
+      -- Vim script
+      lspconfig.vimls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- Docker
+      lspconfig.dockerls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- Terraform
+      lspconfig.terraformls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+      })
+
+      -- SQL
+      lspconfig.sqlls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
       })
     end,
   },
