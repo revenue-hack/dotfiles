@@ -203,3 +203,9 @@ unset __conda_setup
 export GOENV_ROOT=$HOME/.goenv
 export PATH=$GOENV_ROOT/bin:$PATH
 eval "$(goenv init -)"
+
+# ~/.zshrc
+# Load personal/local config if it exists
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi
