@@ -28,6 +28,7 @@ if [ -d $HOME/.pyenv/shims ] ; then
   export PATH=$HOME/.pyenv/shims:$PATH
 fi
 
+export RBENV_ROOT="$HOME/.rbenv"
 if [ -d $HOME/.rbenv/shims ] ; then
   export PATH=$HOME/.rbenv/shims:$PATH
 fi
@@ -35,6 +36,7 @@ fi
 if [ -d $HOME/.phpenv/shims ] ; then
   export PATH=$HOME/.phpenv/shims:$PATH
 fi
+
 
 if [ -d $HOME/.ndenv/shims ] ; then
   export PATH=$HOME/.ndenv/shims:$PATH
