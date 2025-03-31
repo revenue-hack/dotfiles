@@ -113,7 +113,7 @@ return {
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       -- LSPがアタッチされたときのキーマップ
-      local on_attach = function(_, bufnr)
+      local on_attach = function(client, bufnr)
         local opts = { buffer = bufnr, silent = true }
 
         vim.keymap.set("n", "<Tab>]", vim.lsp.buf.definition, opts)
@@ -121,7 +121,17 @@ return {
         vim.keymap.set("n", "<Tab>i", vim.lsp.buf.implementation, opts)
         vim.keymap.set("n", "<C-r>", vim.lsp.buf.references, opts)
         vim.keymap.set("n", "K",  vim.lsp.buf.hover, opts)
+
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr })
+            end,
+          })
+        end
       end
+
       -- LSPサーバーの設定をここで行う
       local lspconfig = require("lspconfig")
 
@@ -141,7 +151,22 @@ return {
       lspconfig.gopls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
+        settings = {
+          gopls = {
+            gofumpt = true,
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true,
+            formatOnSave = true,
+            codelenses = {
+              generate = true,
+              gc_details = true,
+            },
+          },
+        },
       })
+
 
       -- TypeScript / JavaScript (ts_ls)
       lspconfig.ts_ls.setup({
@@ -294,6 +319,59 @@ return {
           require("mason").setup()
         end,
       },
+      {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        event = { "BufReadPost", "BufNewFile" },
+        config = function()
+          require("nvim-treesitter.configs").setup({
+            ensure_installed = {
+              "go",
+              "php",
+              "typescript",
+              "javascript",
+              "ruby",
+              "lua",
+              "bash",
+              "vim",
+              "json",
+              "yaml",
+              "markdown",
+              "html",
+              "css",
+            },
+            highlight = {
+              enable = true,
+              additional_vim_regex_highlighting = false,
+            },
+            indent = {
+              enable = true,
+            },
+            incremental_selection = {
+              enable = true,
+              keymaps = {
+                init_selection = "gnn",        -- 開始
+                node_incremental = "grn",      -- ノードを広げる
+                scope_incremental = "grc",     -- スコープを広げる
+                node_decremental = "grm",      -- ノードを戻す
+              },
+            },
+            textobjects = {
+              select = {
+                enable = true,
+                lookahead = true,
+                keymaps = {
+                  ["af"] = "@function.outer",  -- 関数全体
+                  ["if"] = "@function.inner",  -- 関数内側
+                  ["ac"] = "@class.outer",
+                  ["ic"] = "@class.inner",
+                },
+              },
+            },
+          })
+        end,
+      },
+
 
       {
         "yetone/avante.nvim",
