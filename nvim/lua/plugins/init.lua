@@ -147,6 +147,20 @@ return {
         },
       })
 
+      require("lspconfig").pyright.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        settings = {
+          python = {
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "openFilesOnly", -- or "workspace"
+            },
+          },
+        },
+      })
+
       -- Go (gopls)
       lspconfig.gopls.setup({
         on_attach = on_attach,
@@ -297,6 +311,7 @@ return {
           require("mason-lspconfig").setup({
             ensure_installed = {
               "lua_ls",
+              "pyright",
               "ts_ls",
               "gopls",
               "intelephense",
@@ -328,6 +343,7 @@ return {
             ensure_installed = {
               "go",
               "php",
+              "python",
               "typescript",
               "javascript",
               "ruby",
