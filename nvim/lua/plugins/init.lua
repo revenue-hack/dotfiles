@@ -250,11 +250,12 @@ return {
   -- previm + markdown設定
   {
     "previm/previm",
+    ft = { "markdown" },
     config = function()
       vim.cmd [[
       nnoremap <silent> <TAB>o :PrevimOpen<CR>
       let g:vim_markdown_folding_disabled = 1
-      let g:previm_open_cmd = 'open -a Google\\ Chrome'
+      let g:previm_open_cmd = 'open -a "Google Chrome"'
       let g:previm_enable_realtime = 1
       ]]
     end,
@@ -442,13 +443,14 @@ return {
             },
           },
           {
-            -- Make sure to set this up properly if you have lazy=true
-            'MeanderingProgrammer/render-markdown.nvim',
-            opts = {
-              file_types = { "markdown", "Avante" },
-            },
-            ft = { "markdown", "Avante" },
+            "iamcco/markdown-preview.nvim",
+            ft = { "markdown" },
+            build = "cd app && yarn install",
+            config = function()
+              vim.g.mkdp_auto_start = 1
+              vim.g.mkdp_open_to_the_world = 0
+            end,
           },
-        },
       },
-    }
+  },
+}
