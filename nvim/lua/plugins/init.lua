@@ -121,6 +121,7 @@ return {
         vim.keymap.set("n", "<Tab>i", vim.lsp.buf.implementation, opts)
         vim.keymap.set("n", "<C-r>", vim.lsp.buf.references, opts)
         vim.keymap.set("n", "K",  vim.lsp.buf.hover, opts)
+        vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
 
         if client.server_capabilities.documentFormattingProvider then
           vim.api.nvim_create_autocmd("BufWritePre", {
