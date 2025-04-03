@@ -14,6 +14,27 @@ return {
     end,
   },
   {
+    "stevearc/conform.nvim",
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          python = { "ruff_format" },
+        },
+      })
+
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.py",
+        callback = function(args)
+          require("conform").format({
+            bufnr = args.buf,
+            async = false,
+            lsp_fallback = true,
+          })
+        end,
+      })
+    end,
+  },
+  {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",  -- 安定版
     dependencies = {
@@ -313,6 +334,7 @@ return {
           require("mason-lspconfig").setup({
             ensure_installed = {
               "lua_ls",
+              "ruff",
               "pyright",
               "ts_ls",
               "gopls",
