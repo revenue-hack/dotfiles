@@ -168,6 +168,8 @@ checkout-fzf-gitbranch() {
 }
 zle -N checkout-fzf-gitbranch
 bindkey '^[' checkout-fzf-gitbranch
+bindkey '^r' fzf-history-widget
+
 
 export GOOGLE_APPLICATION_CREDENTIALS=~/.gcloud/key.json
 
