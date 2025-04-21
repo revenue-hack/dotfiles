@@ -143,6 +143,8 @@ return {
         vim.keymap.set("n", "<C-r>", vim.lsp.buf.references, opts)
         vim.keymap.set("n", "K",  vim.lsp.buf.hover, opts)
         vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
+        vim.keymap.set("n", "cn", vim.lsp.buf.rename, { desc = "rename" })
+
 
         if client.server_capabilities.documentFormattingProvider then
           vim.api.nvim_create_autocmd("BufWritePre", {
@@ -156,6 +158,13 @@ return {
 
       -- LSPサーバーの設定をここで行う
       local lspconfig = require("lspconfig")
+
+      -- masonの設定からsolargraphを削除し、手動で設定
+      lspconfig.solargraph.setup{
+        cmd = { "solargraph", "stdio" },
+        filetypes = { "ruby" },
+        root_dir = require'lspconfig'.util.root_pattern('.git', 'Gemfile', '.ruby-version'),
+      }
 
       lspconfig.intelephense.setup({
         on_attach = on_attach,
@@ -189,12 +198,12 @@ return {
         capabilities = capabilities,
         settings = {
           gopls = {
-            gofumpt = true,
+            gofumpt = false,
+
             analyses = {
               unusedparams = true,
             },
             staticcheck = true,
-            formatOnSave = true,
             codelenses = {
               generate = true,
               gc_details = true,
@@ -339,7 +348,6 @@ return {
               "ts_ls",
               "gopls",
               "intelephense",
-              "solargraph",
               "bashls",
               "vimls",
               "dockerls",
@@ -438,7 +446,18 @@ return {
         -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
         dependencies = {
           "nvim-treesitter/nvim-treesitter",
-          "stevearc/dressing.nvim",
+          {
+            "stevearc/dressing.nvim",
+            event = "VeryLazy",
+            opts = {
+              input = {
+                -- safe fallback width
+                win_options = {
+                  list = false, -- dressing用のpopupウィンドウでもlist無効
+                },
+              },
+            },
+          },
           "nvim-lua/plenary.nvim",
           "MunifTanjim/nui.nvim",
           --- The below dependencies are optional,
