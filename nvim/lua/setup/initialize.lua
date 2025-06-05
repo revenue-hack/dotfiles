@@ -6,15 +6,16 @@ vim.g.ruby_host_prog = os.getenv("RBENV_ROOT") .. "/versions/3.0.0/bin/ruby"
 -- 表示・見た目
 vim.opt.number = true
 vim.opt.ambiwidth = "double"
-vim.opt.list = true
-vim.opt.listchars = {
-  tab = "»-",
-  trail = "-",
-  eol = "↲",
-  extends = "»",
-  precedes = "«",
-  nbsp = "%",
-}
+vim.opt.list = false
+vim.opt.listchars = {}
+--vim.opt.listchars = {
+--  tab = "»-",
+--  trail = "-",
+--  eol = "↲",
+--  extends = "»",
+--  precedes = "<",
+--  nbsp = "%",
+--}
 vim.opt.termguicolors = true
 vim.cmd("syntax enable")
 
