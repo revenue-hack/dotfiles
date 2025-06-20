@@ -9,3 +9,4 @@ vendor
 .node-version
 .vim
 .zshrc.local
+.claude
