@@ -159,10 +159,22 @@ function peco-src() {
 zle -N peco-src
 
 checkout-fzf-gitbranch() {
-  local GIT_BRANCH=$(git branch -vv | grep -v HEAD | fzf +m)
-  if [ -n "$GIT_BRANCH" ]; then
-    #git checkout $(echo "$GIT_BRANCH" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-    git checkout $(echo "$GIT_BRANCH" | awk '{print $1}')
+  # Get branches and worktrees
+  local BRANCHES=$(git branch -vv | grep -v HEAD | sed 's/^/[branch] /')
+  local WORKTREES=$(git worktree list | tail -n +2 | awk '{print "[worktree] " $1 " " $3}' 2>/dev/null)
+  
+  # Combine and select
+  local SELECTION=$(echo -e "$BRANCHES\n$WORKTREES" | grep -v '^$' | fzf +m)
+  
+  if [ -n "$SELECTION" ]; then
+    if echo "$SELECTION" | grep -q '^\[branch\]'; then
+      # Regular branch checkout
+      git checkout $(echo "$SELECTION" | sed 's/\[branch\] //' | awk '{print $1}')
+    elif echo "$SELECTION" | grep -q '^\[worktree\]'; then
+      # Change to worktree directory
+      local WORKTREE_PATH=$(echo "$SELECTION" | sed 's/\[worktree\] //' | awk '{print $1}')
+      BUFFER="cd $WORKTREE_PATH"
+    fi
   fi
   zle accept-line
 }
