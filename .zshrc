@@ -159,19 +159,45 @@ function peco-src() {
 zle -N peco-src
 
 checkout-fzf-gitbranch() {
-  # Get branches and worktrees
-  local BRANCHES=$(git branch -vv | grep -v HEAD | sed 's/^/[branch] /')
+  # 現在のディレクトリがgit worktree内かどうかをチェック
+  local IS_WORKTREE=$(git worktree list 2>/dev/null | grep -c "$(pwd)")
+  # gitリポジトリのルートディレクトリを取得
+  local GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+  # メインのworktree（.gitがあるディレクトリ）のパスを取得
+  local MAIN_WORKTREE=$(git worktree list | head -n1 | awk '{print $1}')
+  
+  # ブランチ一覧を取得（HEADを除外し、先頭の*やスペースを削除）
+  local BRANCHES=$(git branch -vv | grep -v HEAD | sed 's/^[ *]*//')
+  # worktree一覧を取得（メインworktreeを除外）
   local WORKTREES=$(git worktree list | tail -n +2 | awk '{print "[worktree] " $1 " " $3}' 2>/dev/null)
   
-  # Combine and select
-  local SELECTION=$(echo -e "$BRANCHES\n$WORKTREES" | grep -v '^$' | fzf +m)
+  # ブランチとworktreeを結合してfzfで選択
+  local SELECTION=$(
+    {
+      # 各ブランチに[branch]タグを付与
+      echo "$BRANCHES" | while IFS= read -r line; do
+        [ -n "$line" ] && echo "[branch] $line"
+      done
+      # worktree一覧を追加
+      echo "$WORKTREES"
+    } | fzf +m
+  )
   
   if [ -n "$SELECTION" ]; then
     if echo "$SELECTION" | grep -q '^\[branch\]'; then
-      # Regular branch checkout
-      git checkout $(echo "$SELECTION" | sed 's/\[branch\] //' | awk '{print $1}')
+      # ブランチ名を抽出（[branch]タグと先頭の+記号を削除し、最初の単語を取得）
+      local BRANCH=$(echo "$SELECTION" | sed 's/^\[branch\] //' | sed 's/^+//' | awk '{print $1}')
+      
+      # ブランチ選択時は常にメインのgitディレクトリでcheckoutを実行
+      if [ "$IS_WORKTREE" -gt 0 ] && [ "$MAIN_WORKTREE" != "$(pwd)" ]; then
+        # worktree内にいる場合は、メインディレクトリに移動してからcheckout
+        BUFFER="cd $MAIN_WORKTREE && git checkout $BRANCH"
+      else
+        # 既にメインディレクトリにいる場合は、その場でcheckout
+        git checkout $BRANCH
+      fi
     elif echo "$SELECTION" | grep -q '^\[worktree\]'; then
-      # Change to worktree directory
+      # worktreeのパスを抽出して移動
       local WORKTREE_PATH=$(echo "$SELECTION" | sed 's/\[worktree\] //' | awk '{print $1}')
       BUFFER="cd $WORKTREE_PATH"
     fi
