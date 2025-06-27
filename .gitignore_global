@@ -10,3 +10,4 @@ vendor
 .vim
 .zshrc.local
 .claude
+phantom.config.json
