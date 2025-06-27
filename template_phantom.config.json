@@ -1,0 +1,12 @@
+{
+  "worktreesDirectory": "./",
+  "postCreate": {
+    "copyFiles": [
+      ".env",
+      ".claude",
+      ".cursor"
+    ],
+    "commands": [
+    ]
+  }
+}
