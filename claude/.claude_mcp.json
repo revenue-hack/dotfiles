@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "macos-notify": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "macos-notify-mcp"
+      ],
+      "env": {}
+    },
+    "mcp-gemini-cli": {
+      "command": "npx",
+      "args": [
+        "mcp-gemini-cli",
+        "--allow-npx"
+      ]
+    }
+  }
+}

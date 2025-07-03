@@ -5,6 +5,8 @@ if [ ! -d "$HOME/.oh-my-zsh" ] ; then
   ln -s ~/dotfiles/.zshrc ~/.zshrc
   touch ~/dotfiles/.zshrc.local
   ln -s ~/dotfiles/.zshrc.local ~/.zshrc.local
+  # claude
+  ln -sf ~/dotfiles/claude/CLAUDE.md ~/.config/claude/CLAUDE.md
 fi
 #exec $SHELL
 #source ~/.zshrc > /dev/null

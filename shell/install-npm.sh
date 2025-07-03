@@ -18,4 +18,7 @@ if type "npm" > /dev/null 2>&1 ; then
     npm i -g graphql-language-service-cli
     npm install -g @anthropic-ai/claude-code
     npm install -g @google/gemini-cli
+    npm i -g reviewit
+    npm i -g macos-notify-mcp
+
 fi
