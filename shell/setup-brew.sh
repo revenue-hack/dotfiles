@@ -18,3 +18,4 @@ brew install ripgrep
 brew install golangci-lint
 brew install hashicorp/tap/terraform-ls
 brew install aku11i/tap/phantom
+brew install git-delta
