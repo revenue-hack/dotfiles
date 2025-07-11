@@ -40,3 +40,7 @@ make
 cd nvim
 make
 ```
+
+## claude
+`~/.claude.json`の一番下にあるmcpSerersに`claude/claude_mcp.json`のjsonを入れる.
+そうすることでグローバルにMCP設定が入る.
