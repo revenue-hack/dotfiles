@@ -7,6 +7,8 @@ if [ ! -d "$HOME/.oh-my-zsh" ] ; then
   ln -s ~/dotfiles/.zshrc.local ~/.zshrc.local
   # claude
   ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
+  # gitconfig
+  ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 fi
 #exec $SHELL
 #source ~/.zshrc > /dev/null

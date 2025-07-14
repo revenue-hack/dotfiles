@@ -1,0 +1,18 @@
+[ghq]
+	root = ~/go/src
+[user]
+	name = revenue-hack
+	email = K.odeveloper10@gmail.com
+[push]
+	default = current
+[core]
+	excludesfile = ~/dotfiles/.gitignore_global
+	ignorecase = false
+        pager = delta
+[http]
+	postBuffer = 157286400
+[pull]
+	rebase = false
+[delta]
+    line-numbers = true
+    syntax-theme = Monokai Extended
