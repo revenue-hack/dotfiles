@@ -9,6 +9,8 @@ if [ ! -d "$HOME/.oh-my-zsh" ] ; then
   ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
   # gitconfig
   ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
+  # gemini
+  ln -sf ~/dotfiles/gemini/settings.json ~/.gemini/settings.json
 fi
 #exec $SHELL
 #source ~/.zshrc > /dev/null

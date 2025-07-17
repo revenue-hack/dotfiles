@@ -5,10 +5,13 @@
       "args": ["--from", "mcp-macos-notify", "macos-notify"]
     },
     "gemini": {
-      "command": "uvx",
-      "args": ["--from", "mcp-gemini", "mcp-gemini"],
+      "command": "npx",
+      "args": [
+        "@choplin/mcp-gemini-cli",
+        "--allow-npx"
+      ],
       "env": {
-        "GOOGLE_API_KEY": "YOUR_GEMINI_API_KEY"
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
       }
     },
     "github": {

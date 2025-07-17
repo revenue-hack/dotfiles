@@ -251,3 +251,5 @@ eval "$(goenv init -)"
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
