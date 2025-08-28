@@ -3,65 +3,85 @@ return {
     "nvim-lua/plenary.nvim",
   },
   {
-    "greggh/claude-code.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim", -- Required for git operations
-    },
-    config = function()
-      require("claude-code").setup({
-        -- Terminal window settings
-        window = {
-          --split_ratio = 0.3,      -- Percentage of screen for the terminal window (height for horizontal, width for vertical splits)
-          vertical_ratio = 0.3,      -- Percentage of screen for the terminal window (height for horizontal, width for vertical splits)
-          position = "rightbelow vsplit",  -- Position of the window: "botright", "topleft", "vertical", "rightbelow vsplit", etc.
-          --enter_insert = true,    -- Whether to enter insert mode when opening Claude Code
-          --hide_numbers = true,    -- Hide line numbers in the terminal window
-          --hide_signcolumn = true, -- Hide the sign column in the terminal window
-        },
-        -- File refresh settings
-        refresh = {
-          enable = true,           -- Enable file change detection
-          updatetime = 100,        -- updatetime when Claude Code is active (milliseconds)
-          timer_interval = 1000,   -- How often to check for file changes (milliseconds)
-          show_notifications = true, -- Show notification when files are reloaded
-        },
-        -- Git project settings
-        git = {
-          use_git_root = true,     -- Set CWD to git root when opening Claude Code (if in git project)
-        },
-        -- Shell-specific settings
-        shell = {
-          separator = '&&',        -- Command separator used in shell commands
-          pushd_cmd = 'pushd',     -- Command to push directory onto stack (e.g., 'pushd' for bash/zsh, 'enter' for nushell)
-          popd_cmd = 'popd',       -- Command to pop directory from stack (e.g., 'popd' for bash/zsh, 'exit' for nushell)
-        },
-        -- Command settings
-        command = "claude",        -- Command used to launch Claude Code
-        -- Command variants
-        command_variants = {
-          -- Conversation management
-          continue = "--continue", -- Resume the most recent conversation
-          --resume = "--resume",     -- Display an interactive conversation picker
-
-          -- Output options
-          --verbose = "--verbose",   -- Enable verbose logging with full turn-by-turn output
-        },
-        -- Keymaps
-        keymaps = {
-          toggle = {
-            normal = "<C-,>",       -- Normal mode keymap for toggling Claude Code, false to disable
-            terminal = "<C-,>",     -- Terminal mode keymap for toggling Claude Code, false to disable
-            variants = {
-              continue = "<leader>cC", -- Normal mode keymap for Claude Code with continue flag
-              verbose = "<leader>cV",  -- Normal mode keymap for Claude Code with verbose flag
-            },
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      terminal = {
+        win = {
+          position = "right",
+          width = 0.4,
+          wo = {
+            list = false,  -- listを無効化
           },
-          window_navigation = true, -- Enable window navigation keymaps (<C-h/j/k/l>)
-          scrolling = true,         -- Enable scrolling keymaps (<C-f/b>) for page up/down
-        }
-      })
-      vim.keymap.set('n', '<leader>cc', '<cmd>ClaudeCode<CR>', { desc = 'Toggle Claude Code' })
-    end
+        },
+      },
+    },
+  },
+  {
+    "coder/claudecode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    config = function()
+      -- Claude Code起動時のみambiwidthをsingleに変更するフック
+      local original_toggle = nil
+      
+      require("claudecode").setup({})
+      
+      -- ClaudeCodeコマンドをラップして、ambiwidth設定を制御
+      local function wrap_claudecode_command()
+        vim.api.nvim_create_user_command("ClaudeCodeWrapper", function(opts)
+          -- 現在の設定を保存
+          local saved_ambiwidth = vim.o.ambiwidth
+          local saved_listchars = vim.o.listchars
+          local saved_fillchars = vim.o.fillchars
+          
+          -- Claude Code用に設定を変更
+          vim.opt.ambiwidth = "single"
+          vim.opt.listchars = ""  -- listcharsも一時的にクリア
+          vim.opt.fillchars = "eob: "  -- fillcharsも基本的な設定に
+          
+          -- 元のコマンドを実行
+          vim.cmd("ClaudeCode " .. (opts.args or ""))
+          
+          -- ターミナルが閉じられたときに設定を復元
+          vim.api.nvim_create_autocmd({"TermClose", "BufDelete"}, {
+            pattern = "*claude*",
+            once = true,
+            callback = function()
+              -- 設定を復元（順序重要：fillchars → listchars → ambiwidth）
+              vim.opt.fillchars = saved_fillchars
+              vim.opt.listchars = saved_listchars
+              vim.opt.ambiwidth = saved_ambiwidth
+            end
+          })
+        end, { nargs = "*" })
+      end
+      
+      wrap_claudecode_command()
+    end,
+    keys = {
+      { "<leader>a", nil, desc = "AI/Claude Code" },
+      { "<leader>cc", "<cmd>ClaudeCodeWrapper<cr>", desc = "Toggle Claude" },
+      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+      { "<leader>ar", "<cmd>ClaudeCodeWrapper --resume<cr>", desc = "Resume Claude" },
+      { "<leader>aC", "<cmd>ClaudeCodeWrapper --continue<cr>", desc = "Continue Claude" },
+      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+      { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
+      {
+        "<leader>as",
+        "<cmd>ClaudeCodeTreeAdd<cr>",
+        desc = "Add file",
+        ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
+      },
+      -- Diff management
+      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
+      
+      -- ファイル操作とウィンドウ管理
+      { "<leader>aw", "<cmd>vsplit | wincmd l<cr>", desc = "Split window vertically" },
+      { "<leader>ah", "<cmd>split | wincmd j<cr>", desc = "Split window horizontally" },
+    },
   },
   {
     "catppuccin/nvim",

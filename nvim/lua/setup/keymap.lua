@@ -22,3 +22,13 @@ map("n", "<C-t>", ":terminal<CR>", opts)
 -- 括弧内選択（カッコ内全選択）
 map("n", "<C-u>", "vi)", opts)
 
+-- Claude Code使用時の便利なキーマップ
+-- ターミナルモードからノーマルモードへ簡単に切り替え
+map("t", "<C-[>", "<C-\\><C-n>", opts)
+
+-- ターミナルモードでもウィンドウ移動を可能に
+map("t", "<C-h>", "<C-\\><C-n><C-w>h", opts)
+map("t", "<C-j>", "<C-\\><C-n><C-w>j", opts)
+map("t", "<C-k>", "<C-\\><C-n><C-w>k", opts)
+map("t", "<C-l>", "<C-\\><C-n><C-w>l", opts)
+
