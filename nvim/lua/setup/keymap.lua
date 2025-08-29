@@ -32,3 +32,9 @@ map("t", "<C-j>", "<C-\\><C-n><C-w>j", opts)
 map("t", "<C-k>", "<C-\\><C-n><C-w>k", opts)
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", opts)
 
+-- Claude Codeで複数行入力のための改行
+-- Ctrl+Enterで改行（Shift+Enterの代替）
+map("t", "<C-CR>", "<C-v><CR>", opts)
+-- Alt+Enterでも改行
+map("t", "<M-CR>", "<C-v><CR>", opts)
+
