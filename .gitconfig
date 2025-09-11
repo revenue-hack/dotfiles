@@ -16,3 +16,5 @@
 [delta]
     line-numbers = true
     syntax-theme = Monokai Extended
+[init]
+	defaultBranch = main

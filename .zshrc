@@ -128,6 +128,7 @@ alias chf='chflags'
 alias chfru='chflags -R uchg'
 alias chfrnou='chflags -R nouchg'
 alias chfnou='chflags nouchg'
+alias claude-notify='~/dotfiles/claude/scripts/notify_claude_complete.sh'
 
 ## git pull 時に --set-upstream-to しろというエラーが出た時に自動処理させる
 function gll() {
