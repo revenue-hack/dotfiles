@@ -1,8 +1,11 @@
 {
   "mcpServers": {
-    "macos-notify": {
-      "command": "uvx",
-      "args": ["--from", "mcp-macos-notify", "macos-notify"]
+    "puppeteer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ]
     },
     "gemini": {
       "command": "npx",
