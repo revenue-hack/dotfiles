@@ -7,16 +7,6 @@
         "@modelcontextprotocol/server-puppeteer"
       ]
     },
-    "gemini": {
-      "command": "npx",
-      "args": [
-        "@choplin/mcp-gemini-cli",
-        "--allow-npx"
-      ],
-      "env": {
-        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
-      }
-    },
     "github": {
       "command": "docker",
       "args": [
@@ -31,6 +21,57 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
       },
       "scope": "user"
+    },
+    "openai": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@openai/mcp-server"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "$OPENAI_API_KEY"
+      }
+    },
+    "figma-dev-mode-mcp-server": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "stripe": {
+      "type": "http",
+      "url": "https://mcp.stripe.com"
+    },
+    "notion": {
+      "type": "http",
+      "url": "https://mcp.notion.com/mcp"
+    },
+    "linear": {
+      "type": "sse",
+      "url": "https://mcp.linear.app/sse"
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "codex": {
+      "type": "stdio",
+      "command": "codex",
+      "args": [
+        "mcp"
+      ],
+      "env": {}
+    },
+    "o3-search": {
+      "command": "npx",
+      "args": ["o3-search-mcp"],
+      "env": {
+        "OPENAI_API_KEY": "$OPENAI_API_KEY",
+        "OPENAI_MODEL": "gpt-5",
+        "SEARCH_CONTEXT_SIZE": "medium",
+        "REASONING_EFFORT": "medium",
+        "OPENAI_API_TIMEOUT": "300000",
+        "OPENAI_MAX_RETRIES": "2"
+      }
     }
   }
 }
