@@ -72,6 +72,16 @@
         "OPENAI_API_TIMEOUT": "300000",
         "OPENAI_MAX_RETRIES": "2"
       }
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--config",
+        "/Users/ko1014/dotfiles/playwright-config.json"
+      ],
+      "env": {}
     }
   }
 }
