@@ -30,7 +30,7 @@
         "@openai/mcp-server"
       ],
       "env": {
-        "OPENAI_API_KEY": "$OPENAI_API_KEY"
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       }
     },
     "figma-dev-mode-mcp-server": {
@@ -65,7 +65,7 @@
       "command": "npx",
       "args": ["o3-search-mcp"],
       "env": {
-        "OPENAI_API_KEY": "$OPENAI_API_KEY",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
         "OPENAI_MODEL": "gpt-5",
         "SEARCH_CONTEXT_SIZE": "medium",
         "REASONING_EFFORT": "medium",
