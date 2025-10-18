@@ -73,6 +73,13 @@
         "OPENAI_MAX_RETRIES": "2"
       }
     },
+    "playwright-test": {
+      "command": "npx",
+      "args": [
+        "playwright",
+        "run-test-mcp-server"
+      ]
+    },
     "playwright": {
       "type": "stdio",
       "command": "npx",
