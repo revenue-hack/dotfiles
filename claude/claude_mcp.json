@@ -73,6 +73,16 @@
         "OPENAI_MAX_RETRIES": "2"
       }
     },
+    "gemini": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google/generative-ai-mcp-server"
+      ],
+      "env": {
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
+      }
+    },
     "playwright": {
       "type": "stdio",
       "command": "npx",
