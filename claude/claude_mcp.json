@@ -71,12 +71,15 @@
         "OPENAI_MAX_RETRIES": "2"
       }
     },
-    "playwright-test": {
+    "gemini": {
       "command": "npx",
       "args": [
-        "playwright",
-        "run-test-mcp-server"
-      ]
+        "-y",
+        "@google/generative-ai-mcp-server"
+      ],
+      "env": {
+        "GOOGLE_API_KEY": "${GOOGLE_API_KEY}"
+      }
     },
     "playwright": {
       "type": "stdio",
