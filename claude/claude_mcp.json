@@ -33,7 +33,7 @@
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       }
     },
-    "figma-dev-mode-mcp-server": {
+    "figma-desktop": {
       "type": "http",
       "url": "http://127.0.0.1:3845/mcp"
     },
@@ -55,10 +55,8 @@
     },
     "codex": {
       "type": "stdio",
-      "command": "codex",
-      "args": [
-        "mcp"
-      ],
+      "command": "/opt/homebrew/bin/codex",
+      "args": ["mcp-server"],
       "env": {}
     },
     "o3-search": {
