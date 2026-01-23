@@ -9,6 +9,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ] ; then
   ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
   ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
   ln -sf ~/dotfiles/claude/agents/* ~/.claude/agents/
+  ln -sf ~/dotfiles/claude/skills/* ~/.claude/skills/
   # gitconfig
   ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
   # gemini
