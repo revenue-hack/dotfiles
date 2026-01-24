@@ -14,11 +14,7 @@ Go / Gin / Clean Architecture / CQRS / wire (DI) / sqlc / sqldef / golangci-lint
 ```
 .
 ├── db/
-│   ├── migrations/schema.sql        # sqldef用スキーマ
-│   └── sqlc/
-│       ├── sqlc.yaml
-│       ├── queries/*.sql            # SQLクエリ定義
-│       └── generated/               # 自動生成（編集禁止）
+│   └── migrations/schema.sql        # sqldef用スキーマ
 └── src/
     ├── di/
     │   ├── wire.go                  # Provider定義
@@ -49,6 +45,12 @@ Go / Gin / Clean Architecture / CQRS / wire (DI) / sqlc / sqldef / golangci-lint
     └── infra/
         ├── router/router.go         # Gin（FWは技術的詳細なのでinfra）
         ├── rdb/
+        │   ├── sqlc.yaml
+        │   ├── generated/           # sqlc自動生成（編集禁止）
+        │   ├── queries/             # メソッドごとにファイル分割（コンフリクト回避）
+        │   │   ├── get_user_by_id.sql
+        │   │   ├── create_user.sql
+        │   │   └── exists_user_by_email.sql
         │   ├── repoimpl/user_repository.go      # Repository実装
         │   └── queryimpl/user_query_service.go  # QueryService実装
         └── gateway/                 # 外部SaaS（SendGrid, SQS等）
@@ -160,12 +162,12 @@ func (u *CreateUserUsecase) Exec(ctx context.Context, input CreateUserInput) (*C
 
 ### sqlc設定
 ```yaml
-# db/sqlc/sqlc.yaml
+# src/infra/rdb/sqlc.yaml
 version: "2"
 sql:
   - engine: "postgresql"
     queries: "queries/"
-    schema: "../migrations/schema.sql"
+    schema: "../../../db/migrations/schema.sql"
     gen:
       go:
         package: "generated"
@@ -174,13 +176,17 @@ sql:
         emit_json_tags: true
 ```
 
-### sqlcクエリ定義
+### sqlcクエリ定義（1ファイル1メソッド、コンフリクト回避）
 ```sql
--- db/sqlc/queries/users.sql
+-- src/infra/rdb/queries/get_user_by_id.sql
 -- name: GetUserByID :one
 SELECT * FROM users WHERE id = $1;
+
+-- src/infra/rdb/queries/create_user.sql
 -- name: CreateUser :one
 INSERT INTO users (id, name, email, created_at) VALUES ($1, $2, $3, $4) RETURNING *;
+
+-- src/infra/rdb/queries/exists_user_by_email.sql
 -- name: ExistsUserByEmail :one
 SELECT EXISTS(SELECT 1 FROM users WHERE email = $1);
 ```
@@ -308,7 +314,7 @@ issues:
 ```makefile
 migrate-dry: psqldef -U $(DB_USER) -h $(DB_HOST) $(DB_NAME) --dry-run < db/migrations/schema.sql
 migrate:     psqldef -U $(DB_USER) -h $(DB_HOST) $(DB_NAME) < db/migrations/schema.sql
-sqlc:        sqlc generate -f db/sqlc/sqlc.yaml
+sqlc:        sqlc generate -f src/infra/rdb/sqlc.yaml
 wire:        cd src/di && wire
 mock:        go generate ./...
 lint:        golangci-lint run ./...
