@@ -244,19 +244,24 @@ func InitializeRouter(queries *generated.Queries) *gin.Engine {
 
 ## テスト（必須）※テストなしはマージ禁止
 
-| 層 | 方法 | DB |
-|----|------|-----|
-| domain/usecase | gomock + testify | 不要 |
-| infra/rdb | SQLite直接アクセス | SQLite |
+**errorは絶対に無視しない。require.NoError等で必ずチェック。**
+
+| 層 | 種類 | 方法 |
+|----|------|------|
+| domain | 単体テスト | gomock + testify |
+| usecase | 単体テスト | gomock + testify |
+| interface/controller | 単体テスト | gomock + testify |
+| interface/presentation | 不要 | - |
+| infra/rdb | 単体テスト | SQLite（RDB制約で無理なら実RDB） |
 | infra/router | goldentest | SQLite |
-| infra/gateway | 都度判断（emailtrap等） | - |
+| infra/gateway | 都度判断 | emailtrap等 |
 
 ### モック生成（go:generateを各IFファイルに記載）
 ```bash
 go generate ./...
 ```
 
-### テスト例
+### 単体テスト例
 ```go
 func TestCreateUserUsecase_Exec(t *testing.T) {
     ctrl := gomock.NewController(t)
@@ -267,7 +272,7 @@ func TestCreateUserUsecase_Exec(t *testing.T) {
 
     uc := createuserusecase.NewCreateUserUsecase(mockRepo, mockDS)
     out, err := uc.Exec(context.Background(), createuserusecase.CreateUserInput{Name: "John", Email: "john@example.com"})
-    require.NoError(t, err)
+    require.NoError(t, err)  // errorは必ずチェック
     assert.NotEmpty(t, out.UserID)
 }
 ```
@@ -275,8 +280,10 @@ func TestCreateUserUsecase_Exec(t *testing.T) {
 ### RDBテスト（SQLite）
 ```go
 func setupTestDB(t *testing.T) *generated.Queries {
-    db, _ := sql.Open("sqlite3", ":memory:")
-    db.Exec(`CREATE TABLE users (id TEXT PRIMARY KEY, name TEXT, email TEXT UNIQUE, created_at DATETIME)`)
+    db, err := sql.Open("sqlite3", ":memory:")
+    require.NoError(t, err)  // errorは必ずチェック
+    _, err = db.Exec(`CREATE TABLE users (id TEXT PRIMARY KEY, name TEXT, email TEXT UNIQUE, created_at DATETIME)`)
+    require.NoError(t, err)
     t.Cleanup(func() { db.Close() })
     return generated.New(db)
 }
