@@ -335,6 +335,107 @@ generate:    sqlc wire mock
 - 使用しないメソッド・フィールド・構造体は作成しない
 - 将来使うかもしれないコードは書かない（YAGNI）
 
+## エラーハンドリング
+
+### パッケージ構成
+
+```
+src/apperr/
+├── error_code.go   # エラーコード定義 (Code型)
+└── app_error.go    # AppError構造体とコンストラクタ
+```
+
+### HTTPステータスの使い分け
+
+| ステータス | 用途 | コンストラクタ |
+|-----------|------|---------------|
+| 400 Bad Request | リクエスト構文エラー（JSON不正など） | `BadRequest`, `BadRequestWrap` |
+| 401 Unauthorized | 認証エラー | `Unauthorized`, `UnauthorizedWrap` |
+| 403 Forbidden | 認可エラー | `Forbidden`, `ForbiddenWrap` |
+| 404 Not Found | リソース未検出 | `NotFound`, `NotFoundWrap` |
+| 409 Conflict | 重複エラー | `Conflict`, `ConflictWrap` |
+| 422 Unprocessable Entity | ドメインバリデーションエラー | `UnprocessableEntity`, `UnprocessableEntityWrap` |
+| 500 Internal Server Error | DB/インフラエラー | `Internal` |
+
+### コンストラクタの使い分け
+
+```go
+// 元のエラーがない場合
+apperr.Conflict(apperr.CodeKeywordAlreadyExists)
+
+// 元のエラーをラップする場合（スタックトレース保持）
+apperr.UnprocessableEntityWrap(err, apperr.CodeInvalidRequest)
+
+// 500系は常にラップ
+apperr.Internal(err)
+```
+
+### Controller での使用
+
+```go
+// JSONバインドエラー → 400
+if err := ctx.ShouldBindJSON(&req); err != nil {
+    _ = ctx.Error(apperr.BadRequestWrap(err, apperr.CodeInvalidRequest))
+    return
+}
+
+// 認証チェック → 401
+if userID == "" {
+    _ = ctx.Error(apperr.Unauthorized(apperr.CodeUnauthorized))
+    return
+}
+
+// リソース検索 → 404
+user, err := c.userQueryService.FindByID(ctx, userID)
+if err != nil {
+    _ = ctx.Error(apperr.NotFoundWrap(err, apperr.CodeUserNotFound))
+    return
+}
+
+// Usecase呼び出し → Usecaseが返すAppErrorをそのまま渡す
+output, err := c.createRuleUsecase.Exec(ctx, input)
+if err != nil {
+    _ = ctx.Error(err)
+    return
+}
+```
+
+### Usecase での使用
+
+```go
+// ドメインバリデーション → 422
+keyword, err := ruledm.NewKeyword(input.Keyword)
+if err != nil {
+    return nil, apperr.UnprocessableEntityWrap(err, apperr.CodeInvalidRequest)
+}
+
+// 重複チェック → 409
+if exists {
+    return nil, apperr.Conflict(apperr.CodeKeywordAlreadyExists)
+}
+
+// DB操作 → 500
+if err := u.ruleRepo.Save(ctx, rule); err != nil {
+    return nil, apperr.Internal(err)
+}
+```
+
+### エラーコード追加手順
+
+1. `src/apperr/error_code.go` に追加:
+```go
+const (
+    CodeNewError Code = "NEW_ERROR"
+)
+```
+
+2. フロントエンド `frontend/src/lib/errorCodes.ts` に対応メッセージ追加:
+```typescript
+export const ERROR_MESSAGES: Record<string, string> = {
+    NEW_ERROR: '新しいエラーメッセージ',
+};
+```
+
 ## 禁止事項
 
 - domain層からinfra層への依存
@@ -347,3 +448,4 @@ generate:    sqlc wire mock
 - 生成コード（sqlc/wire_gen/mock）の手動編集
 - テストなしでのマージ
 - golangci-lintエラーを無視してコミット
+- エラーをラップせずに新規エラーを作成（スタックトレースが失われる）
