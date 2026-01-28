@@ -13,13 +13,16 @@ Go / Gin / Clean Architecture / CQRS / wire (DI) / sqlc / sqldef / golangci-lint
 
 ```
 .
+├── cmd/
+│   └── api/
+│       └── main.go                  # エントリーポイント
 ├── db/
 │   └── migrations/schema.sql        # sqldef用スキーマ
-└── src/
+└── internal/
     ├── di/
     │   ├── wire.go                  # Provider定義
     │   └── wire_gen.go              # 自動生成（編集禁止）
-    ├── mock/                        # gomock生成（src構造をミラー）
+    ├── mock/                        # gomock生成（internal構造をミラー）
     │   ├── domain/userdm/mock_user_repository.go
     │   └── usecase/mock_user_query_service.go
     ├── domain/
@@ -40,7 +43,11 @@ Go / Gin / Clean Architecture / CQRS / wire (DI) / sqlc / sqldef / golangci-lint
     │   │   └── create_user_usecase.go
     │   └── user_query_service.go    # Query系IF（//go:generate）
     ├── interface/
-    │   ├── controller/user_controller.go
+    │   ├── controller/                  # 1Usecase = 1Controllerで凝集度を高める
+    │   │   ├── createusercontroller/
+    │   │   │   └── create_user_controller.go
+    │   │   └── getusercontroller/
+    │   │       └── get_user_controller.go
     │   └── presentation/user_presenter.go
     └── infra/
         ├── router/router.go         # Gin（FWは技術的詳細なのでinfra）
@@ -162,7 +169,7 @@ func (u *CreateUserUsecase) Exec(ctx context.Context, input CreateUserInput) (*C
 
 ### sqlc設定
 ```yaml
-# src/infra/rdb/sqlc.yaml
+# internal/infra/rdb/sqlc.yaml
 version: "2"
 sql:
   - engine: "postgresql"
@@ -178,15 +185,15 @@ sql:
 
 ### sqlcクエリ定義（1ファイル1メソッド、コンフリクト回避）
 ```sql
--- src/infra/rdb/queries/get_user_by_id.sql
+-- internal/infra/rdb/queries/get_user_by_id.sql
 -- name: GetUserByID :one
 SELECT * FROM users WHERE id = $1;
 
--- src/infra/rdb/queries/create_user.sql
+-- internal/infra/rdb/queries/create_user.sql
 -- name: CreateUser :one
 INSERT INTO users (id, name, email, created_at) VALUES ($1, $2, $3, $4) RETURNING *;
 
--- src/infra/rdb/queries/exists_user_by_email.sql
+-- internal/infra/rdb/queries/exists_user_by_email.sql
 -- name: ExistsUserByEmail :one
 SELECT EXISTS(SELECT 1 FROM users WHERE email = $1);
 ```
@@ -198,15 +205,57 @@ psqldef -U postgres -h localhost yourdb < db/migrations/schema.sql            # 
 # MySQL: mysqldef -u root -h localhost yourdb < db/migrations/schema.sql
 ```
 
+## Interface/Controller層
+
+### 凝集度を高めるためのController設計
+
+**1Usecase = 1Controller** のパターンを採用。これにより：
+- コントローラーの依存が明確になる
+- 単体テストが容易になる
+- 変更の影響範囲が限定される
+
+```go
+// interface/controller/createusercontroller/create_user_controller.go
+package createusercontroller
+
+type CreateUserController struct {
+    createUserUsecase *createuserusecase.CreateUserUsecase
+}
+
+func NewCreateUserController(uc *createuserusecase.CreateUserUsecase) *CreateUserController {
+    return &CreateUserController{createUserUsecase: uc}
+}
+
+func (c *CreateUserController) Handle(ctx *gin.Context) {
+    var req CreateUserRequest
+    if err := ctx.ShouldBindJSON(&req); err != nil {
+        _ = ctx.Error(apperr.BadRequestWrap(err, apperr.CodeInvalidRequest))
+        return
+    }
+    output, err := c.createUserUsecase.Exec(ctx.Request.Context(), createuserusecase.CreateUserInput{
+        Name:  req.Name,
+        Email: req.Email,
+    })
+    if err != nil {
+        _ = ctx.Error(err)
+        return
+    }
+    ctx.JSON(http.StatusCreated, gin.H{"id": output.UserID})
+}
+```
+
 ### Ginルーター
 ```go
 // infra/router/router.go
-func NewRouter(userCtrl *controller.UserController) *gin.Engine {
+func NewRouter(
+    createUserCtrl *createusercontroller.CreateUserController,
+    getUserCtrl *getusercontroller.GetUserController,
+) *gin.Engine {
     r := gin.Default()
     api := r.Group("/api/v1")
     users := api.Group("/users")
-    users.GET("/:id", userCtrl.Get)
-    users.POST("", userCtrl.Create)
+    users.GET("/:id", getUserCtrl.Handle)
+    users.POST("", createUserCtrl.Handle)
     return r
 }
 ```
@@ -224,7 +273,7 @@ func (r *userRepositoryImpl) FindByID(ctx context.Context, id userdm.UserID) (*u
 ## DI（wire）※手動DI禁止
 
 ```go
-// src/di/wire.go
+// internal/di/wire.go
 //go:build wireinject
 package di
 
@@ -235,6 +284,12 @@ var infraSet = wire.NewSet(
 )
 var domainServiceSet = wire.NewSet(userdm.NewIsExistUserDomainService)
 var usecaseSet = wire.NewSet(createuserusecase.NewCreateUserUsecase)
+
+// Controller providers（1Usecase = 1Controller）
+var controllerSet = wire.NewSet(
+    createusercontroller.NewCreateUserController,
+    getusercontroller.NewGetUserController,
+)
 
 func InitializeRouter(queries *generated.Queries) *gin.Engine {
     wire.Build(infraSet, domainServiceSet, usecaseSet, controllerSet, router.NewRouter)
@@ -291,7 +346,7 @@ func setupTestDB(t *testing.T) *generated.Queries {
 
 ### goldentest更新
 ```bash
-go test ./src/infra/router/... -update
+go test ./internal/infra/router/... -update
 ```
 
 ## golangci-lint
@@ -321,12 +376,13 @@ issues:
 ```makefile
 migrate-dry: psqldef -U $(DB_USER) -h $(DB_HOST) $(DB_NAME) --dry-run < db/migrations/schema.sql
 migrate:     psqldef -U $(DB_USER) -h $(DB_HOST) $(DB_NAME) < db/migrations/schema.sql
-sqlc:        sqlc generate -f src/infra/rdb/sqlc.yaml
-wire:        cd src/di && wire
+sqlc:        sqlc generate -f internal/infra/rdb/sqlc.yaml
+wire:        cd internal/di && wire
 mock:        go generate ./...
 lint:        golangci-lint run ./...
 test:        go test ./... -v
 generate:    sqlc wire mock
+run:         go run ./cmd/api/main.go
 ```
 
 ## コード実装の原則
@@ -340,7 +396,7 @@ generate:    sqlc wire mock
 ### パッケージ構成
 
 ```
-src/apperr/
+internal/apperr/
 ├── error_code.go   # エラーコード定義 (Code型)
 └── app_error.go    # AppError構造体とコンストラクタ
 ```
@@ -422,7 +478,7 @@ if err := u.ruleRepo.Save(ctx, rule); err != nil {
 
 ### エラーコード追加手順
 
-1. `src/apperr/error_code.go` に追加:
+1. `internal/apperr/error_code.go` に追加:
 ```go
 const (
     CodeNewError Code = "NEW_ERROR"
