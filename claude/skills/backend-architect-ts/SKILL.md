@@ -240,14 +240,44 @@ container.register('CreateUserUsecase', { useClass: CreateUserUsecase });
 export { container };
 ```
 
+## エラーハンドリング
+
+### 400 vs 422
+- **400 Bad Request**: リクエスト構文・形式不正（サーバーが理解できない）
+- **422 Unprocessable Entity**: 構文OK、内容が処理不可（セマンティックエラー）
+
+| シチュエーション | HTTPステータス |
+|-----------------|---------------|
+| ドメインバリデーション（メール形式不正等） | 422 |
+| 必須パラメータ欠落、JSONパースエラー | 400 |
+| 認証失敗 | 401 |
+| リソース未検出 | 404 |
+| 重複エラー | 409 |
+| 内部エラー | 500 |
+
+```typescript
+// ドメイン層: 422
+throw new UnprocessableEntityError('INVALID_EMAIL');
+
+// コントローラー層: パラメータ欠落は400
+throw new BadRequestError('INVALID_REQUEST');
+```
+
 ## テスト（必須）※テストなしはマージ禁止
 
-| 層 | 方法 | DB |
-|----|------|-----|
-| domain/usecase | Jest mock | 不要 |
-| infra/rdb | SQLite直接アクセス | SQLite |
-| infra/router | Jest + supertest | SQLite |
-| infra/gateway | 都度判断（emailtrap等） | - |
+### 必須ルール
+1. **テーブルテスト必須**: 全テストはtest.each/describe.eachで書く
+2. **並列実行**: domain/usecaseテストは並列実行可（Jestデフォルト）
+3. **infraテストは--runInBand**: DB共有によるデータ不整合を防ぐ
+4. **異常系テスト必須**: 正常系だけでなく、エラーケースも必ず含める
+5. **テスト名は日本語**: test.eachのnameフィールドは日本語で記述
+
+| 層 | 方法 | DB | 並列 |
+|----|------|-----|------|
+| domain/usecase | Jest mock | 不要 | ○ |
+| infra/rdb | SQLite直接アクセス | SQLite | × |
+| infra/router | Jest + supertest | SQLite | × |
+| infra/gateway | 都度判断（emailtrap等） | - | - |
 
 ### Jest設定
 ```javascript
@@ -262,22 +292,56 @@ module.exports = {
 };
 ```
 
-### テスト例（Jest mock）
+### テーブルテストパターン（test.each）
 ```typescript
-// tests/usecase/createUser/createUser.usecase.test.ts
+describe('Email.create', () => {
+  test.each([
+    { name: '有効なメールアドレス', email: 'test@example.com', shouldThrow: false },
+    { name: '空文字', email: '', shouldThrow: true },
+    { name: '@なし', email: 'invalid', shouldThrow: true },
+  ])('$name', ({ email, shouldThrow }) => {
+    if (shouldThrow) {
+      expect(() => Email.create(email)).toThrow('INVALID_EMAIL');
+    } else {
+      expect(Email.create(email).value).toBe(email);
+    }
+  });
+});
+```
+
+### ユースケーステスト（モック付きテーブルテスト）
+```typescript
 describe('CreateUserUsecase', () => {
-  it('should create a user', async () => {
-    const mockRepo: jest.Mocked<UserRepository> = {
-      findById: jest.fn(), findByEmail: jest.fn(), existsById: jest.fn(),
-      save: jest.fn().mockResolvedValue(undefined), delete: jest.fn(),
-    };
-    const mockDS = { exec: jest.fn().mockResolvedValue(false) } as unknown as IsExistUserDomainService;
+  test.each([
+    {
+      name: '正常にユーザーを作成できる',
+      input: { name: 'John', email: 'john@example.com' },
+      setupMock: (repo: jest.Mocked<UserRepository>) => {
+        repo.save.mockResolvedValue(undefined);
+      },
+      existsResult: false,
+      shouldThrow: false,
+    },
+    {
+      name: '無効なメールアドレス形式',
+      input: { name: 'John', email: 'invalid' },
+      setupMock: null,
+      existsResult: false,
+      shouldThrow: true,
+    },
+  ])('$name', async ({ input, setupMock, existsResult, shouldThrow }) => {
+    const mockRepo = createMockRepo();
+    const mockDS = { exec: jest.fn().mockResolvedValue(existsResult) };
+    if (setupMock) setupMock(mockRepo);
 
     const usecase = new CreateUserUsecase(mockRepo, mockDS);
-    const result = await usecase.exec({ name: 'John', email: 'john@example.com' });
 
-    expect(result.userId).toBeDefined();
-    expect(mockRepo.save).toHaveBeenCalledTimes(1);
+    if (shouldThrow) {
+      await expect(usecase.exec(input)).rejects.toThrow();
+    } else {
+      const result = await usecase.exec(input);
+      expect(result.userId).toBeDefined();
+    }
   });
 });
 ```

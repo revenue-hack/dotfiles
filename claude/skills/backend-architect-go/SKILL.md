@@ -242,38 +242,125 @@ func InitializeRouter(queries *generated.Queries) *gin.Engine {
 }
 ```
 
+## エラーハンドリング
+
+### 400 vs 422
+- **400 Bad Request**: リクエスト構文・形式不正（サーバーが理解できない）
+- **422 Unprocessable Entity**: 構文OK、内容が処理不可（セマンティックエラー）
+
+| シチュエーション | HTTPステータス |
+|-----------------|---------------|
+| ドメインバリデーション（メール形式不正等） | 422 |
+| 必須パラメータ欠落、JSONパースエラー | 400 |
+| 認証失敗 | 401 |
+| リソース未検出 | 404 |
+| 重複エラー | 409 |
+| 内部エラー | 500 |
+
+```go
+// ドメイン層: 422
+return apperr.UnprocessableEntity(apperr.CodeInvalidEmail)
+
+// コントローラー層: パラメータ欠落は400
+return apperr.BadRequest(apperr.CodeInvalidRequest)
+```
+
 ## テスト（必須）※テストなしはマージ禁止
 
-**errorは絶対に無視しない。require.NoError等で必ずチェック。**
+### 必須ルール
+1. **テーブルテスト必須**: 全テストはテーブル駆動テストで書く
+2. **t.Parallel()**: domain/usecase/controllerテストでは必ず使う
+3. **infraテストはt.Parallel()禁止**: DB共有によるデータ不整合を防ぐ
+4. **異常系テスト必須**: 正常系だけでなく、エラーケースも必ず含める
+5. **errorは絶対に無視しない**: require.NoError等で必ずチェック
+6. **テスト名は日本語**: テーブルテストのnameフィールドは日本語で記述
 
-| 層 | 種類 | 方法 |
-|----|------|------|
-| domain | 単体テスト | gomock + testify |
-| usecase | 単体テスト | gomock + testify |
-| interface/controller | 単体テスト | gomock + testify |
-| interface/presentation | 不要 | - |
-| infra/rdb | 単体テスト | SQLite（RDB制約で無理なら実RDB） |
-| infra/router | goldentest | SQLite |
-| infra/gateway | 都度判断 | emailtrap等 |
+| 層 | 種類 | 方法 | Parallel |
+|----|------|------|----------|
+| domain | 単体テスト | gomock + testify | ○ |
+| usecase | 単体テスト | gomock + testify | ○ |
+| interface/controller | 単体テスト | gomock + testify | ○ |
+| infra/rdb | 単体テスト | SQLite/testcontainers | × |
+| infra/router | goldentest | SQLite | × |
 
-### モック生成（go:generateを各IFファイルに記載）
+### モック生成
 ```bash
 go generate ./...
 ```
 
-### 単体テスト例
+### テーブルテスト + Parallelパターン
+```go
+func TestNewEmail(t *testing.T) {
+    t.Parallel()
+    tests := []struct {
+        name    string
+        email   string
+        wantErr string
+    }{
+        {"有効なメールアドレス", "test@example.com", ""},
+        {"空文字", "", "INVALID_EMAIL"},
+        {"@なし", "invalid", "INVALID_EMAIL"},
+    }
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            t.Parallel()
+            email, err := NewEmail(tt.email)
+            if tt.wantErr != "" {
+                require.Error(t, err)
+                assert.Contains(t, err.Error(), tt.wantErr)
+                return
+            }
+            require.NoError(t, err)
+            assert.Equal(t, tt.email, email.String())
+        })
+    }
+}
+```
+
+### ユースケーステスト（モック付きテーブルテスト）
 ```go
 func TestCreateUserUsecase_Exec(t *testing.T) {
-    ctrl := gomock.NewController(t)
-    mockRepo := mockuserdm.NewMockUserRepository(ctrl)
-    mockDS := mockuserdm.NewMockIsExistUserDomainService(ctrl)
-    mockDS.EXPECT().Exec(gomock.Any(), gomock.Any()).Return(false, nil)
-    mockRepo.EXPECT().Save(gomock.Any(), gomock.Any()).Return(nil)
-
-    uc := createuserusecase.NewCreateUserUsecase(mockRepo, mockDS)
-    out, err := uc.Exec(context.Background(), createuserusecase.CreateUserInput{Name: "John", Email: "john@example.com"})
-    require.NoError(t, err)  // errorは必ずチェック
-    assert.NotEmpty(t, out.UserID)
+    t.Parallel()
+    tests := []struct {
+        name      string
+        input     CreateUserInput
+        setupMock func(*MockRepo)
+        wantErr   string
+    }{
+        {
+            name:  "正常にユーザーを作成できる",
+            input: CreateUserInput{Name: "John", Email: "john@example.com"},
+            setupMock: func(m *MockRepo) {
+                m.EXPECT().ExistsByEmail(gomock.Any(), gomock.Any()).Return(false, nil)
+                m.EXPECT().Save(gomock.Any(), gomock.Any()).Return(nil)
+            },
+            wantErr: "",
+        },
+        {
+            name:      "無効なメールアドレス形式",
+            input:     CreateUserInput{Name: "John", Email: "invalid"},
+            setupMock: nil,
+            wantErr:   "INVALID_EMAIL",
+        },
+    }
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            t.Parallel()
+            ctrl := gomock.NewController(t)
+            mockRepo := NewMockRepo(ctrl)
+            if tt.setupMock != nil {
+                tt.setupMock(mockRepo)
+            }
+            uc := NewCreateUserUsecase(mockRepo)
+            _, err := uc.Exec(ctx, tt.input)
+            if tt.wantErr != "" {
+                require.Error(t, err)
+                assert.Contains(t, err.Error(), tt.wantErr)
+                return
+            }
+            require.NoError(t, err)
+        })
+    }
 }
 ```
 
