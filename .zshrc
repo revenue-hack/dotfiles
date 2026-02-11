@@ -82,6 +82,7 @@ fi
   eval "$(goenv init -)"
 #fi
 
+export GOENV_DISABLE_GOPATH=1
 export GOPATH=$HOME/go
 export PATH=$GOROOT/bin:$PATH
 export PATH=$GOPATH/bin:$PATH

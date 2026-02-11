@@ -51,7 +51,7 @@ src/
 
 ## Hooks配置
 
-- organism専用 → コンポーネントディレクトリ内（`useHeader.ts`）
+- organism専用 → コンポーネントディレクトリ内（`useHeader.ts`）。**最初から分離する**（肥大化してから分けるのではなく、初期から `index.tsx`（UI）と `useXXX.ts`（ロジック）を分ける）
 - 複数箇所で再利用 → `src/hooks/`
 
 ## ESLint
@@ -62,6 +62,12 @@ src/
 ## E2Eテスト
 
 Playwright使用。テストは `src/tests/e2e/` に配置。
+
+## shadcn/ui
+
+- レスポンシブ対応が必要な場合は **shadcn/ui** (Radix UI + Tailwind) の使用を推奨
+- shadcn/ui 使用時のディレクトリ: `components/ui/` にshadcn生成物、`components/atoms/` にカスタム拡張
+- shadcn/ui は Atomic Design の atoms レイヤーに相当
 
 ## パスalias
 
