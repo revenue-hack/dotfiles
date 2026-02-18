@@ -48,10 +48,6 @@
       "type": "http",
       "url": "https://mcp.notion.com/mcp"
     },
-    "linear": {
-      "type": "sse",
-      "url": "https://mcp.linear.app/sse"
-    },
     "sentry": {
       "type": "http",
       "url": "https://mcp.sentry.dev/mcp"

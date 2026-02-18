@@ -20,5 +20,6 @@ if type "npm" > /dev/null 2>&1 ; then
     npm install -g @google/gemini-cli
     npm i -g reviewit
     npm i -g macos-notify-mcp
+    npm install -g openclaw@latest
 
 fi
